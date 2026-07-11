@@ -8,9 +8,12 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Header } from "@/components/site/Header";
+import { Footer } from "@/components/site/Footer";
 
 function NotFoundComponent() {
   return (
@@ -77,21 +80,45 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "BMW Parts Quotes Fast | BavarianParts" },
+      {
+        name: "description",
+        content:
+          "Get a fast quote on genuine & OEM BMW parts. Submit your VIN, model and parts list — our specialists reply within one business day.",
+      },
+      { name: "author", content: "BavarianParts" },
+      { property: "og:title", content: "BMW Parts Quotes Fast | BavarianParts" },
+      {
+        property: "og:description",
+        content:
+          "Genuine & OEM BMW parts quoted fast. Submit your VIN and parts list for an exact-fit quote.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "BavarianParts" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "AutoPartsStore",
+          name: "BavarianParts",
+          description: "Genuine and OEM BMW parts quoted fast from your VIN and parts list.",
+          telephone: "+1-555-123-4567",
+          email: "quotes@bavarianparts.example",
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -119,8 +146,15 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-1">
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+      <Toaster richColors position="top-center" />
     </QueryClientProvider>
   );
 }
