@@ -1,19 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Wrench, Target, HandshakeIcon } from "lucide-react";
+import { Wrench, Target, Handshake } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Us | BavarianParts" },
+      { title: "About Us | Bavarian Parts Co." },
       {
         name: "description",
         content:
-          "BMW parts specialists with decades of combined experience. Learn how BavarianParts sources genuine and OEM parts matched to your VIN.",
+          "Bavarian Parts Co. is an independent concierge sourcing service for genuine OEM BMW parts. Learn how our VIN-verified quote process works.",
       },
-      { property: "og:title", content: "About Us | BavarianParts" },
+      { property: "og:title", content: "About Us | Bavarian Parts Co." },
       {
         property: "og:description",
-        content: "BMW parts specialists sourcing genuine and OEM parts matched to your VIN.",
+        content:
+          "Independent concierge sourcing for genuine OEM BMW parts, matched to your VIN.",
       },
       { property: "og:url", content: "/about" },
     ],
@@ -26,7 +27,7 @@ const values = [
   {
     icon: Target,
     title: "Precision Fitment",
-    text: "Every quote is built from your VIN, so the part numbers we quote are the part numbers that fit — no returns, no guesswork.",
+    text: "Every quote starts with your VIN, so the part numbers we quote are the part numbers that fit — no returns, no guesswork.",
   },
   {
     icon: Wrench,
@@ -34,9 +35,9 @@ const values = [
     text: "Our team drives, wrenches on, and races BMWs. We know the difference between a part that works and the part you actually want.",
   },
   {
-    icon: HandshakeIcon,
+    icon: Handshake,
     title: "Honest Pricing",
-    text: "Transparent, itemized quotes with genuine and OEM options side by side. You choose what fits your budget.",
+    text: "Transparent, itemized quotes with OEM options laid out clearly. You choose what fits your project and budget.",
   },
 ] as const;
 
@@ -45,7 +46,7 @@ function AboutPage() {
     <>
       <section className="bg-gradient-hero text-carbon-foreground">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <p className="heading-kicker text-primary-glow">About BavarianParts</p>
+          <p className="heading-kicker text-primary-glow">About Bavarian Parts Co.</p>
           <h1 className="mt-3 max-w-2xl text-balance text-4xl font-black uppercase sm:text-5xl">
             Built by BMW people, for BMW people
           </h1>
@@ -55,20 +56,28 @@ function AboutPage() {
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <div className="space-y-5 leading-relaxed text-muted-foreground">
           <p>
-            BavarianParts started the way most good garage ideas do — with a frustrating parts
-            counter experience. Wrong part numbers, dealership markups, and week-long waits for a
-            simple answer. We knew there was a better way to get BMW owners the parts they need.
+            Bavarian Parts Co. started the way most good garage ideas do — with a
+            frustrating parts counter experience. Wrong part numbers, dealership markups,
+            and week-long waits for a simple answer. We knew there was a better way to
+            get BMW owners the parts they need.
           </p>
           <p>
-            Today, we operate a quote-first parts service focused exclusively on BMW. Instead of
-            forcing you to decode diagrams and cross-reference part numbers, you simply tell us
-            your car and what you need. Our specialists do the lookup against your VIN and reply
-            with an exact-fit, itemized quote — typically within one business day.
+            Today, we operate as a concierge sourcing service, focused exclusively on
+            BMW. Instead of asking you to decode diagrams and cross-reference part
+            numbers, you tell us your car and what you need. Our specialists do the
+            lookup against your VIN and reply with an exact-fit, itemized quote — usually
+            within one business day.
           </p>
           <p>
-            We source genuine BMW parts and trusted OEM-supplier equivalents (the same companies
-            that build parts for the factory line), so you can choose the right balance of price
-            and provenance for every job.
+            We source genuine OEM BMW parts and OEM-supplier equivalents from authorized
+            channels, so you can choose the right balance of price and provenance for
+            every job — from routine service to a full restoration.
+          </p>
+          <p className="rounded-md border border-border bg-secondary/50 p-4 text-sm">
+            <strong className="text-foreground">Independent, not affiliated.</strong>{" "}
+            Bavarian Parts Co. is an independent parts sourcing service. We are not
+            affiliated with, endorsed by, or sponsored by BMW AG or any of its
+            subsidiaries. Trademarks are used only to identify the vehicles we support.
           </p>
         </div>
       </section>
@@ -97,7 +106,7 @@ function AboutPage() {
           to="/request-quote"
           className="mt-6 inline-flex items-center rounded-md bg-gradient-blue px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-blue transition-transform hover:scale-[1.03]"
         >
-          Request a Quote
+          Request a Free Quote
         </Link>
       </section>
     </>
