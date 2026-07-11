@@ -15,16 +15,24 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link to="/" className="flex min-w-0 items-center gap-2.5" onClick={() => setOpen(false)}>
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-blue text-sm font-black text-primary-foreground">
+        <Link
+          to="/"
+          className="flex min-w-0 items-center gap-2.5"
+          onClick={() => setOpen(false)}
+          aria-label="Bavarian Parts Co. — home"
+        >
+          <span
+            aria-hidden="true"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-blue text-sm font-black text-primary-foreground"
+          >
             BP
           </span>
           <span className="truncate text-lg font-extrabold uppercase tracking-tight">
-            Bavarian<span className="text-primary">Parts</span>
+            Bavarian<span className="text-primary">Parts Co.</span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
           {navItems.map((item) => (
             <Link
               key={item.to}
@@ -48,6 +56,7 @@ export function Header() {
         <button
           type="button"
           aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
           className="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-border md:hidden"
           onClick={() => setOpen((v) => !v)}
         >
@@ -56,7 +65,10 @@ export function Header() {
       </div>
 
       {open && (
-        <nav className="border-t border-border bg-background px-4 pb-4 pt-2 md:hidden">
+        <nav
+          className="border-t border-border bg-background px-4 pb-4 pt-2 md:hidden"
+          aria-label="Mobile"
+        >
           {navItems.map((item) => (
             <Link
               key={item.to}

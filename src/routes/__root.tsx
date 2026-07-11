@@ -80,21 +80,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "BMW Parts Quotes Fast | BavarianParts" },
+      { title: "OEM BMW Parts Without the Guesswork | Bavarian Parts Co." },
       {
         name: "description",
         content:
-          "Get a fast quote on genuine & OEM BMW parts. Submit your VIN, model and parts list — our specialists reply within one business day.",
+          "Concierge sourcing for genuine OEM BMW parts. Submit your VIN and parts list — our specialists verify fitment and email a personalized quote, usually within one business day.",
       },
-      { name: "author", content: "BavarianParts" },
-      { property: "og:title", content: "BMW Parts Quotes Fast | BavarianParts" },
+      { name: "author", content: "Bavarian Parts Co." },
+      { property: "og:title", content: "OEM BMW Parts Without the Guesswork | Bavarian Parts Co." },
       {
         property: "og:description",
         content:
-          "Genuine & OEM BMW parts quoted fast. Submit your VIN and parts list for an exact-fit quote.",
+          "Submit your VIN, we verify fitment, you get a personalized quote for genuine OEM BMW parts.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "BavarianParts" },
+      { property: "og:site_name", content: "Bavarian Parts Co." },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -113,10 +113,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "AutoPartsStore",
-          name: "BavarianParts",
-          description: "Genuine and OEM BMW parts quoted fast from your VIN and parts list.",
+          name: "Bavarian Parts Co.",
+          description:
+            "Independent concierge sourcing service for genuine OEM BMW parts. VIN-verified fitment, personalized quotes, nationwide US shipping.",
           telephone: "+1-555-123-4567",
-          email: "quotes@bavarianparts.example",
+          email: "hello@bavarianpartsco.com",
+          areaServed: "US",
         }),
       },
     ],
