@@ -7,12 +7,16 @@ import { Input } from "@/components/ui/input";
 import { computeQuote, money, percent } from "@/lib/admin/pricing";
 import {
   addLine,
+  DELIVERY_STATUS_TONE,
+  DELIVERY_STATUSES,
+  ELIGIBILITY_TONE,
   formatDate,
   QUOTE_STATUSES,
   refreshExpiration,
   removeLine,
   setStatus,
   STATUS_TONE,
+  updateDelivery,
   updateLine,
   useAdminRequest,
   useAdminState,
@@ -24,7 +28,7 @@ export const Route = createFileRoute("/admin/requests/$id")({
 
 function QuoteBuilder() {
   const { id } = Route.useParams();
-  const { settings } = useAdminState();
+  const { settings, shops } = useAdminState();
   const request = useAdminRequest(id);
 
   if (!request) {
@@ -38,7 +42,14 @@ function QuoteBuilder() {
     );
   }
 
-  const math = computeQuote(request.lines, settings);
+  const shop = shops.find((s) => s.id === request.shopId);
+  const math = computeQuote(
+    request.lines,
+    settings,
+    request.delivery
+      ? { type: request.delivery.type, oversized: request.delivery.oversized }
+      : undefined,
+  );
 
   return (
     <div className="space-y-6">
@@ -285,6 +296,15 @@ function QuoteBuilder() {
         <Metric label="Acquisition cost" value={money(math.acquisitionTotal)} />
         <Metric label="Customer subtotal" value={money(math.subtotal)} />
         <Metric label="Shipping" value={money(math.shippingTotal)} />
+        <Metric
+          label="Delivery fee"
+          value={math.delivery.waived ? "Free" : money(math.delivery.fee)}
+          hint={
+            math.delivery.type === "Local Same-Day" && !math.delivery.waived
+              ? `${money(math.delivery.amountToFreeDelivery)} more for free same-day`
+              : math.delivery.type
+          }
+        />
         <Metric label="Customer total" value={money(math.grandTotal)} emphasis />
         <Metric label="Gross profit" value={money(math.grossProfit)} />
         <Metric label="Gross margin" value={percent(math.grossMargin)} />
