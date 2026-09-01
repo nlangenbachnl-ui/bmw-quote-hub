@@ -3,17 +3,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy | Bavarian Parts Co." },
+      { title: "Privacy Policy | Precision Bimmer Parts" },
       {
         name: "description",
         content:
-          "How Bavarian Parts Co. collects, uses and protects the information you share when requesting an OEM BMW parts quote.",
+          "How Precision Bimmer Parts collects, uses and protects the information you share when requesting an OEM BMW parts quote.",
       },
-      { property: "og:title", content: "Privacy Policy | Bavarian Parts Co." },
+      { property: "og:title", content: "Privacy Policy | Precision Bimmer Parts" },
       {
         property: "og:description",
         content:
-          "How we collect, use and protect the information you share with Bavarian Parts Co.",
+          "How we collect, use and protect the information you share with Precision Bimmer Parts",
       },
       { property: "og:url", content: "/privacy" },
     ],
@@ -37,11 +37,11 @@ function PrivacyPage() {
 
       <article className="mx-auto max-w-3xl space-y-8 px-4 py-14 text-sm leading-relaxed text-muted-foreground sm:px-6">
         <p className="rounded-md border border-border bg-secondary/50 p-4 text-foreground">
-          This page is maintained by Bavarian Parts Co. to explain how we handle the
+          This page is maintained by Precision Bimmer Parts to explain how we handle the
           information you share when using this website. It is written in plain
           language and is not legal advice. If you have questions, contact us at{" "}
-          <a href="mailto:hello@bavarianpartsco.com" className="text-primary hover:underline">
-            hello@bavarianpartsco.com
+          <a href="mailto:hello@precisionbimmerparts.com" className="text-primary hover:underline">
+            hello@precisionbimmerparts.com
           </a>
           .
         </p>
@@ -100,8 +100,8 @@ function PrivacyPage() {
           <p>
             You can request access to, correction of, or deletion of the personal
             information you have shared with us by contacting{" "}
-            <a href="mailto:hello@bavarianpartsco.com" className="text-primary hover:underline">
-              hello@bavarianpartsco.com
+            <a href="mailto:hello@precisionbimmerparts.com" className="text-primary hover:underline">
+              hello@precisionbimmerparts.com
             </a>
             . We will respond within a reasonable time.
           </p>

@@ -4,16 +4,16 @@ import { Mail, Phone, Clock, MapPin } from "lucide-react";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact Us | Bavarian Parts Co." },
+      { title: "Contact Us | Precision Bimmer Parts" },
       {
         name: "description",
         content:
-          "Reach the Bavarian Parts Co. team by email or phone, or submit a free VIN-verified parts quote request online.",
+          "Reach the Precision Bimmer Parts team by email or phone, or submit a free VIN-verified parts quote request online.",
       },
-      { property: "og:title", content: "Contact Us | Bavarian Parts Co." },
+      { property: "og:title", content: "Contact Us | Precision Bimmer Parts" },
       {
         property: "og:description",
-        content: "Reach the Bavarian Parts Co. team by phone, email, or online quote request.",
+        content: "Reach the Precision Bimmer Parts team by phone, email, or online quote request.",
       },
       { property: "og:url", content: "/contact" },
     ],
@@ -26,8 +26,8 @@ const details = [
   {
     icon: Mail,
     title: "Email",
-    lines: ["hello@bavarianpartsco.com"],
-    href: "mailto:hello@bavarianpartsco.com",
+    lines: ["hello@precisionbimmerparts.com"],
+    href: "mailto:hello@precisionbimmerparts.com",
   },
   {
     icon: Phone,

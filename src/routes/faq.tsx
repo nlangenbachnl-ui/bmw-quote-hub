@@ -6,7 +6,7 @@ const faqs = [
     a: "Submit your BMW model, year, VIN and a list of the parts you need through our Request a Quote form. Our specialists verify exact-fit part numbers against your VIN and email you an itemized quote — usually within one business day.",
   },
   {
-    q: "Is Bavarian Parts Co. affiliated with BMW?",
+    q: "Is Precision Bimmer Parts affiliated with BMW?",
     a: "No. We are an independent parts sourcing service and are not affiliated with, endorsed by, or sponsored by BMW AG or any of its subsidiaries. All trademarks are used for identification purposes only.",
   },
   {
@@ -46,13 +46,13 @@ const faqs = [
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "Frequently Asked Questions | Bavarian Parts Co." },
+      { title: "Frequently Asked Questions | Precision Bimmer Parts" },
       {
         name: "description",
         content:
-          "Answers to common questions about VIN-verified OEM BMW parts quotes, shipping, warranties and how Bavarian Parts Co. works.",
+          "Answers to common questions about VIN-verified OEM BMW parts quotes, shipping, warranties and how Precision Bimmer Parts works.",
       },
-      { property: "og:title", content: "Frequently Asked Questions | Bavarian Parts Co." },
+      { property: "og:title", content: "Frequently Asked Questions | Precision Bimmer Parts" },
       {
         property: "og:description",
         content:

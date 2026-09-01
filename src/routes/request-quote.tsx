@@ -18,7 +18,7 @@ import { submitQuote } from "@/lib/quotes";
 export const Route = createFileRoute("/request-quote")({
   head: () => ({
     meta: [
-      { title: "Request a Free BMW Parts Quote | Bavarian Parts Co." },
+      { title: "Request a Free BMW Parts Quote | Precision Bimmer Parts" },
       {
         name: "description",
         content:
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/request-quote")({
       },
       {
         property: "og:title",
-        content: "Request a Free BMW Parts Quote | Bavarian Parts Co.",
+        content: "Request a Free BMW Parts Quote | Precision Bimmer Parts",
       },
       {
         property: "og:description",
@@ -492,7 +492,7 @@ function RequestQuotePage() {
                   {...register("consent")}
                 />
                 <span>
-                  I agree to be contacted about my quote request by Bavarian Parts Co.
+                  I agree to be contacted about my quote request by Precision Bimmer Parts
                   and have read the{" "}
                   <Link to="/privacy" className="font-semibold text-primary hover:underline">
                     Privacy Policy

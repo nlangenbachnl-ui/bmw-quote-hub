@@ -19,16 +19,16 @@ export function Header() {
           to="/"
           className="flex min-w-0 items-center gap-2.5"
           onClick={() => setOpen(false)}
-          aria-label="Bavarian Parts Co. — home"
+          aria-label="Precision Bimmer Parts — home"
         >
           <span
             aria-hidden="true"
             className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-blue text-sm font-black text-primary-foreground"
           >
-            BP
+            PB
           </span>
           <span className="truncate text-lg font-extrabold uppercase tracking-tight">
-            Bavarian<span className="text-primary">Parts Co.</span>
+            Precision<span className="text-primary">Bimmer Parts</span>
           </span>
         </Link>
 
