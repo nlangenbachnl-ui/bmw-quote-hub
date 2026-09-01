@@ -20,8 +20,10 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as QuoteIdRouteImport } from './routes/quote.$id'
+import { Route as PortalHistoryRouteImport } from './routes/portal.history'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminRequestsIdRouteImport } from './routes/admin.requests.$id'
 
@@ -80,6 +82,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortalRoute,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -89,6 +96,11 @@ const QuoteIdRoute = QuoteIdRouteImport.update({
   id: '/quote/$id',
   path: '/quote/$id',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PortalHistoryRoute = PortalHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => PortalRoute,
 } as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/settings',
@@ -108,14 +120,16 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
-  '/portal': typeof PortalRoute
+  '/portal': typeof PortalRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/portal/history': typeof PortalHistoryRoute
   '/quote/$id': typeof QuoteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/portal/': typeof PortalIndexRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
 }
 export interface FileRoutesByTo {
@@ -124,14 +138,15 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
-  '/portal': typeof PortalRoute
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/portal/history': typeof PortalHistoryRoute
   '/quote/$id': typeof QuoteIdRoute
   '/admin': typeof AdminIndexRoute
+  '/portal': typeof PortalIndexRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
 }
 export interface FileRoutesById {
@@ -142,14 +157,16 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
-  '/portal': typeof PortalRoute
+  '/portal': typeof PortalRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/portal/history': typeof PortalHistoryRoute
   '/quote/$id': typeof QuoteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/portal/': typeof PortalIndexRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
 }
 export interface FileRouteTypes {
@@ -167,8 +184,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/settings'
+    | '/portal/history'
     | '/quote/$id'
     | '/admin/'
+    | '/portal/'
     | '/admin/requests/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -177,14 +196,15 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/for-shops'
-    | '/portal'
     | '/privacy'
     | '/request-quote'
     | '/sitemap.xml'
     | '/terms'
     | '/admin/settings'
+    | '/portal/history'
     | '/quote/$id'
     | '/admin'
+    | '/portal'
     | '/admin/requests/$id'
   id:
     | '__root__'
@@ -200,8 +220,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/settings'
+    | '/portal/history'
     | '/quote/$id'
     | '/admin/'
+    | '/portal/'
     | '/admin/requests/$id'
   fileRoutesById: FileRoutesById
 }
@@ -212,7 +234,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   ForShopsRoute: typeof ForShopsRoute
-  PortalRoute: typeof PortalRoute
+  PortalRoute: typeof PortalRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   RequestQuoteRoute: typeof RequestQuoteRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -299,6 +321,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -312,6 +341,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/quote/$id'
       preLoaderRoute: typeof QuoteIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/portal/history': {
+      id: '/portal/history'
+      path: '/history'
+      fullPath: '/portal/history'
+      preLoaderRoute: typeof PortalHistoryRouteImport
+      parentRoute: typeof PortalRoute
     }
     '/admin/settings': {
       id: '/admin/settings'
@@ -344,6 +380,19 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface PortalRouteChildren {
+  PortalHistoryRoute: typeof PortalHistoryRoute
+  PortalIndexRoute: typeof PortalIndexRoute
+}
+
+const PortalRouteChildren: PortalRouteChildren = {
+  PortalHistoryRoute: PortalHistoryRoute,
+  PortalIndexRoute: PortalIndexRoute,
+}
+
+const PortalRouteWithChildren =
+  PortalRoute._addFileChildren(PortalRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -351,7 +400,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   ForShopsRoute: ForShopsRoute,
-  PortalRoute: PortalRoute,
+  PortalRoute: PortalRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   RequestQuoteRoute: RequestQuoteRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
