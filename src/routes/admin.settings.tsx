@@ -272,3 +272,31 @@ function Field({
     </div>
   );
 }
+
+function TextField({
+  id,
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <div className="grid gap-2 sm:grid-cols-[1fr_18rem] sm:items-center">
+      <Label htmlFor={id} className="text-sm font-semibold">
+        {label}
+      </Label>
+      <Input
+        id={id}
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  );
+}
