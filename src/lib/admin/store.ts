@@ -781,7 +781,7 @@ export const IN_ZONE_ZIPS = [
   "60201",
   "60202",
   "60302",
-  "60everything".slice(0, 5),
+  "60018",
 ];
 
 export function submitShopRequest(input: ShopRequestInput): QuoteRequest {
