@@ -98,6 +98,87 @@ function QuoteBuilder() {
         ) : null}
       </section>
 
+      {request.channel === "commercial" ? (
+        <section
+          aria-labelledby="commercial-heading"
+          className="grid gap-4 rounded-xl border border-border bg-card p-6 shadow-card md:grid-cols-2"
+        >
+          <h2 id="commercial-heading" className="text-sm font-bold uppercase tracking-wider md:col-span-2">
+            Commercial job
+          </h2>
+          <Detail label="Shop" value={shop?.shopName ?? "Unlinked account"} />
+          <Detail label="Shop contact" value={shop ? `${shop.contactName} · ${shop.phone}` : "—"} />
+          <Detail label="RO number" value={request.roNumber ?? "—"} />
+          <Detail label="Insurer / estimate ref" value={request.insurerRef || "—"} />
+          <Detail label="Urgency" value={request.urgency ?? "Standard"} />
+          <Detail
+            label="Shop references"
+            value={[request.vehicleRef, request.customerRef].filter(Boolean).join(" · ") || "—"}
+          />
+          <Detail
+            label="Estimate files"
+            value={
+              request.estimateFiles?.length
+                ? request.estimateFiles.map((f) => f.name).join(", ")
+                : "None uploaded"
+            }
+          />
+          <Detail label="Resale certificate" value={shop?.resaleStatus ?? "—"} />
+        </section>
+      ) : null}
+
+      {request.delivery ? (
+        <section
+          aria-labelledby="delivery-heading"
+          className="rounded-xl border border-border bg-card p-6 shadow-card"
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <h2 id="delivery-heading" className="text-sm font-bold uppercase tracking-wider">
+              Delivery
+            </h2>
+            <Badge className={`${ELIGIBILITY_TONE[request.delivery.eligibility]} border-transparent`}>
+              {request.delivery.eligibility}
+            </Badge>
+            <Badge className={`${DELIVERY_STATUS_TONE[request.delivery.status]} border-transparent`}>
+              {request.delivery.status}
+            </Badge>
+          </div>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <Detail label="Method" value={request.delivery.type} />
+            <Detail
+              label="Fee on this quote"
+              value={math.delivery.waived ? "Free (threshold met)" : money(math.delivery.fee)}
+            />
+            <Detail
+              label="Requested window"
+              value={request.delivery.requestedWindow || "Not specified"}
+            />
+            <Detail label="Address" value={shop?.deliveryAddress ?? request.shippingZip} />
+            <Detail label="Receiving hours" value={request.delivery.receivingHours || "—"} />
+            <Detail label="Instructions" value={request.delivery.instructions || "None"} />
+          </div>
+          <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-border pt-4">
+            {DELIVERY_STATUSES.map((s) => (
+              <Button
+                key={s}
+                size="sm"
+                variant={request.delivery?.status === s ? "default" : "outline"}
+                onClick={() => updateDelivery(request.id, { status: s })}
+                aria-pressed={request.delivery?.status === s}
+              >
+                {s}
+              </Button>
+            ))}
+            <Link
+              to="/admin/deliveries"
+              className="text-sm font-semibold text-primary hover:underline"
+            >
+              Delivery board
+            </Link>
+          </div>
+        </section>
+      ) : null}
+
       <section aria-labelledby="status-heading" className="rounded-xl border border-border bg-card p-6 shadow-card">
         <h2 id="status-heading" className="text-sm font-bold uppercase tracking-wider">
           Status
