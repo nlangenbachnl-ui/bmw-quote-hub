@@ -23,6 +23,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as QuoteIdRouteImport } from './routes/quote.$id'
+import { Route as PortalRequestRouteImport } from './routes/portal.request'
+import { Route as PortalProfileRouteImport } from './routes/portal.profile'
 import { Route as PortalHistoryRouteImport } from './routes/portal.history'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminRequestsIdRouteImport } from './routes/admin.requests.$id'
@@ -97,6 +99,16 @@ const QuoteIdRoute = QuoteIdRouteImport.update({
   path: '/quote/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalRequestRoute = PortalRequestRouteImport.update({
+  id: '/request',
+  path: '/request',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalProfileRoute = PortalProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalHistoryRoute = PortalHistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -127,6 +139,8 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/portal/history': typeof PortalHistoryRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/request': typeof PortalRequestRoute
   '/quote/$id': typeof QuoteIdRoute
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
@@ -144,6 +158,8 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/portal/history': typeof PortalHistoryRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/request': typeof PortalRequestRoute
   '/quote/$id': typeof QuoteIdRoute
   '/admin': typeof AdminIndexRoute
   '/portal': typeof PortalIndexRoute
@@ -164,6 +180,8 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/portal/history': typeof PortalHistoryRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/request': typeof PortalRequestRoute
   '/quote/$id': typeof QuoteIdRoute
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
@@ -185,6 +203,8 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/settings'
     | '/portal/history'
+    | '/portal/profile'
+    | '/portal/request'
     | '/quote/$id'
     | '/admin/'
     | '/portal/'
@@ -202,6 +222,8 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/settings'
     | '/portal/history'
+    | '/portal/profile'
+    | '/portal/request'
     | '/quote/$id'
     | '/admin'
     | '/portal'
@@ -221,6 +243,8 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/settings'
     | '/portal/history'
+    | '/portal/profile'
+    | '/portal/request'
     | '/quote/$id'
     | '/admin/'
     | '/portal/'
@@ -342,6 +366,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuoteIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/request': {
+      id: '/portal/request'
+      path: '/request'
+      fullPath: '/portal/request'
+      preLoaderRoute: typeof PortalRequestRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/profile': {
+      id: '/portal/profile'
+      path: '/profile'
+      fullPath: '/portal/profile'
+      preLoaderRoute: typeof PortalProfileRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/history': {
       id: '/portal/history'
       path: '/history'
@@ -382,11 +420,15 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface PortalRouteChildren {
   PortalHistoryRoute: typeof PortalHistoryRoute
+  PortalProfileRoute: typeof PortalProfileRoute
+  PortalRequestRoute: typeof PortalRequestRoute
   PortalIndexRoute: typeof PortalIndexRoute
 }
 
 const PortalRouteChildren: PortalRouteChildren = {
   PortalHistoryRoute: PortalHistoryRoute,
+  PortalProfileRoute: PortalProfileRoute,
+  PortalRequestRoute: PortalRequestRoute,
   PortalIndexRoute: PortalIndexRoute,
 }
 
