@@ -13,14 +13,22 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RequestQuoteRouteImport } from './routes/request-quote'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PortalRouteImport } from './routes/portal'
+import { Route as ForShopsRouteImport } from './routes/for-shops'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as QuoteIdRouteImport } from './routes/quote.$id'
+import { Route as PortalRequestRouteImport } from './routes/portal.request'
+import { Route as PortalProfileRouteImport } from './routes/portal.profile'
+import { Route as PortalHistoryRouteImport } from './routes/portal.history'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminDeliveriesRouteImport } from './routes/admin.deliveries'
+import { Route as AdminAccountsRouteImport } from './routes/admin.accounts'
 import { Route as AdminRequestsIdRouteImport } from './routes/admin.requests.$id'
 
 const TermsRoute = TermsRouteImport.update({
@@ -41,6 +49,16 @@ const RequestQuoteRoute = RequestQuoteRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForShopsRoute = ForShopsRouteImport.update({
+  id: '/for-shops',
+  path: '/for-shops',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -68,6 +86,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortalRoute,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -78,9 +101,34 @@ const QuoteIdRoute = QuoteIdRouteImport.update({
   path: '/quote/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalRequestRoute = PortalRequestRouteImport.update({
+  id: '/request',
+  path: '/request',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalProfileRoute = PortalProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalHistoryRoute = PortalHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => PortalRoute,
+} as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDeliveriesRoute = AdminDeliveriesRouteImport.update({
+  id: '/deliveries',
+  path: '/deliveries',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAccountsRoute = AdminAccountsRouteImport.update({
+  id: '/accounts',
+  path: '/accounts',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminRequestsIdRoute = AdminRequestsIdRouteImport.update({
@@ -95,13 +143,21 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/for-shops': typeof ForShopsRoute
+  '/portal': typeof PortalRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/portal/history': typeof PortalHistoryRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/request': typeof PortalRequestRoute
   '/quote/$id': typeof QuoteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/portal/': typeof PortalIndexRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
 }
 export interface FileRoutesByTo {
@@ -109,13 +165,20 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/for-shops': typeof ForShopsRoute
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/portal/history': typeof PortalHistoryRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/request': typeof PortalRequestRoute
   '/quote/$id': typeof QuoteIdRoute
   '/admin': typeof AdminIndexRoute
+  '/portal': typeof PortalIndexRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
 }
 export interface FileRoutesById {
@@ -125,13 +188,21 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/for-shops': typeof ForShopsRoute
+  '/portal': typeof PortalRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/portal/history': typeof PortalHistoryRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/request': typeof PortalRequestRoute
   '/quote/$id': typeof QuoteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/portal/': typeof PortalIndexRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
 }
 export interface FileRouteTypes {
@@ -142,13 +213,21 @@ export interface FileRouteTypes {
     | '/admin'
     | '/contact'
     | '/faq'
+    | '/for-shops'
+    | '/portal'
     | '/privacy'
     | '/request-quote'
     | '/sitemap.xml'
     | '/terms'
+    | '/admin/accounts'
+    | '/admin/deliveries'
     | '/admin/settings'
+    | '/portal/history'
+    | '/portal/profile'
+    | '/portal/request'
     | '/quote/$id'
     | '/admin/'
+    | '/portal/'
     | '/admin/requests/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -156,13 +235,20 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/faq'
+    | '/for-shops'
     | '/privacy'
     | '/request-quote'
     | '/sitemap.xml'
     | '/terms'
+    | '/admin/accounts'
+    | '/admin/deliveries'
     | '/admin/settings'
+    | '/portal/history'
+    | '/portal/profile'
+    | '/portal/request'
     | '/quote/$id'
     | '/admin'
+    | '/portal'
     | '/admin/requests/$id'
   id:
     | '__root__'
@@ -171,13 +257,21 @@ export interface FileRouteTypes {
     | '/admin'
     | '/contact'
     | '/faq'
+    | '/for-shops'
+    | '/portal'
     | '/privacy'
     | '/request-quote'
     | '/sitemap.xml'
     | '/terms'
+    | '/admin/accounts'
+    | '/admin/deliveries'
     | '/admin/settings'
+    | '/portal/history'
+    | '/portal/profile'
+    | '/portal/request'
     | '/quote/$id'
     | '/admin/'
+    | '/portal/'
     | '/admin/requests/$id'
   fileRoutesById: FileRoutesById
 }
@@ -187,6 +281,8 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
+  ForShopsRoute: typeof ForShopsRoute
+  PortalRoute: typeof PortalRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   RequestQuoteRoute: typeof RequestQuoteRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -224,6 +320,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-shops': {
+      id: '/for-shops'
+      path: '/for-shops'
+      fullPath: '/for-shops'
+      preLoaderRoute: typeof ForShopsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
@@ -259,6 +369,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -273,11 +390,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuoteIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/request': {
+      id: '/portal/request'
+      path: '/request'
+      fullPath: '/portal/request'
+      preLoaderRoute: typeof PortalRequestRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/profile': {
+      id: '/portal/profile'
+      path: '/profile'
+      fullPath: '/portal/profile'
+      preLoaderRoute: typeof PortalProfileRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/history': {
+      id: '/portal/history'
+      path: '/history'
+      fullPath: '/portal/history'
+      preLoaderRoute: typeof PortalHistoryRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/settings'
       fullPath: '/admin/settings'
       preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/deliveries': {
+      id: '/admin/deliveries'
+      path: '/deliveries'
+      fullPath: '/admin/deliveries'
+      preLoaderRoute: typeof AdminDeliveriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/accounts': {
+      id: '/admin/accounts'
+      path: '/accounts'
+      fullPath: '/admin/accounts'
+      preLoaderRoute: typeof AdminAccountsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/requests/$id': {
@@ -291,12 +443,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminAccountsRoute: typeof AdminAccountsRoute
+  AdminDeliveriesRoute: typeof AdminDeliveriesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminRequestsIdRoute: typeof AdminRequestsIdRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAccountsRoute: AdminAccountsRoute,
+  AdminDeliveriesRoute: AdminDeliveriesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminRequestsIdRoute: AdminRequestsIdRoute,
@@ -304,12 +460,31 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface PortalRouteChildren {
+  PortalHistoryRoute: typeof PortalHistoryRoute
+  PortalProfileRoute: typeof PortalProfileRoute
+  PortalRequestRoute: typeof PortalRequestRoute
+  PortalIndexRoute: typeof PortalIndexRoute
+}
+
+const PortalRouteChildren: PortalRouteChildren = {
+  PortalHistoryRoute: PortalHistoryRoute,
+  PortalProfileRoute: PortalProfileRoute,
+  PortalRequestRoute: PortalRequestRoute,
+  PortalIndexRoute: PortalIndexRoute,
+}
+
+const PortalRouteWithChildren =
+  PortalRoute._addFileChildren(PortalRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
+  ForShopsRoute: ForShopsRoute,
+  PortalRoute: PortalRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   RequestQuoteRoute: RequestQuoteRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

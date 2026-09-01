@@ -4,7 +4,7 @@ import { RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { money, percent } from "@/lib/admin/pricing";
+import { formatCutoff, money, percent, WEEK_DAYS } from "@/lib/admin/pricing";
 import { resetSettings, updateSettings, useAdminState } from "@/lib/admin/store";
 
 export const Route = createFileRoute("/admin/settings")({
@@ -84,6 +84,138 @@ function AdminSettings() {
         </div>
       </section>
 
+      <section className="space-y-5 rounded-xl border border-border bg-card p-6 shadow-card">
+        <div>
+          <h2 className="text-sm font-bold uppercase tracking-wider">Delivery</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Applied to commercial quotes and the delivery board. Eligibility is always confirmed by
+            the desk before a window is promised.
+          </p>
+        </div>
+
+        <Field
+          id="radius"
+          label="Local delivery radius"
+          hint="Miles from the fulfilment hub for same-day service."
+          suffix="mi"
+          step={1}
+          value={settings.deliveryRadiusMiles}
+          onChange={(v) => updateSettings({ deliveryRadiusMiles: Math.max(0, Math.round(v)) })}
+        />
+        <Field
+          id="same-day-fee"
+          label="Local same-day fee"
+          hint="Flat fee charged when the order is not over the free threshold."
+          prefix="$"
+          step={0.05}
+          value={round(settings.sameDayFee, 2)}
+          onChange={(v) => updateSettings({ sameDayFee: Math.max(0, v) })}
+        />
+        <Field
+          id="free-threshold"
+          label="Free same-day threshold"
+          hint="Merchandise subtotal at or above which local same-day delivery is free."
+          prefix="$"
+          step={25}
+          value={round(settings.freeSameDayThreshold, 2)}
+          onChange={(v) => updateSettings({ freeSameDayThreshold: Math.max(0, v) })}
+        />
+        <Field
+          id="courier-fee"
+          label="Priority / oversize courier fee"
+          prefix="$"
+          hint="Flat fee for priority or oversize courier runs."
+          step={0.05}
+          value={round(settings.priorityCourierFee, 2)}
+          onChange={(v) => updateSettings({ priorityCourierFee: Math.max(0, v) })}
+        />
+
+        <div className="grid gap-2 sm:grid-cols-[1fr_12rem] sm:items-center">
+          <div>
+            <Label htmlFor="cutoff" className="text-sm font-semibold">
+              Same-day cutoff
+            </Label>
+            <p className="text-xs text-muted-foreground">
+              Orders confirmed after this local time move to the next delivery day.
+            </p>
+          </div>
+          <Input
+            id="cutoff"
+            type="time"
+            value={settings.sameDayCutoff}
+            onChange={(e) => updateSettings({ sameDayCutoff: e.target.value })}
+          />
+        </div>
+
+        <fieldset className="grid gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
+          <legend className="sr-only">Delivery days</legend>
+          <div>
+            <span className="text-sm font-semibold">Delivery days</span>
+            <p className="text-xs text-muted-foreground">Weekdays local same-day delivery runs.</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {WEEK_DAYS.map((day) => {
+              const on = settings.deliveryDays.includes(day);
+              return (
+                <Button
+                  key={day}
+                  type="button"
+                  size="sm"
+                  variant={on ? "default" : "outline"}
+                  aria-pressed={on}
+                  onClick={() =>
+                    updateSettings({
+                      deliveryDays: on
+                        ? settings.deliveryDays.filter((d) => d !== day)
+                        : WEEK_DAYS.filter((d) => d === day || settings.deliveryDays.includes(d)),
+                    })
+                  }
+                >
+                  {day}
+                </Button>
+              );
+            })}
+          </div>
+        </fieldset>
+
+        <p className="rounded-md bg-muted/60 p-3 text-xs text-muted-foreground">
+          Current same-day terms: {money(settings.sameDayFee)} flat, free at{" "}
+          {money(settings.freeSameDayThreshold)}+, cutoff {formatCutoff(settings.sameDayCutoff)},{" "}
+          {settings.deliveryDays.join(" · ")}, within {settings.deliveryRadiusMiles} miles.
+        </p>
+      </section>
+
+      <section className="space-y-5 rounded-xl border border-border bg-card p-6 shadow-card">
+        <div>
+          <h2 className="text-sm font-bold uppercase tracking-wider">Integration placeholders</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Reserved for courier dispatch and mapping/distance APIs. Keys move to server-side
+            secrets when the backend is wired up.
+          </p>
+        </div>
+        <TextField
+          id="courier-provider"
+          label="Courier provider"
+          placeholder="Roadie, Curri, in-house driver…"
+          value={settings.courierProvider}
+          onChange={(v) => updateSettings({ courierProvider: v })}
+        />
+        <TextField
+          id="distance-provider"
+          label="Mapping / distance provider"
+          placeholder="Google Distance Matrix, Mapbox…"
+          value={settings.distanceProvider}
+          onChange={(v) => updateSettings({ distanceProvider: v })}
+        />
+        <TextField
+          id="courier-key"
+          label="Courier API key (placeholder)"
+          placeholder="Stored as a server secret later"
+          value={settings.courierApiKey}
+          onChange={(v) => updateSettings({ courierApiKey: v })}
+        />
+      </section>
+
       <p className="text-xs text-muted-foreground">
         Settings are stored locally in this prototype. They move to the database — with an audit
         trail and per-user permissions — alongside authentication, email notifications, and Stripe
@@ -137,6 +269,34 @@ function Field({
         />
         {suffix ? <span className="text-sm text-muted-foreground">{suffix}</span> : null}
       </div>
+    </div>
+  );
+}
+
+function TextField({
+  id,
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <div className="grid gap-2 sm:grid-cols-[1fr_18rem] sm:items-center">
+      <Label htmlFor={id} className="text-sm font-semibold">
+        {label}
+      </Label>
+      <Input
+        id={id}
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+      />
     </div>
   );
 }

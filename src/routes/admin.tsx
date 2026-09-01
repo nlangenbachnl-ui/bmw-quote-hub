@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
-import { LayoutDashboard, Lock, Settings2, ShieldCheck } from "lucide-react";
+import { Building2, LayoutDashboard, Lock, Settings2, ShieldCheck, Truck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,6 +52,8 @@ function AdminHeader() {
 
   const tabs = [
     { to: "/admin", label: "Requests", icon: LayoutDashboard, exact: true },
+    { to: "/admin/accounts", label: "Accounts", icon: Building2, exact: false },
+    { to: "/admin/deliveries", label: "Deliveries", icon: Truck, exact: false },
     { to: "/admin/settings", label: "Settings", icon: Settings2, exact: false },
   ] as const;
 
@@ -73,7 +75,7 @@ function AdminHeader() {
           </div>
         </div>
 
-        <nav className="flex items-center gap-2" aria-label="Admin sections">
+        <nav className="flex flex-wrap items-center gap-2" aria-label="Admin sections">
           {tabs.map((tab) => {
             const active = tab.exact ? pathname === tab.to : pathname.startsWith(tab.to);
             return (
