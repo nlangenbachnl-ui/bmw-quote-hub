@@ -19,7 +19,9 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as QuoteIdRouteImport } from './routes/quote.$id'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminRequestsIdRouteImport } from './routes/admin.requests.$id'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -71,9 +73,19 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const QuoteIdRoute = QuoteIdRouteImport.update({
+  id: '/quote/$id',
+  path: '/quote/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRequestsIdRoute = AdminRequestsIdRouteImport.update({
+  id: '/requests/$id',
+  path: '/requests/$id',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -88,7 +100,9 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/quote/$id': typeof QuoteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/requests/$id': typeof AdminRequestsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -100,7 +114,9 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/quote/$id': typeof QuoteIdRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/requests/$id': typeof AdminRequestsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -114,7 +130,9 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/quote/$id': typeof QuoteIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/requests/$id': typeof AdminRequestsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -129,7 +147,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/settings'
+    | '/quote/$id'
     | '/admin/'
+    | '/admin/requests/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -141,7 +161,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/settings'
+    | '/quote/$id'
     | '/admin'
+    | '/admin/requests/$id'
   id:
     | '__root__'
     | '/'
@@ -154,7 +176,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/settings'
+    | '/quote/$id'
     | '/admin/'
+    | '/admin/requests/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -167,6 +191,7 @@ export interface RootRouteChildren {
   RequestQuoteRoute: typeof RequestQuoteRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  QuoteIdRoute: typeof QuoteIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -241,11 +266,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/quote/$id': {
+      id: '/quote/$id'
+      path: '/quote/$id'
+      fullPath: '/quote/$id'
+      preLoaderRoute: typeof QuoteIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/settings'
       fullPath: '/admin/settings'
       preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/requests/$id': {
+      id: '/admin/requests/$id'
+      path: '/requests/$id'
+      fullPath: '/admin/requests/$id'
+      preLoaderRoute: typeof AdminRequestsIdRouteImport
       parentRoute: typeof AdminRoute
     }
   }
@@ -254,11 +293,13 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminRequestsIdRoute: typeof AdminRequestsIdRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminRequestsIdRoute: AdminRequestsIdRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
@@ -273,6 +314,7 @@ const rootRouteChildren: RootRouteChildren = {
   RequestQuoteRoute: RequestQuoteRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  QuoteIdRoute: QuoteIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
