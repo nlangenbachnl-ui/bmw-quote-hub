@@ -58,7 +58,7 @@ export function Header() {
           type="button"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-border md:hidden"
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-border lg:hidden"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -67,7 +67,7 @@ export function Header() {
 
       {open && (
         <nav
-          className="border-t border-border bg-background px-4 pb-4 pt-2 md:hidden"
+          className="border-t border-border bg-background px-4 pb-4 pt-2 lg:hidden"
           aria-label="Mobile"
         >
           {navItems.map((item) => (
