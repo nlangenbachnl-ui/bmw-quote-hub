@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle2, ShieldCheck } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Truck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { computeQuote, money, percent } from "@/lib/admin/pricing";
@@ -40,7 +40,14 @@ function CustomerQuote() {
     );
   }
 
-  const math = computeQuote(request.lines, settings);
+  const math = computeQuote(
+    request.lines,
+    settings,
+    request.delivery
+      ? { type: request.delivery.type, oversized: request.delivery.oversized }
+      : undefined,
+  );
+  const freeSameDay = math.delivery.type === "Local Same-Day" && math.delivery.waived;
 
   return (
     <div className="min-h-screen bg-muted/40 py-10">
@@ -112,8 +119,29 @@ function CustomerQuote() {
             <dl className="mt-6 space-y-2 border-t border-border pt-5 text-sm">
               <Row label="Subtotal" value={money(math.subtotal)} />
               <Row label="Shipping" value={math.shippingTotal > 0 ? money(math.shippingTotal) : "Included"} />
+              {request.delivery ? (
+                <Row
+                  label={request.delivery.type}
+                  value={freeSameDay ? "Free" : money(math.delivery.fee)}
+                />
+              ) : null}
               <Row label="Total" value={money(math.grandTotal)} strong />
             </dl>
+
+            {freeSameDay ? (
+              <p className="mt-4 flex items-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-extrabold uppercase tracking-wide text-primary-foreground">
+                <Truck className="h-4 w-4" aria-hidden="true" />
+                Free same-day local delivery
+              </p>
+            ) : null}
+
+            {request.delivery && request.delivery.eligibility !== "Eligible" ? (
+              <p className="mt-3 text-xs text-muted-foreground">
+                Delivery shown as {request.delivery.type} — {request.delivery.eligibility.toLowerCase()}.
+                Same-day service depends on parts availability, delivery radius, package size, and
+                courier capacity; we confirm the window before dispatch.
+              </p>
+            ) : null}
 
             {math.savings > 0 ? (
               <p className="mt-4 flex items-center gap-2 rounded-lg bg-primary/5 px-4 py-3 text-sm font-semibold text-primary">

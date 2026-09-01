@@ -4,6 +4,7 @@ import { useState } from "react";
 
 const navItems = [
   { to: "/", label: "Home" },
+  { to: "/for-shops", label: "For Repair & Body Shops" },
   { to: "/about", label: "About" },
   { to: "/faq", label: "FAQ" },
   { to: "/contact", label: "Contact" },
@@ -32,7 +33,7 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-5 lg:flex" aria-label="Primary">
           {navItems.map((item) => (
             <Link
               key={item.to}
