@@ -80,21 +80,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "OEM BMW Parts Without the Guesswork | Bavarian Parts Co." },
+      { title: "OEM BMW Parts Without the Guesswork | Precision Bimmer Parts" },
       {
         name: "description",
         content:
           "Concierge sourcing for genuine OEM BMW parts. Submit your VIN and parts list — our specialists verify fitment and email a personalized quote, usually within one business day.",
       },
-      { name: "author", content: "Bavarian Parts Co." },
-      { property: "og:title", content: "OEM BMW Parts Without the Guesswork | Bavarian Parts Co." },
+      { name: "author", content: "Precision Bimmer Parts" },
+      { property: "og:title", content: "OEM BMW Parts Without the Guesswork | Precision Bimmer Parts" },
       {
         property: "og:description",
         content:
           "Submit your VIN, we verify fitment, you get a personalized quote for genuine OEM BMW parts.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "Bavarian Parts Co." },
+      { property: "og:site_name", content: "Precision Bimmer Parts" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -113,11 +113,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "AutoPartsStore",
-          name: "Bavarian Parts Co.",
+          name: "Precision Bimmer Parts",
           description:
             "Independent concierge sourcing service for genuine OEM BMW parts. VIN-verified fitment, personalized quotes, nationwide US shipping.",
           telephone: "+1-555-123-4567",
-          email: "hello@bavarianpartsco.com",
+          email: "hello@precisionbimmerparts.com",
           areaServed: "US",
         }),
       },

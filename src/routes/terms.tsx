@@ -3,16 +3,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms of Service | Bavarian Parts Co." },
+      { title: "Terms of Service | Precision Bimmer Parts" },
       {
         name: "description",
         content:
-          "Terms that govern your use of the Bavarian Parts Co. website and quote sourcing service.",
+          "Terms that govern your use of the Precision Bimmer Parts website and quote sourcing service.",
       },
-      { property: "og:title", content: "Terms of Service | Bavarian Parts Co." },
+      { property: "og:title", content: "Terms of Service | Precision Bimmer Parts" },
       {
         property: "og:description",
-        content: "Terms that govern your use of the Bavarian Parts Co. website and service.",
+        content: "Terms that govern your use of the Precision Bimmer Parts website and service.",
       },
       { property: "og:url", content: "/terms" },
     ],
@@ -36,7 +36,7 @@ function TermsPage() {
 
       <article className="mx-auto max-w-3xl space-y-8 px-4 py-14 text-sm leading-relaxed text-muted-foreground sm:px-6">
         <p className="rounded-md border border-border bg-secondary/50 p-4 text-foreground">
-          These Terms explain how you may use the Bavarian Parts Co. website and
+          These Terms explain how you may use the Precision Bimmer Parts website and
           concierge parts sourcing service. Please read them before submitting a quote
           request. They are provided for general information and are not legal advice.
         </p>
@@ -44,7 +44,7 @@ function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-foreground">1. Independent business</h2>
           <p>
-            Bavarian Parts Co. is an independent parts sourcing service. We are not
+            Precision Bimmer Parts is an independent parts sourcing service. We are not
             affiliated with, endorsed by, or sponsored by BMW AG or any of its
             subsidiaries. Trademarks referenced on this site are the property of their
             respective owners and are used only to identify the vehicles we support.
@@ -102,7 +102,7 @@ function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-foreground">7. Limitation of liability</h2>
           <p>
-            To the maximum extent permitted by law, Bavarian Parts Co. is not liable
+            To the maximum extent permitted by law, Precision Bimmer Parts is not liable
             for indirect, incidental, or consequential damages arising from your use of
             this site or of parts we source. Our total liability for any claim is
             limited to the amount you paid for the specific part at issue.
@@ -114,8 +114,8 @@ function TermsPage() {
           <p>
             We may update these Terms from time to time. The "Last updated" date above
             reflects the current version. Questions? Email{" "}
-            <a href="mailto:hello@bavarianpartsco.com" className="text-primary hover:underline">
-              hello@bavarianpartsco.com
+            <a href="mailto:hello@precisionbimmerparts.com" className="text-primary hover:underline">
+              hello@precisionbimmerparts.com
             </a>
             .
           </p>

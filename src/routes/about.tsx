@@ -4,13 +4,13 @@ import { Wrench, Target, Handshake } from "lucide-react";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Us | Bavarian Parts Co." },
+      { title: "About Us | Precision Bimmer Parts" },
       {
         name: "description",
         content:
-          "Bavarian Parts Co. is an independent concierge sourcing service for genuine OEM BMW parts. Learn how our VIN-verified quote process works.",
+          "Precision Bimmer Parts is an independent concierge sourcing service for genuine OEM BMW parts. Learn how our VIN-verified quote process works.",
       },
-      { property: "og:title", content: "About Us | Bavarian Parts Co." },
+      { property: "og:title", content: "About Us | Precision Bimmer Parts" },
       {
         property: "og:description",
         content:
@@ -46,7 +46,7 @@ function AboutPage() {
     <>
       <section className="bg-gradient-hero text-carbon-foreground">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <p className="heading-kicker text-primary-glow">About Bavarian Parts Co.</p>
+          <p className="heading-kicker text-primary-glow">About Precision Bimmer Parts</p>
           <h1 className="mt-3 max-w-2xl text-balance text-4xl font-black uppercase sm:text-5xl">
             Built by BMW people, for BMW people
           </h1>
@@ -56,7 +56,7 @@ function AboutPage() {
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <div className="space-y-5 leading-relaxed text-muted-foreground">
           <p>
-            Bavarian Parts Co. started the way most good garage ideas do — with a
+            Precision Bimmer Parts started the way most good garage ideas do — with a
             frustrating parts counter experience. Wrong part numbers, dealership markups,
             and week-long waits for a simple answer. We knew there was a better way to
             get BMW owners the parts they need.
@@ -75,7 +75,7 @@ function AboutPage() {
           </p>
           <p className="rounded-md border border-border bg-secondary/50 p-4 text-sm">
             <strong className="text-foreground">Independent, not affiliated.</strong>{" "}
-            Bavarian Parts Co. is an independent parts sourcing service. We are not
+            Precision Bimmer Parts is an independent parts sourcing service. We are not
             affiliated with, endorsed by, or sponsored by BMW AG or any of its
             subsidiaries. Trademarks are used only to identify the vehicles we support.
           </p>

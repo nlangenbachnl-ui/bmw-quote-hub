@@ -18,7 +18,7 @@ import { TrustBadges } from "@/components/site/TrustBadges";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "OEM BMW Parts Without the Guesswork | Bavarian Parts Co." },
+      { title: "OEM BMW Parts Without the Guesswork | Precision Bimmer Parts" },
       {
         name: "description",
         content:
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:title",
-        content: "OEM BMW Parts Without the Guesswork | Bavarian Parts Co.",
+        content: "OEM BMW Parts Without the Guesswork | Precision Bimmer Parts",
       },
       {
         property: "og:description",
@@ -151,7 +151,7 @@ const testimonials = [
 
 const homeFaqs = [
   {
-    q: "Is Bavarian Parts Co. affiliated with BMW?",
+    q: "Is Precision Bimmer Parts affiliated with BMW?",
     a: "No. We are an independent parts sourcing service and are not affiliated with, endorsed by, or sponsored by BMW AG.",
   },
   {

@@ -21,7 +21,7 @@ export function Footer() {
             parts list — we verify exact fitment and reply with a personalized quote.
           </p>
           <p className="mt-4 max-w-sm text-xs leading-relaxed text-carbon-muted/80">
-            Bavarian Parts Co. is an independent parts sourcing service. We are not
+            Precision Bimmer Parts is an independent parts sourcing service. We are not
             affiliated with, endorsed by, or sponsored by BMW AG or any of its
             subsidiaries. All trademarks are the property of their respective owners and
             are used for identification purposes only.
@@ -49,8 +49,8 @@ export function Footer() {
             <li><Link to="/privacy" className="hover:text-primary-glow">Privacy Policy</Link></li>
             <li><Link to="/terms" className="hover:text-primary-glow">Terms of Service</Link></li>
             <li>
-              <a href="mailto:hello@bavarianpartsco.com" className="hover:text-primary-glow">
-                hello@bavarianpartsco.com
+              <a href="mailto:hello@precisionbimmerparts.com" className="hover:text-primary-glow">
+                hello@precisionbimmerparts.com
               </a>
             </li>
           </ul>
@@ -58,7 +58,7 @@ export function Footer() {
       </div>
       <div className="border-t border-carbon-elevated">
         <p className="mx-auto max-w-6xl px-4 py-5 text-xs text-carbon-muted sm:px-6">
-          © {new Date().getFullYear()} Bavarian Parts Co. All rights reserved.
+          © {new Date().getFullYear()} Precision Bimmer Parts All rights reserved.
         </p>
       </div>
     </footer>

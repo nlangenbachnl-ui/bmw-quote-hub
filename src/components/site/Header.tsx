@@ -19,7 +19,7 @@ export function Header() {
           to="/"
           className="flex min-w-0 items-center gap-2.5"
           onClick={() => setOpen(false)}
-          aria-label="Bavarian Parts Co. — home"
+          aria-label="Precision Bimmer Parts — home"
         >
           <span
             aria-hidden="true"
