@@ -98,7 +98,7 @@ function CommercialAccounts() {
               </div>
               <Link
                 to="/admin"
-                search={{}}
+                
                 className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
               >
                 View requests
