@@ -27,6 +27,8 @@ import { Route as PortalRequestRouteImport } from './routes/portal.request'
 import { Route as PortalProfileRouteImport } from './routes/portal.profile'
 import { Route as PortalHistoryRouteImport } from './routes/portal.history'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminDeliveriesRouteImport } from './routes/admin.deliveries'
+import { Route as AdminAccountsRouteImport } from './routes/admin.accounts'
 import { Route as AdminRequestsIdRouteImport } from './routes/admin.requests.$id'
 
 const TermsRoute = TermsRouteImport.update({
@@ -119,6 +121,16 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminDeliveriesRoute = AdminDeliveriesRouteImport.update({
+  id: '/deliveries',
+  path: '/deliveries',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAccountsRoute = AdminAccountsRouteImport.update({
+  id: '/accounts',
+  path: '/accounts',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminRequestsIdRoute = AdminRequestsIdRouteImport.update({
   id: '/requests/$id',
   path: '/requests/$id',
@@ -137,6 +149,8 @@ export interface FileRoutesByFullPath {
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
@@ -156,6 +170,8 @@ export interface FileRoutesByTo {
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
@@ -178,6 +194,8 @@ export interface FileRoutesById {
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
@@ -201,6 +219,8 @@ export interface FileRouteTypes {
     | '/request-quote'
     | '/sitemap.xml'
     | '/terms'
+    | '/admin/accounts'
+    | '/admin/deliveries'
     | '/admin/settings'
     | '/portal/history'
     | '/portal/profile'
@@ -220,6 +240,8 @@ export interface FileRouteTypes {
     | '/request-quote'
     | '/sitemap.xml'
     | '/terms'
+    | '/admin/accounts'
+    | '/admin/deliveries'
     | '/admin/settings'
     | '/portal/history'
     | '/portal/profile'
@@ -241,6 +263,8 @@ export interface FileRouteTypes {
     | '/request-quote'
     | '/sitemap.xml'
     | '/terms'
+    | '/admin/accounts'
+    | '/admin/deliveries'
     | '/admin/settings'
     | '/portal/history'
     | '/portal/profile'
@@ -394,6 +418,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/deliveries': {
+      id: '/admin/deliveries'
+      path: '/deliveries'
+      fullPath: '/admin/deliveries'
+      preLoaderRoute: typeof AdminDeliveriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/accounts': {
+      id: '/admin/accounts'
+      path: '/accounts'
+      fullPath: '/admin/accounts'
+      preLoaderRoute: typeof AdminAccountsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/requests/$id': {
       id: '/admin/requests/$id'
       path: '/requests/$id'
@@ -405,12 +443,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminAccountsRoute: typeof AdminAccountsRoute
+  AdminDeliveriesRoute: typeof AdminDeliveriesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminRequestsIdRoute: typeof AdminRequestsIdRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAccountsRoute: AdminAccountsRoute,
+  AdminDeliveriesRoute: AdminDeliveriesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminRequestsIdRoute: AdminRequestsIdRoute,
