@@ -25,7 +25,7 @@ export function Header() {
             aria-hidden="true"
             className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-blue text-sm font-black text-primary-foreground"
           >
-            BP
+            PB
           </span>
           <span className="truncate text-lg font-extrabold uppercase tracking-tight">
             Precision<span className="text-primary">Bimmer Parts</span>

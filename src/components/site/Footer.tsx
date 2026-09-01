@@ -10,7 +10,7 @@ export function Footer() {
               aria-hidden="true"
               className="grid h-9 w-9 place-items-center rounded-full bg-gradient-blue text-sm font-black text-primary-foreground"
             >
-              BP
+              PB
             </span>
             <span className="text-lg font-extrabold uppercase tracking-tight">
               Precision<span className="text-primary-glow">Bimmer Parts</span>
