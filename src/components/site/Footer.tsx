@@ -13,7 +13,7 @@ export function Footer() {
               BP
             </span>
             <span className="text-lg font-extrabold uppercase tracking-tight">
-              Bavarian<span className="text-primary-glow">Parts Co.</span>
+              Precision<span className="text-primary-glow">Bimmer Parts</span>
             </span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-carbon-muted">

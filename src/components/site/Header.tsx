@@ -28,7 +28,7 @@ export function Header() {
             BP
           </span>
           <span className="truncate text-lg font-extrabold uppercase tracking-tight">
-            Bavarian<span className="text-primary">Parts Co.</span>
+            Precision<span className="text-primary">Bimmer Parts</span>
           </span>
         </Link>
 
