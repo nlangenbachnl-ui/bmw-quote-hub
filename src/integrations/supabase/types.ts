@@ -625,6 +625,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      submit_wholesale_application: {
+        Args: { _payload: Json }
+        Returns: string
+      }
     }
     Enums: {
       app_role: "admin" | "staff" | "user"
