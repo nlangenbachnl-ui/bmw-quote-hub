@@ -21,7 +21,7 @@ export function AdminOnlyNotice({ signedIn }: { signedIn: boolean }) {
       </p>
       {!signedIn ? (
         <Link
-          to="/auth"
+          to="/wholesale/sign-in"
           className="mt-6 inline-block rounded-md bg-gradient-blue px-5 py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-blue"
         >
           Sign in

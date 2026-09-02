@@ -375,3 +375,92 @@ export async function adminSaveInvoice(
 export async function adminUploadInvoiceFile(userId: string, file: File) {
   return uploadWholesaleFile(userId, file);
 }
+
+/* ---------------- wholesale quotes ---------------- */
+
+export type WholesaleQuote = Database["public"]["Tables"]["wholesale_quotes"]["Row"];
+export type WholesaleQuoteLine = Database["public"]["Tables"]["wholesale_quote_lines"]["Row"];
+
+/**
+ * Quotes issued to the signed-in wholesale account. Wholesale users are exempt
+ * from retail part-number masking, so full OEM numbers are returned here.
+ */
+export async function fetchMyWholesaleQuotes(): Promise<
+  Array<WholesaleQuote & { wholesale_quote_lines: WholesaleQuoteLine[] }>
+> {
+  const { data, error } = await supabase
+    .from("wholesale_quotes")
+    .select("*, wholesale_quote_lines(*)")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as Array<WholesaleQuote & { wholesale_quote_lines: WholesaleQuoteLine[] }>;
+}
+
+export async function adminListWholesaleQuotes(): Promise<
+  Array<WholesaleQuote & { wholesale_quote_lines: WholesaleQuoteLine[] }>
+> {
+  return fetchMyWholesaleQuotes();
+}
+
+export async function adminListAllPartsRequests(): Promise<PartsRequest[]> {
+  const { data, error } = await supabase
+    .from("wholesale_parts_requests")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function adminCreateWholesaleQuote(input: {
+  userId: string;
+  createdBy: string;
+  requestId: string | null;
+  poNumber: string | null;
+  shippingTotal: number;
+  expiresAt: string | null;
+  notes: string | null;
+  lines: Array<{
+    part_number: string | null;
+    description: string;
+    quantity: number;
+    unit_price: number;
+    availability: string | null;
+  }>;
+}) {
+  const lines = input.lines.map((line, index) => ({
+    ...line,
+    position: index,
+    line_total: Number((line.quantity * line.unit_price).toFixed(2)),
+  }));
+  const subtotal = Number(lines.reduce((sum, line) => sum + line.line_total, 0).toFixed(2));
+
+  const { data, error } = await supabase
+    .from("wholesale_quotes")
+    .insert({
+      user_id: input.userId,
+      created_by: input.createdBy,
+      request_id: input.requestId,
+      po_number: input.poNumber,
+      shipping_total: input.shippingTotal,
+      subtotal,
+      total: Number((subtotal + input.shippingTotal).toFixed(2)),
+      expires_at: input.expiresAt,
+      notes: input.notes,
+    })
+    .select("id, quote_number")
+    .single();
+  if (error) throw error;
+
+  if (lines.length) {
+    const { error: linesError } = await supabase
+      .from("wholesale_quote_lines")
+      .insert(lines.map((line) => ({ ...line, quote_id: data.id })));
+    if (linesError) throw linesError;
+  }
+  return data;
+}
+
+export async function adminUpdateWholesaleQuoteStatus(id: string, status: string) {
+  const { error } = await supabase.from("wholesale_quotes").update({ status }).eq("id", id);
+  if (error) throw error;
+}

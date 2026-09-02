@@ -25,15 +25,15 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WholesaleIndexRouteImport } from './routes/wholesale.index'
-import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as WholesaleSignInRouteImport } from './routes/wholesale.sign-in'
 import { Route as WholesaleApplyRouteImport } from './routes/wholesale.apply'
 import { Route as QuoteIdRouteImport } from './routes/quote.$id'
-import { Route as PortalRequestRouteImport } from './routes/portal.request'
-import { Route as PortalProfileRouteImport } from './routes/portal.profile'
-import { Route as PortalHistoryRouteImport } from './routes/portal.history'
+import { Route as PortalSplatRouteImport } from './routes/portal_.$'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
+import { Route as AdminWholesaleQuotesRouteImport } from './routes/admin.wholesale-quotes'
 import { Route as AdminWholesaleApplicationsRouteImport } from './routes/admin.wholesale-applications'
+import { Route as AdminSignInRouteImport } from './routes/admin.sign-in'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminDeliveriesRouteImport } from './routes/admin.deliveries'
 import { Route as AdminAccountsRouteImport } from './routes/admin.accounts'
@@ -121,15 +121,15 @@ const WholesaleIndexRoute = WholesaleIndexRouteImport.update({
   path: '/wholesale/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PortalIndexRoute = PortalIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PortalRoute,
-} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const WholesaleSignInRoute = WholesaleSignInRouteImport.update({
+  id: '/wholesale/sign-in',
+  path: '/wholesale/sign-in',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const WholesaleApplyRoute = WholesaleApplyRouteImport.update({
   id: '/wholesale/apply',
@@ -141,25 +141,20 @@ const QuoteIdRoute = QuoteIdRouteImport.update({
   path: '/quote/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PortalRequestRoute = PortalRequestRouteImport.update({
-  id: '/request',
-  path: '/request',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalProfileRoute = PortalProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalHistoryRoute = PortalHistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
-  getParentRoute: () => PortalRoute,
+const PortalSplatRoute = PortalSplatRouteImport.update({
+  id: '/portal_/$',
+  path: '/portal/$',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => AuthRoute,
+} as any)
+const AdminWholesaleQuotesRoute = AdminWholesaleQuotesRouteImport.update({
+  id: '/wholesale-quotes',
+  path: '/wholesale-quotes',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminWholesaleApplicationsRoute =
   AdminWholesaleApplicationsRouteImport.update({
@@ -167,6 +162,11 @@ const AdminWholesaleApplicationsRoute =
     path: '/wholesale-applications',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminSignInRoute = AdminSignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -215,7 +215,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
   '/individual-customers': typeof IndividualCustomersRoute
-  '/portal': typeof PortalRouteWithChildren
+  '/portal': typeof PortalRoute
   '/privacy': typeof PrivacyRoute
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
@@ -224,15 +224,15 @@ export interface FileRoutesByFullPath {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
+  '/admin/wholesale-quotes': typeof AdminWholesaleQuotesRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
-  '/portal/history': typeof PortalHistoryRoute
-  '/portal/profile': typeof PortalProfileRoute
-  '/portal/request': typeof PortalRequestRoute
+  '/portal/$': typeof PortalSplatRoute
   '/quote/$id': typeof QuoteIdRoute
   '/wholesale/apply': typeof WholesaleApplyRoute
+  '/wholesale/sign-in': typeof WholesaleSignInRoute
   '/admin/': typeof AdminIndexRoute
-  '/portal/': typeof PortalIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
@@ -247,6 +247,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
   '/individual-customers': typeof IndividualCustomersRoute
+  '/portal': typeof PortalRoute
   '/privacy': typeof PrivacyRoute
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
@@ -255,14 +256,14 @@ export interface FileRoutesByTo {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sign-in': typeof AdminSignInRoute
+  '/admin/wholesale-quotes': typeof AdminWholesaleQuotesRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
-  '/portal/history': typeof PortalHistoryRoute
-  '/portal/profile': typeof PortalProfileRoute
-  '/portal/request': typeof PortalRequestRoute
+  '/portal/$': typeof PortalSplatRoute
   '/quote/$id': typeof QuoteIdRoute
   '/wholesale/apply': typeof WholesaleApplyRoute
+  '/wholesale/sign-in': typeof WholesaleSignInRoute
   '/admin': typeof AdminIndexRoute
-  '/portal': typeof PortalIndexRoute
   '/wholesale': typeof WholesaleIndexRoute
   '/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
@@ -280,7 +281,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
   '/individual-customers': typeof IndividualCustomersRoute
-  '/portal': typeof PortalRouteWithChildren
+  '/portal': typeof PortalRoute
   '/privacy': typeof PrivacyRoute
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
@@ -289,15 +290,15 @@ export interface FileRoutesById {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
+  '/admin/wholesale-quotes': typeof AdminWholesaleQuotesRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
-  '/portal/history': typeof PortalHistoryRoute
-  '/portal/profile': typeof PortalProfileRoute
-  '/portal/request': typeof PortalRequestRoute
+  '/portal_/$': typeof PortalSplatRoute
   '/quote/$id': typeof QuoteIdRoute
   '/wholesale/apply': typeof WholesaleApplyRoute
+  '/wholesale/sign-in': typeof WholesaleSignInRoute
   '/admin/': typeof AdminIndexRoute
-  '/portal/': typeof PortalIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/_authenticated/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
@@ -324,15 +325,15 @@ export interface FileRouteTypes {
     | '/admin/accounts'
     | '/admin/deliveries'
     | '/admin/settings'
+    | '/admin/sign-in'
     | '/admin/wholesale-applications'
+    | '/admin/wholesale-quotes'
     | '/auth/reset-password'
-    | '/portal/history'
-    | '/portal/profile'
-    | '/portal/request'
+    | '/portal/$'
     | '/quote/$id'
     | '/wholesale/apply'
+    | '/wholesale/sign-in'
     | '/admin/'
-    | '/portal/'
     | '/wholesale/'
     | '/wholesale/dashboard'
     | '/admin/requests/$id'
@@ -347,6 +348,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/for-shops'
     | '/individual-customers'
+    | '/portal'
     | '/privacy'
     | '/repair-body-shops'
     | '/request-quote'
@@ -355,14 +357,14 @@ export interface FileRouteTypes {
     | '/admin/accounts'
     | '/admin/deliveries'
     | '/admin/settings'
+    | '/admin/sign-in'
+    | '/admin/wholesale-quotes'
     | '/auth/reset-password'
-    | '/portal/history'
-    | '/portal/profile'
-    | '/portal/request'
+    | '/portal/$'
     | '/quote/$id'
     | '/wholesale/apply'
+    | '/wholesale/sign-in'
     | '/admin'
-    | '/portal'
     | '/wholesale'
     | '/wholesale/dashboard'
     | '/admin/requests/$id'
@@ -388,15 +390,15 @@ export interface FileRouteTypes {
     | '/admin/accounts'
     | '/admin/deliveries'
     | '/admin/settings'
+    | '/admin/sign-in'
     | '/admin/wholesale-applications'
+    | '/admin/wholesale-quotes'
     | '/auth/reset-password'
-    | '/portal/history'
-    | '/portal/profile'
-    | '/portal/request'
+    | '/portal_/$'
     | '/quote/$id'
     | '/wholesale/apply'
+    | '/wholesale/sign-in'
     | '/admin/'
-    | '/portal/'
     | '/wholesale/'
     | '/_authenticated/wholesale/dashboard'
     | '/admin/requests/$id'
@@ -414,14 +416,16 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   ForShopsRoute: typeof ForShopsRoute
   IndividualCustomersRoute: typeof IndividualCustomersRoute
-  PortalRoute: typeof PortalRouteWithChildren
+  PortalRoute: typeof PortalRoute
   PrivacyRoute: typeof PrivacyRoute
   RepairBodyShopsRoute: typeof RepairBodyShopsRoute
   RequestQuoteRoute: typeof RequestQuoteRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  PortalSplatRoute: typeof PortalSplatRoute
   QuoteIdRoute: typeof QuoteIdRoute
   WholesaleApplyRoute: typeof WholesaleApplyRoute
+  WholesaleSignInRoute: typeof WholesaleSignInRoute
   WholesaleIndexRoute: typeof WholesaleIndexRoute
 }
 
@@ -539,19 +543,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WholesaleIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portal/': {
-      id: '/portal/'
-      path: '/'
-      fullPath: '/portal/'
-      preLoaderRoute: typeof PortalIndexRouteImport
-      parentRoute: typeof PortalRoute
-    }
     '/admin/': {
       id: '/admin/'
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/wholesale/sign-in': {
+      id: '/wholesale/sign-in'
+      path: '/wholesale/sign-in'
+      fullPath: '/wholesale/sign-in'
+      preLoaderRoute: typeof WholesaleSignInRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/wholesale/apply': {
       id: '/wholesale/apply'
@@ -567,26 +571,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuoteIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portal/request': {
-      id: '/portal/request'
-      path: '/request'
-      fullPath: '/portal/request'
-      preLoaderRoute: typeof PortalRequestRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/profile': {
-      id: '/portal/profile'
-      path: '/profile'
-      fullPath: '/portal/profile'
-      preLoaderRoute: typeof PortalProfileRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/history': {
-      id: '/portal/history'
-      path: '/history'
-      fullPath: '/portal/history'
-      preLoaderRoute: typeof PortalHistoryRouteImport
-      parentRoute: typeof PortalRoute
+    '/portal_/$': {
+      id: '/portal_/$'
+      path: '/portal/$'
+      fullPath: '/portal/$'
+      preLoaderRoute: typeof PortalSplatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/auth/reset-password': {
       id: '/auth/reset-password'
@@ -595,11 +585,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthResetPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/admin/wholesale-quotes': {
+      id: '/admin/wholesale-quotes'
+      path: '/wholesale-quotes'
+      fullPath: '/admin/wholesale-quotes'
+      preLoaderRoute: typeof AdminWholesaleQuotesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/wholesale-applications': {
       id: '/admin/wholesale-applications'
       path: '/wholesale-applications'
       fullPath: '/admin/wholesale-applications'
       preLoaderRoute: typeof AdminWholesaleApplicationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/sign-in': {
+      id: '/admin/sign-in'
+      path: '/sign-in'
+      fullPath: '/admin/sign-in'
+      preLoaderRoute: typeof AdminSignInRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/settings': {
@@ -685,7 +689,9 @@ interface AdminRouteChildren {
   AdminAccountsRoute: typeof AdminAccountsRoute
   AdminDeliveriesRoute: typeof AdminDeliveriesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminSignInRoute: typeof AdminSignInRoute
   AdminWholesaleApplicationsRoute: typeof AdminWholesaleApplicationsRouteWithChildren
+  AdminWholesaleQuotesRoute: typeof AdminWholesaleQuotesRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminRequestsIdRoute: typeof AdminRequestsIdRoute
 }
@@ -694,7 +700,9 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAccountsRoute: AdminAccountsRoute,
   AdminDeliveriesRoute: AdminDeliveriesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
+  AdminSignInRoute: AdminSignInRoute,
   AdminWholesaleApplicationsRoute: AdminWholesaleApplicationsRouteWithChildren,
+  AdminWholesaleQuotesRoute: AdminWholesaleQuotesRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminRequestsIdRoute: AdminRequestsIdRoute,
 }
@@ -711,23 +719,6 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
-interface PortalRouteChildren {
-  PortalHistoryRoute: typeof PortalHistoryRoute
-  PortalProfileRoute: typeof PortalProfileRoute
-  PortalRequestRoute: typeof PortalRequestRoute
-  PortalIndexRoute: typeof PortalIndexRoute
-}
-
-const PortalRouteChildren: PortalRouteChildren = {
-  PortalHistoryRoute: PortalHistoryRoute,
-  PortalProfileRoute: PortalProfileRoute,
-  PortalRequestRoute: PortalRequestRoute,
-  PortalIndexRoute: PortalIndexRoute,
-}
-
-const PortalRouteWithChildren =
-  PortalRoute._addFileChildren(PortalRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -738,14 +729,16 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   ForShopsRoute: ForShopsRoute,
   IndividualCustomersRoute: IndividualCustomersRoute,
-  PortalRoute: PortalRouteWithChildren,
+  PortalRoute: PortalRoute,
   PrivacyRoute: PrivacyRoute,
   RepairBodyShopsRoute: RepairBodyShopsRoute,
   RequestQuoteRoute: RequestQuoteRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  PortalSplatRoute: PortalSplatRoute,
   QuoteIdRoute: QuoteIdRoute,
   WholesaleApplyRoute: WholesaleApplyRoute,
+  WholesaleSignInRoute: WholesaleSignInRoute,
   WholesaleIndexRoute: WholesaleIndexRoute,
 }
 export const routeTree = rootRouteImport
