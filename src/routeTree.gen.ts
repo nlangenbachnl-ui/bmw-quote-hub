@@ -35,6 +35,7 @@ import { Route as AdminWholesaleApplicationsRouteImport } from './routes/admin.w
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminDeliveriesRouteImport } from './routes/admin.deliveries'
 import { Route as AdminAccountsRouteImport } from './routes/admin.accounts'
+import { Route as AdminWholesaleApplicationsIdRouteImport } from './routes/admin.wholesale-applications.$id'
 import { Route as AdminRequestsIdRouteImport } from './routes/admin.requests.$id'
 import { Route as AuthenticatedWholesaleDashboardRouteImport } from './routes/_authenticated/wholesale.dashboard'
 
@@ -168,6 +169,12 @@ const AdminAccountsRoute = AdminAccountsRouteImport.update({
   path: '/accounts',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminWholesaleApplicationsIdRoute =
+  AdminWholesaleApplicationsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AdminWholesaleApplicationsRoute,
+  } as any)
 const AdminRequestsIdRoute = AdminRequestsIdRouteImport.update({
   id: '/requests/$id',
   path: '/requests/$id',
@@ -196,7 +203,7 @@ export interface FileRoutesByFullPath {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
-  '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRoute
+  '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
@@ -208,6 +215,7 @@ export interface FileRoutesByFullPath {
   '/wholesale/': typeof WholesaleIndexRoute
   '/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
+  '/admin/wholesale-applications/$id': typeof AdminWholesaleApplicationsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -223,7 +231,7 @@ export interface FileRoutesByTo {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
-  '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRoute
+  '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
@@ -235,6 +243,7 @@ export interface FileRoutesByTo {
   '/wholesale': typeof WholesaleIndexRoute
   '/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
+  '/admin/wholesale-applications/$id': typeof AdminWholesaleApplicationsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -254,7 +263,7 @@ export interface FileRoutesById {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
-  '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRoute
+  '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
@@ -266,6 +275,7 @@ export interface FileRoutesById {
   '/wholesale/': typeof WholesaleIndexRoute
   '/_authenticated/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
+  '/admin/wholesale-applications/$id': typeof AdminWholesaleApplicationsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -297,6 +307,7 @@ export interface FileRouteTypes {
     | '/wholesale/'
     | '/wholesale/dashboard'
     | '/admin/requests/$id'
+    | '/admin/wholesale-applications/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -324,6 +335,7 @@ export interface FileRouteTypes {
     | '/wholesale'
     | '/wholesale/dashboard'
     | '/admin/requests/$id'
+    | '/admin/wholesale-applications/$id'
   id:
     | '__root__'
     | '/'
@@ -354,6 +366,7 @@ export interface FileRouteTypes {
     | '/wholesale/'
     | '/_authenticated/wholesale/dashboard'
     | '/admin/requests/$id'
+    | '/admin/wholesale-applications/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -559,6 +572,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAccountsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/wholesale-applications/$id': {
+      id: '/admin/wholesale-applications/$id'
+      path: '/$id'
+      fullPath: '/admin/wholesale-applications/$id'
+      preLoaderRoute: typeof AdminWholesaleApplicationsIdRouteImport
+      parentRoute: typeof AdminWholesaleApplicationsRoute
+    }
     '/admin/requests/$id': {
       id: '/admin/requests/$id'
       path: '/requests/$id'
@@ -587,11 +607,25 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface AdminWholesaleApplicationsRouteChildren {
+  AdminWholesaleApplicationsIdRoute: typeof AdminWholesaleApplicationsIdRoute
+}
+
+const AdminWholesaleApplicationsRouteChildren: AdminWholesaleApplicationsRouteChildren =
+  {
+    AdminWholesaleApplicationsIdRoute: AdminWholesaleApplicationsIdRoute,
+  }
+
+const AdminWholesaleApplicationsRouteWithChildren =
+  AdminWholesaleApplicationsRoute._addFileChildren(
+    AdminWholesaleApplicationsRouteChildren,
+  )
+
 interface AdminRouteChildren {
   AdminAccountsRoute: typeof AdminAccountsRoute
   AdminDeliveriesRoute: typeof AdminDeliveriesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
-  AdminWholesaleApplicationsRoute: typeof AdminWholesaleApplicationsRoute
+  AdminWholesaleApplicationsRoute: typeof AdminWholesaleApplicationsRouteWithChildren
   AdminIndexRoute: typeof AdminIndexRoute
   AdminRequestsIdRoute: typeof AdminRequestsIdRoute
 }
@@ -600,7 +634,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAccountsRoute: AdminAccountsRoute,
   AdminDeliveriesRoute: AdminDeliveriesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
-  AdminWholesaleApplicationsRoute: AdminWholesaleApplicationsRoute,
+  AdminWholesaleApplicationsRoute: AdminWholesaleApplicationsRouteWithChildren,
   AdminIndexRoute: AdminIndexRoute,
   AdminRequestsIdRoute: AdminRequestsIdRoute,
 }
