@@ -108,7 +108,7 @@ function RepairBodyShops() {
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
             <Link
-              to="/auth"
+              to="/wholesale/sign-in"
               className="inline-flex items-center justify-center gap-2 rounded-md border border-carbon-muted/40 px-7 py-4 text-sm font-bold uppercase tracking-wide text-carbon-foreground hover:border-primary-glow"
             >
               <LogIn className="h-4 w-4" aria-hidden="true" />
@@ -175,7 +175,7 @@ function RepairBodyShops() {
             Apply for a Wholesale Account
           </Link>
           <Link
-            to="/auth"
+            to="/wholesale/sign-in"
             className="inline-flex items-center justify-center gap-2 rounded-md border border-border px-7 py-4 text-sm font-bold uppercase tracking-wide hover:border-primary"
           >
             Sign In

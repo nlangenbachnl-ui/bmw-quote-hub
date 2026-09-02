@@ -110,7 +110,7 @@ function WholesaleLanding() {
               Apply for a wholesale account
             </Link>
             <Link
-              to="/auth"
+              to="/wholesale/sign-in"
               className="rounded-md border border-white/20 px-6 py-3 text-sm font-bold uppercase tracking-wide text-carbon-foreground transition-colors hover:bg-white/5"
             >
               Wholesale sign in
@@ -174,7 +174,7 @@ function WholesaleLanding() {
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
-              to="/auth"
+              to="/wholesale/sign-in"
               className="rounded-md bg-gradient-blue px-6 py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-blue"
             >
               Sign in or register

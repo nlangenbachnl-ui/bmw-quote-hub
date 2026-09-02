@@ -42,7 +42,7 @@ export function Footer() {
             <li><Link to="/repair-body-shops" className="hover:text-primary-glow">For Repair &amp; Body Shops</Link></li>
             <li><Link to="/wholesale" className="hover:text-primary-glow">Wholesale Program</Link></li>
             <li><Link to="/wholesale/apply" className="hover:text-primary-glow">Wholesale Application</Link></li>
-            <li><Link to="/portal" className="hover:text-primary-glow">Shop Portal Login</Link></li>
+            <li><Link to="/wholesale/sign-in" className="hover:text-primary-glow">Wholesale Sign In</Link></li>
           </ul>
         </div>
 

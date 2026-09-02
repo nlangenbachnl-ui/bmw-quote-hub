@@ -252,7 +252,7 @@ function WholesaleApplyPage() {
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
-            to="/auth"
+            to="/wholesale/sign-in"
             className="rounded-md bg-gradient-blue px-5 py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-blue"
           >
             Create your account
