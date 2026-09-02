@@ -3,15 +3,12 @@ import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AlertCircle,
-  Boxes,
   Car,
-  ClipboardList,
-  FileText,
+  History,
+  LayoutDashboard,
   Loader2,
   LogOut,
   Plus,
-  Receipt,
-  ShoppingCart,
   Trash2,
   Truck,
   UserCog,
