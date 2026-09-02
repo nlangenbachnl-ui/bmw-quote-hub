@@ -34,6 +34,7 @@ import { Route as PortalRequestRouteImport } from './routes/portal.request'
 import { Route as PortalProfileRouteImport } from './routes/portal.profile'
 import { Route as PortalHistoryRouteImport } from './routes/portal.history'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
+import { Route as AdminWholesaleQuotesRouteImport } from './routes/admin.wholesale-quotes'
 import { Route as AdminWholesaleApplicationsRouteImport } from './routes/admin.wholesale-applications'
 import { Route as AdminSignInRouteImport } from './routes/admin.sign-in'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
@@ -168,6 +169,11 @@ const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => AuthRoute,
 } as any)
+const AdminWholesaleQuotesRoute = AdminWholesaleQuotesRouteImport.update({
+  id: '/wholesale-quotes',
+  path: '/wholesale-quotes',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminWholesaleApplicationsRoute =
   AdminWholesaleApplicationsRouteImport.update({
     id: '/wholesale-applications',
@@ -238,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
+  '/admin/wholesale-quotes': typeof AdminWholesaleQuotesRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
@@ -270,6 +277,7 @@ export interface FileRoutesByTo {
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sign-in': typeof AdminSignInRoute
+  '/admin/wholesale-quotes': typeof AdminWholesaleQuotesRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
@@ -307,6 +315,7 @@ export interface FileRoutesById {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
+  '/admin/wholesale-quotes': typeof AdminWholesaleQuotesRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
@@ -344,6 +353,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/sign-in'
     | '/admin/wholesale-applications'
+    | '/admin/wholesale-quotes'
     | '/auth/reset-password'
     | '/portal/history'
     | '/portal/profile'
@@ -376,6 +386,7 @@ export interface FileRouteTypes {
     | '/admin/deliveries'
     | '/admin/settings'
     | '/admin/sign-in'
+    | '/admin/wholesale-quotes'
     | '/auth/reset-password'
     | '/portal/history'
     | '/portal/profile'
@@ -412,6 +423,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/sign-in'
     | '/admin/wholesale-applications'
+    | '/admin/wholesale-quotes'
     | '/auth/reset-password'
     | '/portal/history'
     | '/portal/profile'
@@ -627,6 +639,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthResetPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/admin/wholesale-quotes': {
+      id: '/admin/wholesale-quotes'
+      path: '/wholesale-quotes'
+      fullPath: '/admin/wholesale-quotes'
+      preLoaderRoute: typeof AdminWholesaleQuotesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/wholesale-applications': {
       id: '/admin/wholesale-applications'
       path: '/wholesale-applications'
@@ -726,6 +745,7 @@ interface AdminRouteChildren {
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSignInRoute: typeof AdminSignInRoute
   AdminWholesaleApplicationsRoute: typeof AdminWholesaleApplicationsRouteWithChildren
+  AdminWholesaleQuotesRoute: typeof AdminWholesaleQuotesRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminRequestsIdRoute: typeof AdminRequestsIdRoute
 }
@@ -736,6 +756,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSignInRoute: AdminSignInRoute,
   AdminWholesaleApplicationsRoute: AdminWholesaleApplicationsRouteWithChildren,
+  AdminWholesaleQuotesRoute: AdminWholesaleQuotesRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminRequestsIdRoute: AdminRequestsIdRoute,
 }
