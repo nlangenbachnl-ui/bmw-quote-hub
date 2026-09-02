@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
+import type { Database, Json } from "@/integrations/supabase/types";
 import type { WholesaleStatus, WholesaleTier } from "./constants";
 
 export type Application = Database["public"]["Tables"]["wholesale_applications"]["Row"];
@@ -67,7 +67,7 @@ export async function signedCustomerFileUrl(path: string) {
  */
 export async function submitApplication(input: ApplicationInsert) {
   const { data, error } = await supabase.rpc("submit_wholesale_application", {
-    _payload: input as unknown as Database["public"]["Tables"]["wholesale_applications"]["Insert"] as never,
+    _payload: input as unknown as Json,
   });
   if (error) throw error;
   return { reference_code: data as string };
