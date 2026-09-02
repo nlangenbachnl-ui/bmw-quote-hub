@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { CheckCircle2, Loader2, Upload } from "lucide-react";
 import { toast } from "sonner";
@@ -14,7 +15,10 @@ import {
   PREFERRED_CONTACT_OPTIONS,
   type BusinessType,
 } from "@/lib/wholesale/constants";
-import { submitApplication, uploadApplicationDocument } from "@/lib/wholesale/api";
+import { submitApplication, uploadApplicationDocument, fetchMyApplications } from "@/lib/wholesale/api";
+import { fetchMyAccountProfile } from "@/lib/account/api";
+import { useAuth } from "@/hooks/useAuth";
+import { STATUS_LABELS } from "@/lib/wholesale/constants";
 
 export const Route = createFileRoute("/wholesale/apply")({
   head: () => ({
@@ -139,6 +143,34 @@ function WholesaleApplyPage() {
   const [doc, setDoc] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [reference, setReference] = useState<string | null>(null);
+  const { user } = useAuth();
+  const userId = user?.id ?? null;
+
+  const accountQuery = useQuery({
+    queryKey: ["account-profile", userId],
+    enabled: Boolean(userId),
+    queryFn: fetchMyAccountProfile,
+  });
+  const existingQuery = useQuery({
+    queryKey: ["wholesale-my-applications", userId],
+    enabled: Boolean(userId),
+    queryFn: fetchMyApplications,
+  });
+  const account = accountQuery.data ?? null;
+  const existing = existingQuery.data?.[0] ?? null;
+
+  // Prefill from the account profile collected once at signup.
+  useEffect(() => {
+    if (!account) return;
+    setValues((prev) => ({
+      ...prev,
+      legal_business_name: prev.legal_business_name || account.business_name || "",
+      contact_name: prev.contact_name || account.full_name || "",
+      business_email: account.business_email || prev.business_email,
+      business_phone: prev.business_phone || account.phone || "",
+      business_type: (prev.business_type || account.business_type || "") as FormValues["business_type"],
+    }));
+  }, [account]);
 
   function set<K extends keyof FormValues>(key: K, value: FormValues[K]) {
     setValues((prev) => ({ ...prev, [key]: value }));
@@ -228,6 +260,45 @@ function WholesaleApplyPage() {
     } finally {
       setBusy(false);
     }
+  }
+
+  // Already applied — show status instead of inviting a duplicate application.
+  if (!reference && existing) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-20 sm:px-6">
+        <h1 className="text-3xl font-extrabold uppercase tracking-tight">
+          Your application is on file
+        </h1>
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+          We already have a wholesale application for your account, so there's no need to submit
+          another. Current status:{" "}
+          <strong className="text-foreground">
+            {STATUS_LABELS[existing.status] ?? existing.status}
+          </strong>
+          .
+        </p>
+        <p className="mt-6 rounded-xl border border-border bg-muted/40 p-6">
+          <span className="block text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+            Reference number
+          </span>
+          <span className="mt-2 block font-mono text-xl font-bold">{existing.reference_code}</span>
+        </p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link
+            to="/wholesale/dashboard"
+            className="rounded-md bg-gradient-blue px-5 py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-blue"
+          >
+            Go to your dashboard
+          </Link>
+          <Link
+            to="/contact"
+            className="rounded-md border border-border px-5 py-3 text-sm font-bold uppercase tracking-wide"
+          >
+            Contact the wholesale desk
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   if (reference) {
