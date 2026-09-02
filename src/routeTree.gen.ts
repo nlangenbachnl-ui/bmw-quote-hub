@@ -35,6 +35,7 @@ import { Route as AdminWholesaleQuotesRouteImport } from './routes/admin.wholesa
 import { Route as AdminWholesaleApplicationsRouteImport } from './routes/admin.wholesale-applications'
 import { Route as AdminSignInRouteImport } from './routes/admin.sign-in'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminQuotesOrdersRouteImport } from './routes/admin.quotes-orders'
 import { Route as AdminDeliveriesRouteImport } from './routes/admin.deliveries'
 import { Route as AdminAccountsRouteImport } from './routes/admin.accounts'
 import { Route as AdminWholesaleApplicationsIndexRouteImport } from './routes/admin.wholesale-applications.index'
@@ -172,6 +173,11 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminQuotesOrdersRoute = AdminQuotesOrdersRouteImport.update({
+  id: '/quotes-orders',
+  path: '/quotes-orders',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminDeliveriesRoute = AdminDeliveriesRouteImport.update({
   id: '/deliveries',
   path: '/deliveries',
@@ -223,6 +229,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
+  '/admin/quotes-orders': typeof AdminQuotesOrdersRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
@@ -255,6 +262,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
+  '/admin/quotes-orders': typeof AdminQuotesOrdersRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-quotes': typeof AdminWholesaleQuotesRoute
@@ -289,6 +297,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
+  '/admin/quotes-orders': typeof AdminQuotesOrdersRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
@@ -324,6 +333,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/accounts'
     | '/admin/deliveries'
+    | '/admin/quotes-orders'
     | '/admin/settings'
     | '/admin/sign-in'
     | '/admin/wholesale-applications'
@@ -356,6 +366,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/accounts'
     | '/admin/deliveries'
+    | '/admin/quotes-orders'
     | '/admin/settings'
     | '/admin/sign-in'
     | '/admin/wholesale-quotes'
@@ -389,6 +400,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/accounts'
     | '/admin/deliveries'
+    | '/admin/quotes-orders'
     | '/admin/settings'
     | '/admin/sign-in'
     | '/admin/wholesale-applications'
@@ -613,6 +625,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/quotes-orders': {
+      id: '/admin/quotes-orders'
+      path: '/quotes-orders'
+      fullPath: '/admin/quotes-orders'
+      preLoaderRoute: typeof AdminQuotesOrdersRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/deliveries': {
       id: '/admin/deliveries'
       path: '/deliveries'
@@ -688,6 +707,7 @@ const AdminWholesaleApplicationsRouteWithChildren =
 interface AdminRouteChildren {
   AdminAccountsRoute: typeof AdminAccountsRoute
   AdminDeliveriesRoute: typeof AdminDeliveriesRoute
+  AdminQuotesOrdersRoute: typeof AdminQuotesOrdersRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSignInRoute: typeof AdminSignInRoute
   AdminWholesaleApplicationsRoute: typeof AdminWholesaleApplicationsRouteWithChildren
@@ -699,6 +719,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAccountsRoute: AdminAccountsRoute,
   AdminDeliveriesRoute: AdminDeliveriesRoute,
+  AdminQuotesOrdersRoute: AdminQuotesOrdersRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSignInRoute: AdminSignInRoute,
   AdminWholesaleApplicationsRoute: AdminWholesaleApplicationsRouteWithChildren,
