@@ -73,12 +73,7 @@ function QuoteBuilder() {
             <span className="font-mono">{request.vin}</span> · Ships to {request.shippingZip}
           </p>
         </div>
-        <Button asChild variant="outline">
-          <Link to="/quote/$id" params={{ id: request.id }} target="_blank">
-            <Eye className="mr-2 h-4 w-4" aria-hidden="true" />
-            Customer preview
-          </Link>
-        </Button>
+        <PublishPanel request={request} math={math} />
       </div>
 
       <section className="grid gap-4 rounded-xl border border-border bg-card p-6 shadow-card md:grid-cols-2">
