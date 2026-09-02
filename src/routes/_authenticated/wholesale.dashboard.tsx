@@ -37,7 +37,6 @@ import {
   formatDate,
   formatMoney,
   formatVin,
-  statusBadgeClass,
 } from "@/lib/wholesale/constants";
 import {
   claimApplication,
@@ -64,7 +63,7 @@ export const Route = createFileRoute("/_authenticated/wholesale/dashboard")({
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  component: WholesaleDashboard;
+  component: WholesaleDashboard,
 });
 
 type TabKey = "overview" | "vehicles" | "request" | "history" | "invoices" | "account";
@@ -1180,5 +1179,3 @@ function PanelLoading() {
     </div>
   );
 }
-
-export { statusBadgeClass };
