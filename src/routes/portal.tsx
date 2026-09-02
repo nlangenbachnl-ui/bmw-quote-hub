@@ -96,7 +96,7 @@ function PortalHeader({ shopName, contactName }: { shopName: string; contactName
             );
           })}
           <Link
-            to="/for-shops"
+            to="/repair-body-shops"
             className="rounded-md px-3 py-2 text-sm font-semibold text-carbon-muted hover:text-carbon-foreground"
           >
             View site

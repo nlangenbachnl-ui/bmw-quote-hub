@@ -207,11 +207,10 @@ function AuthPage() {
           </>
         )}
         <p className="pt-2 text-muted-foreground">
-          Not a wholesale customer yet?{" "}
+          Need a wholesale account?{" "}
           <Link to="/wholesale" className="font-semibold text-primary hover:underline">
-            Apply for an account
+            Apply here.
           </Link>
-          .
         </p>
       </div>
     </div>

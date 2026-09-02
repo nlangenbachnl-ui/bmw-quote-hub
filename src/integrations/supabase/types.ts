@@ -59,6 +59,125 @@ export type Database = {
         }
         Relationships: []
       }
+      retail_quote_lines: {
+        Row: {
+          availability: string | null
+          created_at: string
+          description: string
+          id: string
+          line_total: number
+          msrp_total: number
+          part_number: string | null
+          position: number
+          quantity: number
+          quote_id: string
+          unit_price: number
+        }
+        Insert: {
+          availability?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          line_total?: number
+          msrp_total?: number
+          part_number?: string | null
+          position?: number
+          quantity?: number
+          quote_id: string
+          unit_price?: number
+        }
+        Update: {
+          availability?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          line_total?: number
+          msrp_total?: number
+          part_number?: string | null
+          position?: number
+          quantity?: number
+          quote_id?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retail_quote_lines_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "retail_quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      retail_quotes: {
+        Row: {
+          access_token: string
+          bmw_model: string | null
+          created_at: string
+          created_by: string | null
+          customer_name: string
+          delivery_fee: number
+          delivery_free: boolean
+          delivery_label: string | null
+          expires_at: string | null
+          grand_total: number
+          id: string
+          model_year: string | null
+          msrp_total: number
+          reference: string
+          shipping_total: number
+          source_request_id: string | null
+          status: string
+          subtotal: number
+          updated_at: string
+          vin: string | null
+        }
+        Insert: {
+          access_token?: string
+          bmw_model?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_name: string
+          delivery_fee?: number
+          delivery_free?: boolean
+          delivery_label?: string | null
+          expires_at?: string | null
+          grand_total?: number
+          id?: string
+          model_year?: string | null
+          msrp_total?: number
+          reference: string
+          shipping_total?: number
+          source_request_id?: string | null
+          status?: string
+          subtotal?: number
+          updated_at?: string
+          vin?: string | null
+        }
+        Update: {
+          access_token?: string
+          bmw_model?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_name?: string
+          delivery_fee?: number
+          delivery_free?: boolean
+          delivery_label?: string | null
+          expires_at?: string | null
+          grand_total?: number
+          id?: string
+          model_year?: string | null
+          msrp_total?: number
+          reference?: string
+          shipping_total?: number
+          source_request_id?: string | null
+          status?: string
+          subtotal?: number
+          updated_at?: string
+          vin?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -618,6 +737,7 @@ export type Database = {
         }
       }
       generate_reference: { Args: { _prefix: string }; Returns: string }
+      get_retail_quote: { Args: { _token: string }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -625,6 +745,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      mask_part_number: { Args: { _part_number: string }; Returns: string }
+      publish_retail_quote: { Args: { _payload: Json }; Returns: Json }
       submit_wholesale_application: {
         Args: { _payload: Json }
         Returns: string

@@ -4,7 +4,8 @@ import { useState } from "react";
 
 const navItems = [
   { to: "/", label: "Home" },
-  { to: "/for-shops", label: "For Repair & Body Shops" },
+  { to: "/individual-customers", label: "Individuals" },
+  { to: "/repair-body-shops", label: "Repair & Body Shops" },
   { to: "/wholesale", label: "Wholesale" },
   { to: "/about", label: "About" },
   { to: "/faq", label: "FAQ" },

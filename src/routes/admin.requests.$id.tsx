@@ -1,10 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Eye, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Copy, Eye, Loader2, Plus, Send, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { computeQuote, money, percent } from "@/lib/admin/pricing";
+import type { QuoteMath } from "@/lib/admin/pricing";
+import { publishRetailQuote } from "@/lib/retail-quote.publish";
 import {
   addLine,
   DELIVERY_STATUS_TONE,
@@ -21,6 +25,7 @@ import {
   useAdminRequest,
   useAdminState,
 } from "@/lib/admin/store";
+import type { QuoteRequest } from "@/lib/admin/store";
 
 export const Route = createFileRoute("/admin/requests/$id")({
   component: QuoteBuilder,
@@ -73,12 +78,7 @@ function QuoteBuilder() {
             <span className="font-mono">{request.vin}</span> · Ships to {request.shippingZip}
           </p>
         </div>
-        <Button asChild variant="outline">
-          <Link to="/quote/$id" params={{ id: request.id }} target="_blank">
-            <Eye className="mr-2 h-4 w-4" aria-hidden="true" />
-            Customer preview
-          </Link>
-        </Button>
+        <PublishPanel request={request} math={math} />
       </div>
 
       <section className="grid gap-4 rounded-xl border border-border bg-card p-6 shadow-card md:grid-cols-2">
@@ -434,6 +434,79 @@ function Metric({
       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{label}</p>
       <p className="mt-1 text-xl font-extrabold tracking-tight">{value}</p>
       {hint ? <p className="mt-1 text-xs text-muted-foreground">{hint}</p> : null}
+    </div>
+  );
+}
+
+/**
+ * Publishes the built quote to the secure server-side retail quote record and
+ * returns the customer link. Full OEM part numbers stay in the admin record —
+ * the customer link serves them masked until the order is paid/completed.
+ */
+function PublishPanel({ request, math }: { request: QuoteRequest; math: QuoteMath }) {
+  const [busy, setBusy] = useState(false);
+  const [link, setLink] = useState<string | null>(null);
+
+  async function publish() {
+    setBusy(true);
+    try {
+      const { accessToken } = await publishRetailQuote(request, math);
+      const url = `${window.location.origin}/quote/${accessToken}`;
+      setLink(url);
+      toast.success("Customer quote published");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Could not publish the quote. Admin role required.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="w-full max-w-sm rounded-xl border border-border bg-card p-4 shadow-card">
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
+        Customer link
+      </p>
+      <Button className="mt-3 w-full" onClick={publish} disabled={busy || math.lines.length === 0}>
+        {busy ? (
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+        ) : (
+          <Send className="mr-2 h-4 w-4" aria-hidden="true" />
+        )}
+        {link ? "Re-publish quote" : "Publish customer quote"}
+      </Button>
+      {link ? (
+        <div className="mt-3 space-y-2">
+          <Input readOnly value={link} aria-label="Customer quote link" className="font-mono text-xs" />
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="flex-1"
+              onClick={() => {
+                void navigator.clipboard.writeText(link);
+                toast.success("Link copied");
+              }}
+            >
+              <Copy className="mr-2 h-4 w-4" aria-hidden="true" />
+              Copy
+            </Button>
+            <Button asChild variant="outline" size="sm" className="flex-1">
+              <a href={link} target="_blank" rel="noreferrer">
+                <Eye className="mr-2 h-4 w-4" aria-hidden="true" />
+                Preview
+              </a>
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+          Retail customers see part numbers masked (••••••482) until the order is paid. Approved
+          wholesale accounts and admins always see full numbers.
+        </p>
+      )}
     </div>
   );
 }
