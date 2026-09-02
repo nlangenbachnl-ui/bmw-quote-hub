@@ -447,7 +447,7 @@ function StatusScreen({
   );
 }
 
-function Overview({
+function DashboardPanel({
   account,
   onNavigate,
 }: {
@@ -456,96 +456,107 @@ function Overview({
 }) {
   const requests = useQuery({ queryKey: ["wholesale-requests"], queryFn: fetchMyRequests });
   const orders = useQuery({ queryKey: ["wholesale-orders"], queryFn: fetchMyOrders });
-  const pricing = useQuery({ queryKey: ["wholesale-tier-pricing"], queryFn: fetchTierPricing });
-  const profile = useQuery({ queryKey: ["wholesale-profile-overview"], queryFn: fetchMyProfile });
+  const quotes = useQuery({ queryKey: ["wholesale-quotes"], queryFn: fetchMyWholesaleQuotes });
 
-  const tier = profile.data?.tier ?? "standard";
-  const tierRow = pricing.data?.find((row) => row.tier === tier);
+  const openRequests = (requests.data ?? []).filter(
+    (r) => !["closed", "fulfilled"].includes(r.status),
+  );
+  const awaitingQuotes = (quotes.data ?? []).filter((q) =>
+    ["sent", "ready", "draft"].includes(q.status),
+  );
+  const activeOrders = (orders.data ?? []).filter(
+    (o) => !["cancelled", "delivered", "closed"].includes(o.status),
+  );
+
+  const activity = [
+    ...(requests.data ?? []).map((r) => ({
+      id: `req-${r.id}`,
+      at: r.created_at,
+      label: `Request ${r.reference_code}`,
+      detail: r.status.replace(/_/g, " "),
+    })),
+    ...(quotes.data ?? []).map((q) => ({
+      id: `quo-${q.id}`,
+      at: q.created_at,
+      label: `Quote ${q.quote_number}`,
+      detail: q.status.replace(/_/g, " "),
+    })),
+    ...(orders.data ?? []).map((o) => ({
+      id: `ord-${o.id}`,
+      at: o.placed_at,
+      label: `Order ${o.order_number}`,
+      detail: o.status.replace(/_/g, " "),
+    })),
+  ]
+    .sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
+    .slice(0, 6);
 
   return (
     <div className="space-y-8">
-      <section className="rounded-xl border border-border p-6">
-        <h2 className="text-sm font-bold uppercase tracking-wide">Account identity</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {account?.business_name ?? "Business name on file"} · {account?.full_name ?? "Contact"} ·{" "}
-          {account?.business_email ?? ""}
-          {account?.phone ? ` · ${account.phone}` : ""}
-        </p>
+      <section className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-muted/40 p-6">
+        <div>
+          <h2 className="text-lg font-extrabold uppercase tracking-tight">
+            Need parts sourced?
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {account?.business_name ?? "Your shop"} — send a VIN and a parts list, we quote it back.
+          </p>
+        </div>
+        <Button size="lg" onClick={() => onNavigate("new")}>
+          <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
+          New Parts Request
+        </Button>
       </section>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Stat label="Open requests" value={String(
-          (requests.data ?? []).filter((r) => !["closed", "fulfilled"].includes(r.status)).length,
-        )} />
-        <Stat label="Orders on file" value={String((orders.data ?? []).length)} />
-        <Stat label="Saved tier" value={TIER_LABELS[tier]} />
+        <Stat label="Open requests" value={String(openRequests.length)} />
+        <Stat label="Quotes awaiting action" value={String(awaitingQuotes.length)} />
+        <Stat label="Active orders" value={String(activeOrders.length)} />
       </div>
 
-      <section className="rounded-xl border border-border p-6">
-        <h2 className="text-sm font-bold uppercase tracking-wide">Your account pricing</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          Quotes we build for your shop are priced using your{" "}
-          <strong className="text-foreground">{TIER_LABELS[tier]}</strong> tier.
-          {tierRow?.discount_percent
-            ? ` Current configured tier adjustment: ${tierRow.discount_percent}%${tierRow.is_sample ? " (sample value set by our team, not final)" : ""}.`
-            : " Your tier discount has not been configured yet, so quotes are priced at standard wholesale until our team sets it."}
-        </p>
-      </section>
-
       <section>
-        <h2 className="text-sm font-bold uppercase tracking-wide">Quick actions</h2>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <Button onClick={() => onNavigate("request")}>
-            <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
-            New parts request
-          </Button>
-          <Button variant="outline" onClick={() => onNavigate("vehicles")}>
-            <Car className="mr-2 h-4 w-4" aria-hidden="true" />
-            Manage saved VINs
-          </Button>
-          <Button variant="outline" onClick={() => onNavigate("requests")}>
-            <FileText className="mr-2 h-4 w-4" aria-hidden="true" />
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-sm font-bold uppercase tracking-wide">Recent activity</h2>
+          <Button variant="ghost" size="sm" onClick={() => onNavigate("history")}>
             View history
           </Button>
         </div>
-      </section>
-
-      <section>
-        <h2 className="text-sm font-bold uppercase tracking-wide">Recent requests</h2>
-        {requests.isLoading ? (
+        {requests.isLoading || quotes.isLoading || orders.isLoading ? (
           <PanelLoading />
-        ) : (requests.data ?? []).length === 0 ? (
+        ) : activity.length === 0 ? (
           <Empty>
-            No parts requests yet. Submit your first request and it will appear here with its
-            reference number and status.
+            No activity yet. Your requests, quotes, and orders appear here once they exist.
           </Empty>
         ) : (
-          <div className="mt-4 overflow-x-auto rounded-xl border border-border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Reference</TableHead>
-                  <TableHead>PO</TableHead>
-                  <TableHead>VIN</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {(requests.data ?? []).slice(0, 5).map((r) => (
-                  <TableRow key={r.id}>
-                    <TableCell className="font-mono text-xs">{r.reference_code}</TableCell>
-                    <TableCell>{r.po_number || "—"}</TableCell>
-                    <TableCell className="font-mono text-xs">{r.vin || "—"}</TableCell>
-                    <TableCell>{formatDate(r.created_at)}</TableCell>
-                    <TableCell className="capitalize">{r.status.replace(/_/g, " ")}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <ul className="mt-4 divide-y divide-border rounded-xl border border-border">
+            {activity.map((item) => (
+              <li key={item.id} className="flex flex-wrap items-center justify-between gap-2 p-4">
+                <span className="text-sm font-semibold">{item.label}</span>
+                <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                  {item.detail} · {formatDate(item.at)}
+                </span>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
+    </div>
+  );
+}
+
+function NewRequestPanel({ userId, onDone }: { userId: string; onDone: () => void }) {
+  return (
+    <div className="space-y-8">
+      <RequestPanel userId={userId} onDone={onDone} />
+      <details className="rounded-xl border border-border p-4">
+        <summary className="flex cursor-pointer items-center gap-2 text-sm font-bold uppercase tracking-wide">
+          <Car className="h-4 w-4" aria-hidden="true" />
+          Manage saved vehicles / VINs
+        </summary>
+        <div className="mt-6">
+          <VehiclesPanel userId={userId} />
+        </div>
+      </details>
     </div>
   );
 }
