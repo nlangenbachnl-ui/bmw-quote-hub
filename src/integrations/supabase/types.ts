@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_profiles: {
+        Row: {
+          business_email: string
+          business_name: string
+          business_type:
+            | Database["public"]["Enums"]["wholesale_business_type"]
+            | null
+          created_at: string
+          full_name: string
+          id: string
+          phone: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          business_email?: string
+          business_name?: string
+          business_type?:
+            | Database["public"]["Enums"]["wholesale_business_type"]
+            | null
+          created_at?: string
+          full_name?: string
+          id?: string
+          phone?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          business_email?: string
+          business_name?: string
+          business_type?:
+            | Database["public"]["Enums"]["wholesale_business_type"]
+            | null
+          created_at?: string
+          full_name?: string
+          id?: string
+          phone?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       quote_requests: {
         Row: {
           bmw_model: string
@@ -604,6 +646,112 @@ export type Database = {
             columns: ["application_id"]
             isOneToOne: false
             referencedRelation: "wholesale_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wholesale_quote_lines: {
+        Row: {
+          availability: string | null
+          created_at: string
+          description: string
+          id: string
+          line_total: number
+          part_number: string | null
+          position: number
+          quantity: number
+          quote_id: string
+          unit_price: number
+        }
+        Insert: {
+          availability?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          line_total?: number
+          part_number?: string | null
+          position?: number
+          quantity?: number
+          quote_id: string
+          unit_price?: number
+        }
+        Update: {
+          availability?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          line_total?: number
+          part_number?: string | null
+          position?: number
+          quantity?: number
+          quote_id?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wholesale_quote_lines_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wholesale_quotes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          expires_at: string | null
+          id: string
+          notes: string | null
+          po_number: string | null
+          quote_number: string
+          request_id: string | null
+          shipping_total: number
+          status: string
+          subtotal: number
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          notes?: string | null
+          po_number?: string | null
+          quote_number?: string
+          request_id?: string | null
+          shipping_total?: number
+          status?: string
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          notes?: string | null
+          po_number?: string | null
+          quote_number?: string
+          request_id?: string | null
+          shipping_total?: number
+          status?: string
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wholesale_quotes_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_parts_requests"
             referencedColumns: ["id"]
           },
         ]
