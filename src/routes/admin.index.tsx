@@ -276,6 +276,8 @@ function AdminRequests() {
           </table>
         </div>
       </div>
+      </section>
+      )}
     </div>
   );
 }
