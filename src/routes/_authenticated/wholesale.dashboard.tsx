@@ -180,9 +180,7 @@ function WholesaleDashboard() {
           <NewRequestPanel userId={userId!} onDone={() => setTab("history")} />
         ) : null}
         {tab === "history" ? <HistoryPanel /> : null}
-        {tab === "account" ? (
-          <AccountPanel userId={userId!} account={account} profile={profile} />
-        ) : null}
+        {tab === "account" ? <AccountPanel userId={userId!} account={account} /> : null}
       </div>
 
       {/* Mobile: 4-item bottom navigation. */}
