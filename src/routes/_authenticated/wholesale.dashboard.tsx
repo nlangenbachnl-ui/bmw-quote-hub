@@ -1061,16 +1061,26 @@ function RequestPanel({ userId, onDone }: { userId: string; onDone: () => void }
   );
 }
 
-function HistoryPanel({ only }: { only: "requests" | "orders" }) {
+const HISTORY_VIEWS = [
+  { key: "requests", label: "Requests" },
+  { key: "quotes", label: "Quotes" },
+  { key: "orders", label: "Orders" },
+  { key: "invoices", label: "Invoices" },
+] as const;
+
+type HistoryView = (typeof HISTORY_VIEWS)[number]["key"];
+
+function HistoryPanel() {
+  const [view, setView] = useState<HistoryView>("requests");
   const requests = useQuery({
     queryKey: ["wholesale-requests"],
     queryFn: fetchMyRequests,
-    enabled: only === "requests",
+    enabled: view === "requests",
   });
   const orders = useQuery({
     queryKey: ["wholesale-orders"],
     queryFn: fetchMyOrders,
-    enabled: only === "orders",
+    enabled: view === "orders",
   });
   const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
@@ -1086,8 +1096,34 @@ function HistoryPanel({ only }: { only: "requests" | "orders" }) {
   }, [requests.data, search]);
 
   return (
-    <div className="space-y-10">
-      {only === "requests" ? (
+    <div className="space-y-8">
+      <div
+        className="inline-flex flex-wrap gap-1 rounded-lg border border-border bg-muted/50 p-1"
+        role="tablist"
+        aria-label="History views"
+      >
+        {HISTORY_VIEWS.map((v) => (
+          <button
+            key={v.key}
+            type="button"
+            role="tab"
+            aria-selected={view === v.key}
+            onClick={() => setView(v.key)}
+            className={`rounded-md px-3 py-1.5 text-sm font-semibold transition ${
+              view === v.key
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {v.label}
+          </button>
+        ))}
+      </div>
+
+      {view === "quotes" ? <QuotesPanel /> : null}
+      {view === "invoices" ? <InvoicesPanel /> : null}
+
+      {view === "requests" ? (
       <section>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-sm font-bold uppercase tracking-wide">Parts requests</h2>
