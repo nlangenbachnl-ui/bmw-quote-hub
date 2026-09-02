@@ -16,7 +16,7 @@ import {
   type BusinessType,
 } from "@/lib/wholesale/constants";
 import { submitApplication, uploadApplicationDocument, fetchMyApplications } from "@/lib/wholesale/api";
-import { fetchMyAccountProfile } from "@/lib/account/api";
+import { fetchMyAccountProfile, saveMyAccountProfile } from "@/lib/account/api";
 import { useAuth } from "@/hooks/useAuth";
 import { STATUS_LABELS } from "@/lib/wholesale/constants";
 
@@ -250,6 +250,16 @@ function WholesaleApplyPage() {
         certified_accurate: true,
         agreed_to_terms: true,
       });
+      // Keep the account profile in sync with legitimate business/contact edits.
+      if (userId) {
+        await saveMyAccountProfile(userId, {
+          full_name: data.contact_name,
+          business_name: data.legal_business_name,
+          phone: data.business_phone,
+          business_type: data.business_type as BusinessType,
+          business_email: account?.business_email || data.business_email,
+        }).catch(() => null);
+      }
       setReference(result.reference_code);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
