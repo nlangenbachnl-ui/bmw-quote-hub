@@ -34,7 +34,7 @@ import {
   type WholesaleStatus,
   type WholesaleTier,
 } from "@/lib/wholesale/constants";
-import { AdminOnlyNotice } from "./admin.wholesale-applications";
+import { AdminOnlyNotice } from "@/components/wholesale/AdminOnlyNotice";
 
 export const Route = createFileRoute("/admin/wholesale-applications/$id")({
   head: () => ({
