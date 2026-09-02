@@ -5,9 +5,23 @@ import {
   redirect,
   useRouterState,
 } from "@tanstack/react-router";
-import { Building2, LayoutDashboard, Loader2, ReceiptText, Settings2, ShieldAlert, ShieldCheck, Truck } from "lucide-react";
+import {
+  Building2,
+  LayoutDashboard,
+  Loader2,
+  ReceiptText,
+  Settings2,
+  ShieldAlert,
+  UserRound,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { supabase } from "@/integrations/supabase/client";
 import { signOut, useAuth, useIsAdmin } from "@/hooks/useAuth";
 
