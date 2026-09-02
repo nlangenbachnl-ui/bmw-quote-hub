@@ -214,7 +214,7 @@ function AdminSettings() {
           value={settings.courierApiKey}
           onChange={(v) => updateSettings({ courierApiKey: v })}
         />
-      </section>
+      </details>
 
       <p className="text-xs text-muted-foreground">
         Settings are stored locally in this prototype. They move to the database — with an audit
