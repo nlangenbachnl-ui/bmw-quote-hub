@@ -217,6 +217,71 @@ function Index() {
         <TrustBadges />
       </section>
 
+      {/* Choose your path */}
+      <section aria-labelledby="paths-heading" className="mx-auto max-w-6xl px-4 pb-6 sm:px-6">
+        <p className="heading-kicker">Two Ways To Work With Us</p>
+        <h2 id="paths-heading" className="mt-3 text-3xl font-black uppercase sm:text-4xl">
+          Which describes <span className="text-primary">you</span>?
+        </h2>
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
+          <div className="flex flex-col rounded-xl border border-border bg-card p-7 shadow-card">
+            <span className="grid h-11 w-11 place-items-center rounded-lg bg-primary/10 text-primary">
+              <Wrench className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <h3 className="mt-4 text-xl font-extrabold uppercase tracking-tight">
+              I own a BMW
+            </h3>
+            <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+              Send your VIN and parts list. We verify exact fitment for your build, source genuine
+              OEM parts, and email a transparent quote — free and non-binding.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                to="/request-quote"
+                className="inline-flex items-center gap-2 rounded-md bg-gradient-blue px-5 py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-blue"
+              >
+                Request a Quote
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+              <Link
+                to="/individual-customers"
+                className="inline-flex items-center rounded-md border border-border px-5 py-3 text-sm font-bold uppercase tracking-wide hover:border-primary hover:text-primary"
+              >
+                Learn more
+              </Link>
+            </div>
+          </div>
+
+          <div className="flex flex-col rounded-xl border border-border bg-card p-7 shadow-card">
+            <span className="grid h-11 w-11 place-items-center rounded-lg bg-primary/10 text-primary">
+              <Users className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <h3 className="mt-4 text-xl font-extrabold uppercase tracking-tight">
+              I run a repair or body shop
+            </h3>
+            <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+              Fast sourcing with PO/RO references, full OEM part numbers, tiered wholesale pricing,
+              and local same-day delivery where eligible.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                to="/wholesale/apply"
+                className="inline-flex items-center gap-2 rounded-md bg-gradient-blue px-5 py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-blue"
+              >
+                Apply for Wholesale
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+              <Link
+                to="/repair-body-shops"
+                className="inline-flex items-center rounded-md border border-border px-5 py-3 text-sm font-bold uppercase tracking-wide hover:border-primary hover:text-primary"
+              >
+                Learn more
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How it works */}
       <section className="bg-secondary">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
