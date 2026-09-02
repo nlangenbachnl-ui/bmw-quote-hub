@@ -210,11 +210,9 @@ function AdminRequests() {
       ) : null}
 
       {source === "wholesale" ? null : (
+      <section>
         <h2 className="text-lg font-extrabold uppercase tracking-tight">Retail requests</h2>
-      )}
-
-
-      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-card">
+      <div className="mt-3 overflow-hidden rounded-xl border border-border bg-card shadow-card">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[64rem] text-left text-sm">
             <caption className="sr-only">Incoming BMW parts quote requests</caption>
