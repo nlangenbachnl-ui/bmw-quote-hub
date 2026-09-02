@@ -47,7 +47,7 @@ export function DeliveryBoard() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold uppercase tracking-tight">Delivery board</h1>
+          <h2 className="text-lg font-extrabold uppercase tracking-tight">Delivery board</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Local same-day and courier runs. Confirm eligibility before committing a window to a
             shop.

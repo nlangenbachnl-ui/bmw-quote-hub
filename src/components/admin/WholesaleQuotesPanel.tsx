@@ -106,7 +106,7 @@ export function AdminWholesaleQuotes() {
   return (
     <div className="space-y-10">
       <header>
-        <h1 className="text-2xl font-extrabold uppercase tracking-tight">Wholesale quotes</h1>
+        <h2 className="text-lg font-extrabold uppercase tracking-tight">Wholesale quotes</h2>
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
           Quotes created here are attached to the shop's authenticated wholesale account and appear
           in their dashboard with full OEM part numbers. Retail quotes stay on the separate,

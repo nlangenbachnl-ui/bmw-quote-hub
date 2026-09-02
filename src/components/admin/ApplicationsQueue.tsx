@@ -75,9 +75,9 @@ export function WholesaleApplicationsQueue() {
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold uppercase tracking-tight">
+          <h2 className="text-lg font-extrabold uppercase tracking-tight">
             Wholesale applications
-          </h1>
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">
             {rows.length} of {applications.data?.length ?? 0} applications
           </p>

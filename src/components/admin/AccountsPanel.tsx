@@ -55,7 +55,7 @@ export function CommercialAccounts() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-extrabold uppercase tracking-tight">Commercial accounts</h1>
+        <h2 className="text-lg font-extrabold uppercase tracking-tight">Commercial accounts</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Repair and body shop accounts, their addresses, and their quote/order volume.
         </p>
