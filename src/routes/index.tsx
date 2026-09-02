@@ -442,11 +442,12 @@ function Index() {
               For Repair &amp; Body Shops
             </Link>
             <Link
-              to="/portal"
+              to="/wholesale/sign-in"
               className="inline-flex items-center justify-center rounded-md border border-border px-6 py-4 text-sm font-bold uppercase tracking-wide transition-colors hover:border-primary hover:text-primary"
             >
-              Shop Portal Login
+              Wholesale Account Sign In
             </Link>
+
             <p className="text-xs leading-relaxed text-muted-foreground">
               Same-day delivery is subject to parts availability, delivery radius, package size, and
               courier capacity. We confirm eligibility before committing to a window.
