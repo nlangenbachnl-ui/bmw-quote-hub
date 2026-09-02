@@ -350,15 +350,20 @@ function CompleteProfileScreen({
 function StatusScreen({
   status,
   hasApplication,
+  reference,
+  account,
 }: {
   status: string | null;
   hasApplication: boolean;
+  reference: string | null;
+  account: AccountProfile | null;
 }) {
   const queryClient = useQueryClient();
-  const [reference, setReference] = useState("");
+  const [claimRef, setClaimRef] = useState("");
 
   const claim = useMutation({
-    mutationFn: () => claimApplication(reference.trim().toUpperCase()),
+    mutationFn: () => claimApplication(claimRef.trim().toUpperCase()),
+
     onSuccess: () => {
       toast.success("Application linked to your account");
       queryClient.invalidateQueries({ queryKey: ["wholesale-profile"] });
