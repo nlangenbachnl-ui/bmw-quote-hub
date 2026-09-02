@@ -29,7 +29,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as WholesaleSignInRouteImport } from './routes/wholesale.sign-in'
 import { Route as WholesaleApplyRouteImport } from './routes/wholesale.apply'
 import { Route as QuoteIdRouteImport } from './routes/quote.$id'
-import { Route as PortalSplatRouteImport } from './routes/portal.$'
+import { Route as PortalSplatRouteImport } from './routes/portal_.$'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
 import { Route as AdminWholesaleQuotesRouteImport } from './routes/admin.wholesale-quotes'
 import { Route as AdminWholesaleApplicationsRouteImport } from './routes/admin.wholesale-applications'
@@ -142,9 +142,9 @@ const QuoteIdRoute = QuoteIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalSplatRoute = PortalSplatRouteImport.update({
-  id: '/$',
-  path: '/$',
-  getParentRoute: () => PortalRoute,
+  id: '/portal_/$',
+  path: '/portal/$',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -215,7 +215,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
   '/individual-customers': typeof IndividualCustomersRoute
-  '/portal': typeof PortalRouteWithChildren
+  '/portal': typeof PortalRoute
   '/privacy': typeof PrivacyRoute
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
@@ -247,7 +247,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
   '/individual-customers': typeof IndividualCustomersRoute
-  '/portal': typeof PortalRouteWithChildren
+  '/portal': typeof PortalRoute
   '/privacy': typeof PrivacyRoute
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
@@ -281,7 +281,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
   '/individual-customers': typeof IndividualCustomersRoute
-  '/portal': typeof PortalRouteWithChildren
+  '/portal': typeof PortalRoute
   '/privacy': typeof PrivacyRoute
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
@@ -294,7 +294,7 @@ export interface FileRoutesById {
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
   '/admin/wholesale-quotes': typeof AdminWholesaleQuotesRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
-  '/portal/$': typeof PortalSplatRoute
+  '/portal_/$': typeof PortalSplatRoute
   '/quote/$id': typeof QuoteIdRoute
   '/wholesale/apply': typeof WholesaleApplyRoute
   '/wholesale/sign-in': typeof WholesaleSignInRoute
@@ -394,7 +394,7 @@ export interface FileRouteTypes {
     | '/admin/wholesale-applications'
     | '/admin/wholesale-quotes'
     | '/auth/reset-password'
-    | '/portal/$'
+    | '/portal_/$'
     | '/quote/$id'
     | '/wholesale/apply'
     | '/wholesale/sign-in'
@@ -416,12 +416,13 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   ForShopsRoute: typeof ForShopsRoute
   IndividualCustomersRoute: typeof IndividualCustomersRoute
-  PortalRoute: typeof PortalRouteWithChildren
+  PortalRoute: typeof PortalRoute
   PrivacyRoute: typeof PrivacyRoute
   RepairBodyShopsRoute: typeof RepairBodyShopsRoute
   RequestQuoteRoute: typeof RequestQuoteRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  PortalSplatRoute: typeof PortalSplatRoute
   QuoteIdRoute: typeof QuoteIdRoute
   WholesaleApplyRoute: typeof WholesaleApplyRoute
   WholesaleSignInRoute: typeof WholesaleSignInRoute
@@ -570,12 +571,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuoteIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portal/$': {
-      id: '/portal/$'
-      path: '/$'
+    '/portal_/$': {
+      id: '/portal_/$'
+      path: '/portal/$'
       fullPath: '/portal/$'
       preLoaderRoute: typeof PortalSplatRouteImport
-      parentRoute: typeof PortalRoute
+      parentRoute: typeof rootRouteImport
     }
     '/auth/reset-password': {
       id: '/auth/reset-password'
@@ -718,17 +719,6 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
-interface PortalRouteChildren {
-  PortalSplatRoute: typeof PortalSplatRoute
-}
-
-const PortalRouteChildren: PortalRouteChildren = {
-  PortalSplatRoute: PortalSplatRoute,
-}
-
-const PortalRouteWithChildren =
-  PortalRoute._addFileChildren(PortalRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -739,12 +729,13 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   ForShopsRoute: ForShopsRoute,
   IndividualCustomersRoute: IndividualCustomersRoute,
-  PortalRoute: PortalRouteWithChildren,
+  PortalRoute: PortalRoute,
   PrivacyRoute: PrivacyRoute,
   RepairBodyShopsRoute: RepairBodyShopsRoute,
   RequestQuoteRoute: RequestQuoteRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  PortalSplatRoute: PortalSplatRoute,
   QuoteIdRoute: QuoteIdRoute,
   WholesaleApplyRoute: WholesaleApplyRoute,
   WholesaleSignInRoute: WholesaleSignInRoute,
