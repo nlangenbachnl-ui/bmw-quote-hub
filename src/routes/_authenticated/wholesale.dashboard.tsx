@@ -5,11 +5,13 @@ import {
   AlertCircle,
   Boxes,
   Car,
+  ClipboardList,
   FileText,
   Loader2,
   LogOut,
   Plus,
   Receipt,
+  ShoppingCart,
   Trash2,
   Truck,
   UserCog,
@@ -30,6 +32,7 @@ import {
 } from "@/components/ui/table";
 import { signOut, useAuth } from "@/hooks/useAuth";
 import {
+  BUSINESS_TYPE_LABELS,
   FULFILLMENT_OPTIONS,
   STATUS_LABELS,
   TIER_LABELS,
@@ -38,6 +41,13 @@ import {
   formatMoney,
   formatVin,
 } from "@/lib/wholesale/constants";
+import type { BusinessType } from "@/lib/wholesale/constants";
+import {
+  fetchMyAccountProfile,
+  isAccountProfileComplete,
+  saveMyAccountProfile,
+  type AccountProfile,
+} from "@/lib/account/api";
 import {
   claimApplication,
   deleteVehicle,
@@ -46,6 +56,7 @@ import {
   fetchMyOrders,
   fetchMyProfile,
   fetchMyRequests,
+  fetchMyWholesaleQuotes,
   fetchTierPricing,
   fetchVehicles,
   saveVehicle,
@@ -66,16 +77,27 @@ export const Route = createFileRoute("/_authenticated/wholesale/dashboard")({
   component: WholesaleDashboard,
 });
 
-type TabKey = "overview" | "vehicles" | "request" | "history" | "invoices" | "account";
+type TabKey =
+  | "overview"
+  | "request"
+  | "requests"
+  | "quotes"
+  | "orders"
+  | "invoices"
+  | "vehicles"
+  | "account";
 
 const TABS: Array<{ key: TabKey; label: string; icon: typeof Boxes }> = [
   { key: "overview", label: "Overview", icon: Boxes },
-  { key: "vehicles", label: "Saved vehicles", icon: Car },
   { key: "request", label: "New parts request", icon: Plus },
-  { key: "history", label: "Requests & orders", icon: FileText },
+  { key: "requests", label: "Requests", icon: ClipboardList },
+  { key: "quotes", label: "Quotes", icon: FileText },
+  { key: "orders", label: "Orders", icon: ShoppingCart },
   { key: "invoices", label: "Invoices", icon: Receipt },
+  { key: "vehicles", label: "Saved vehicles / VINs", icon: Car },
   { key: "account", label: "Account", icon: UserCog },
 ];
+
 
 function WholesaleDashboard() {
   const { user } = useAuth();
