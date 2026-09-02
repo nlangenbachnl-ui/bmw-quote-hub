@@ -1483,43 +1483,82 @@ function AccountPanel({ userId, account }: { userId: string; account: AccountPro
   ];
 
   return (
-    <form
-      className="max-w-2xl rounded-xl border border-border p-6"
-      onSubmit={(e) => {
-        e.preventDefault();
-        save.mutate();
-      }}
-    >
-      <h2 className="text-sm font-bold uppercase tracking-wide">Business contact &amp; shipping</h2>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Account: <strong className="text-foreground">{account?.business_name}</strong> ·{" "}
-        {account?.full_name} · {account?.business_email}
-        {account?.business_type
-          ? ` · ${BUSINESS_TYPE_LABELS[account.business_type as BusinessType]}`
-          : ""}
-      </p>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Company name, tier, and tax-exempt status are managed by our wholesale team — contact us to
-        change them.
-      </p>
-      <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        {fields.map(([key, label]) => (
-          <div key={key} className={key.includes("line") ? "sm:col-span-2" : undefined}>
-            <Label htmlFor={`a-${key}`}>{label}</Label>
-            <Input
-              id={`a-${key}`}
-              className="mt-1.5"
-              value={values[key] ?? ""}
-              onChange={(e) => setForm({ ...values, [key]: e.target.value })}
-            />
-          </div>
-        ))}
-      </div>
-      <Button type="submit" className="mt-6" disabled={save.isPending}>
-        {save.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" /> : null}
-        Save changes
+    <div className="max-w-2xl space-y-6">
+      <section className="rounded-xl border border-border p-6">
+        <h2 className="text-sm font-bold uppercase tracking-wide">Account</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          <strong className="text-foreground">{account?.business_name}</strong> ·{" "}
+          {account?.full_name} · {account?.business_email}
+          {account?.business_type
+            ? ` · ${BUSINESS_TYPE_LABELS[account.business_type as BusinessType]}`
+            : ""}
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary">
+            {TIER_LABELS[profile!.tier ?? "standard"]} tier
+          </span>
+          <span className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Approved
+          </span>
+        </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Company name, tier, and tax-exempt status are managed by our wholesale team — contact us to
+          change them.
+        </p>
+      </section>
+
+      <form
+        className="rounded-xl border border-border p-6"
+        onSubmit={(e) => {
+          e.preventDefault();
+          save.mutate();
+        }}
+      >
+        <h2 className="text-sm font-bold uppercase tracking-wide">
+          Business contact &amp; shipping
+        </h2>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          {fields.map(([key, label]) => (
+            <div key={key} className={key.includes("line") ? "sm:col-span-2" : undefined}>
+              <Label htmlFor={`a-${key}`}>{label}</Label>
+              <Input
+                id={`a-${key}`}
+                className="mt-1.5"
+                value={values[key] ?? ""}
+                onChange={(e) => setForm({ ...values, [key]: e.target.value })}
+              />
+            </div>
+          ))}
+        </div>
+        <Button type="submit" className="mt-6" disabled={save.isPending}>
+          {save.isPending ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+          ) : null}
+          Save changes
+        </Button>
+      </form>
+
+      <details className="rounded-xl border border-border p-6">
+        <summary className="flex cursor-pointer items-center gap-2 text-sm font-bold uppercase tracking-wide">
+          <Car className="h-4 w-4" aria-hidden="true" />
+          Saved vehicles / VINs
+        </summary>
+        <div className="mt-6">
+          <VehiclesPanel userId={userId} />
+        </div>
+      </details>
+
+      <Button
+        variant="outline"
+        onClick={async () => {
+          await signOut();
+          window.location.href = "/";
+        }}
+      >
+        <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
+        Sign out
       </Button>
-    </form>
+    </div>
   );
 }
 
