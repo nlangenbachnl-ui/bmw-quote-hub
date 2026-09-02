@@ -87,7 +87,7 @@ const TABS: Array<{ key: TabKey; label: string; icon: typeof Plus }> = [
 function WholesaleDashboard() {
   const { user } = useAuth();
   const userId = user?.id ?? null;
-  const [tab, setTab] = useState<TabKey>("overview");
+  const [tab, setTab] = useState<TabKey>("dashboard");
 
   const accountQuery = useQuery({
     queryKey: ["account-profile", userId],
