@@ -575,7 +575,7 @@ function WholesaleApplyPage() {
             <Checkbox
               id="certify"
               checked={values.certified_accurate === true}
-              onCheckedChange={(v) => set("certified_accurate", v === true)}
+              onCheckedChange={(v) => set("certified_accurate", (v === true) as true)}
             />
             <Label htmlFor="certify" className="text-sm font-normal leading-relaxed">
               I certify that the information in this application is accurate and that I am
@@ -592,7 +592,7 @@ function WholesaleApplyPage() {
             <Checkbox
               id="agree"
               checked={values.agreed_to_terms === true}
-              onCheckedChange={(v) => set("agreed_to_terms", v === true)}
+              onCheckedChange={(v) => set("agreed_to_terms", (v === true) as true)}
             />
             <Label htmlFor="agree" className="text-sm font-normal leading-relaxed">
               I agree to the{" "}

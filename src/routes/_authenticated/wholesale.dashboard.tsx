@@ -1083,18 +1083,18 @@ function AccountPanel() {
   const profile = profileQuery.data;
   const [form, setForm] = useState<Record<string, string> | null>(null);
 
-  const values =
+  const values: Record<string, string> | null =
     form ??
     (profile
       ? {
           contact_name: profile.contact_name ?? "",
           contact_email: profile.contact_email ?? "",
           contact_phone: profile.contact_phone ?? "",
-          shipping_address_line1: profile.shipping_address_line1 ?? "",
-          shipping_address_line2: profile.shipping_address_line2 ?? "",
-          shipping_city: profile.shipping_city ?? "",
-          shipping_state: profile.shipping_state ?? "",
-          shipping_postal_code: profile.shipping_postal_code ?? "",
+          ship_address_line1: profile.ship_address_line1 ?? "",
+          ship_address_line2: profile.ship_address_line2 ?? "",
+          ship_city: profile.ship_city ?? "",
+          ship_state: profile.ship_state ?? "",
+          ship_postal_code: profile.ship_postal_code ?? "",
         }
       : null);
 
@@ -1113,11 +1113,11 @@ function AccountPanel() {
     ["contact_name", "Contact name"],
     ["contact_email", "Contact email"],
     ["contact_phone", "Contact phone"],
-    ["shipping_address_line1", "Default shipping street"],
-    ["shipping_address_line2", "Suite / unit"],
-    ["shipping_city", "City"],
-    ["shipping_state", "State"],
-    ["shipping_postal_code", "ZIP / postal code"],
+    ["ship_address_line1", "Default shipping street"],
+    ["ship_address_line2", "Suite / unit"],
+    ["ship_city", "City"],
+    ["ship_state", "State"],
+    ["ship_postal_code", "ZIP / postal code"],
   ];
 
   return (
