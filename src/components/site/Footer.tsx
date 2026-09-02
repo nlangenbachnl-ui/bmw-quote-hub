@@ -39,6 +39,8 @@ export function Footer() {
             <li><Link to="/contact" className="hover:text-primary-glow">Contact</Link></li>
             <li><Link to="/request-quote" className="hover:text-primary-glow">Request a Quote</Link></li>
             <li><Link to="/for-shops" className="hover:text-primary-glow">For Repair &amp; Body Shops</Link></li>
+            <li><Link to="/wholesale" className="hover:text-primary-glow">Wholesale Program</Link></li>
+            <li><Link to="/wholesale/apply" className="hover:text-primary-glow">Wholesale Application</Link></li>
             <li><Link to="/portal" className="hover:text-primary-glow">Shop Portal Login</Link></li>
           </ul>
         </div>

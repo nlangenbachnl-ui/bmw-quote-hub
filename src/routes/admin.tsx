@@ -53,6 +53,12 @@ function AdminHeader() {
   const tabs = [
     { to: "/admin", label: "Requests", icon: LayoutDashboard, exact: true },
     { to: "/admin/accounts", label: "Accounts", icon: Building2, exact: false },
+    {
+      to: "/admin/wholesale-applications",
+      label: "Wholesale",
+      icon: ShieldCheck,
+      exact: false,
+    },
     { to: "/admin/deliveries", label: "Deliveries", icon: Truck, exact: false },
     { to: "/admin/settings", label: "Settings", icon: Settings2, exact: false },
   ] as const;

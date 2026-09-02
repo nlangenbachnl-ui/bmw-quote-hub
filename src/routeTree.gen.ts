@@ -17,19 +17,28 @@ import { Route as PortalRouteImport } from './routes/portal'
 import { Route as ForShopsRouteImport } from './routes/for-shops'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WholesaleIndexRouteImport } from './routes/wholesale.index'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as WholesaleApplyRouteImport } from './routes/wholesale.apply'
 import { Route as QuoteIdRouteImport } from './routes/quote.$id'
 import { Route as PortalRequestRouteImport } from './routes/portal.request'
 import { Route as PortalProfileRouteImport } from './routes/portal.profile'
 import { Route as PortalHistoryRouteImport } from './routes/portal.history'
+import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
+import { Route as AdminWholesaleApplicationsRouteImport } from './routes/admin.wholesale-applications'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminDeliveriesRouteImport } from './routes/admin.deliveries'
 import { Route as AdminAccountsRouteImport } from './routes/admin.accounts'
+import { Route as AdminWholesaleApplicationsIndexRouteImport } from './routes/admin.wholesale-applications.index'
+import { Route as AdminWholesaleApplicationsIdRouteImport } from './routes/admin.wholesale-applications.$id'
 import { Route as AdminRequestsIdRouteImport } from './routes/admin.requests.$id'
+import { Route as AuthenticatedWholesaleDashboardRouteImport } from './routes/_authenticated/wholesale.dashboard'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -71,6 +80,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -81,9 +95,18 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WholesaleIndexRoute = WholesaleIndexRouteImport.update({
+  id: '/wholesale/',
+  path: '/wholesale/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalIndexRoute = PortalIndexRouteImport.update({
@@ -95,6 +118,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const WholesaleApplyRoute = WholesaleApplyRouteImport.update({
+  id: '/wholesale/apply',
+  path: '/wholesale/apply',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const QuoteIdRoute = QuoteIdRouteImport.update({
   id: '/quote/$id',
@@ -116,6 +144,17 @@ const PortalHistoryRoute = PortalHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => PortalRoute,
 } as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AdminWholesaleApplicationsRoute =
+  AdminWholesaleApplicationsRouteImport.update({
+    id: '/wholesale-applications',
+    path: '/wholesale-applications',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -131,16 +170,35 @@ const AdminAccountsRoute = AdminAccountsRouteImport.update({
   path: '/accounts',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminWholesaleApplicationsIndexRoute =
+  AdminWholesaleApplicationsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AdminWholesaleApplicationsRoute,
+  } as any)
+const AdminWholesaleApplicationsIdRoute =
+  AdminWholesaleApplicationsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AdminWholesaleApplicationsRoute,
+  } as any)
 const AdminRequestsIdRoute = AdminRequestsIdRouteImport.update({
   id: '/requests/$id',
   path: '/requests/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+const AuthenticatedWholesaleDashboardRoute =
+  AuthenticatedWholesaleDashboardRouteImport.update({
+    id: '/wholesale/dashboard',
+    path: '/wholesale/dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
@@ -152,17 +210,25 @@ export interface FileRoutesByFullPath {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
   '/portal/request': typeof PortalRequestRoute
   '/quote/$id': typeof QuoteIdRoute
+  '/wholesale/apply': typeof WholesaleApplyRoute
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
+  '/wholesale/': typeof WholesaleIndexRoute
+  '/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
+  '/admin/wholesale-applications/$id': typeof AdminWholesaleApplicationsIdRoute
+  '/admin/wholesale-applications/': typeof AdminWholesaleApplicationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
@@ -173,19 +239,27 @@ export interface FileRoutesByTo {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
   '/portal/request': typeof PortalRequestRoute
   '/quote/$id': typeof QuoteIdRoute
+  '/wholesale/apply': typeof WholesaleApplyRoute
   '/admin': typeof AdminIndexRoute
   '/portal': typeof PortalIndexRoute
+  '/wholesale': typeof WholesaleIndexRoute
+  '/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
+  '/admin/wholesale-applications/$id': typeof AdminWholesaleApplicationsIdRoute
+  '/admin/wholesale-applications': typeof AdminWholesaleApplicationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
@@ -197,13 +271,20 @@ export interface FileRoutesById {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
   '/portal/request': typeof PortalRequestRoute
   '/quote/$id': typeof QuoteIdRoute
+  '/wholesale/apply': typeof WholesaleApplyRoute
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
+  '/wholesale/': typeof WholesaleIndexRoute
+  '/_authenticated/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
+  '/admin/wholesale-applications/$id': typeof AdminWholesaleApplicationsIdRoute
+  '/admin/wholesale-applications/': typeof AdminWholesaleApplicationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -211,6 +292,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/auth'
     | '/contact'
     | '/faq'
     | '/for-shops'
@@ -222,17 +304,25 @@ export interface FileRouteTypes {
     | '/admin/accounts'
     | '/admin/deliveries'
     | '/admin/settings'
+    | '/admin/wholesale-applications'
+    | '/auth/reset-password'
     | '/portal/history'
     | '/portal/profile'
     | '/portal/request'
     | '/quote/$id'
+    | '/wholesale/apply'
     | '/admin/'
     | '/portal/'
+    | '/wholesale/'
+    | '/wholesale/dashboard'
     | '/admin/requests/$id'
+    | '/admin/wholesale-applications/$id'
+    | '/admin/wholesale-applications/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/auth'
     | '/contact'
     | '/faq'
     | '/for-shops'
@@ -243,18 +333,26 @@ export interface FileRouteTypes {
     | '/admin/accounts'
     | '/admin/deliveries'
     | '/admin/settings'
+    | '/auth/reset-password'
     | '/portal/history'
     | '/portal/profile'
     | '/portal/request'
     | '/quote/$id'
+    | '/wholesale/apply'
     | '/admin'
     | '/portal'
+    | '/wholesale'
+    | '/wholesale/dashboard'
     | '/admin/requests/$id'
+    | '/admin/wholesale-applications/$id'
+    | '/admin/wholesale-applications'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/admin'
+    | '/auth'
     | '/contact'
     | '/faq'
     | '/for-shops'
@@ -266,19 +364,28 @@ export interface FileRouteTypes {
     | '/admin/accounts'
     | '/admin/deliveries'
     | '/admin/settings'
+    | '/admin/wholesale-applications'
+    | '/auth/reset-password'
     | '/portal/history'
     | '/portal/profile'
     | '/portal/request'
     | '/quote/$id'
+    | '/wholesale/apply'
     | '/admin/'
     | '/portal/'
+    | '/wholesale/'
+    | '/_authenticated/wholesale/dashboard'
     | '/admin/requests/$id'
+    | '/admin/wholesale-applications/$id'
+    | '/admin/wholesale-applications/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   ForShopsRoute: typeof ForShopsRoute
@@ -288,6 +395,8 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   QuoteIdRoute: typeof QuoteIdRoute
+  WholesaleApplyRoute: typeof WholesaleApplyRoute
+  WholesaleIndexRoute: typeof WholesaleIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -348,6 +457,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -362,11 +478,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wholesale/': {
+      id: '/wholesale/'
+      path: '/wholesale'
+      fullPath: '/wholesale/'
+      preLoaderRoute: typeof WholesaleIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/portal/': {
@@ -382,6 +512,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/wholesale/apply': {
+      id: '/wholesale/apply'
+      path: '/wholesale/apply'
+      fullPath: '/wholesale/apply'
+      preLoaderRoute: typeof WholesaleApplyRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/quote/$id': {
       id: '/quote/$id'
@@ -411,6 +548,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalHistoryRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/auth/reset-password': {
+      id: '/auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/admin/wholesale-applications': {
+      id: '/admin/wholesale-applications'
+      path: '/wholesale-applications'
+      fullPath: '/admin/wholesale-applications'
+      preLoaderRoute: typeof AdminWholesaleApplicationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/settings'
@@ -432,6 +583,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAccountsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/wholesale-applications/': {
+      id: '/admin/wholesale-applications/'
+      path: '/'
+      fullPath: '/admin/wholesale-applications/'
+      preLoaderRoute: typeof AdminWholesaleApplicationsIndexRouteImport
+      parentRoute: typeof AdminWholesaleApplicationsRoute
+    }
+    '/admin/wholesale-applications/$id': {
+      id: '/admin/wholesale-applications/$id'
+      path: '/$id'
+      fullPath: '/admin/wholesale-applications/$id'
+      preLoaderRoute: typeof AdminWholesaleApplicationsIdRouteImport
+      parentRoute: typeof AdminWholesaleApplicationsRoute
+    }
     '/admin/requests/$id': {
       id: '/admin/requests/$id'
       path: '/requests/$id'
@@ -439,13 +604,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRequestsIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_authenticated/wholesale/dashboard': {
+      id: '/_authenticated/wholesale/dashboard'
+      path: '/wholesale/dashboard'
+      fullPath: '/wholesale/dashboard'
+      preLoaderRoute: typeof AuthenticatedWholesaleDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedWholesaleDashboardRoute: typeof AuthenticatedWholesaleDashboardRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedWholesaleDashboardRoute: AuthenticatedWholesaleDashboardRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+interface AdminWholesaleApplicationsRouteChildren {
+  AdminWholesaleApplicationsIdRoute: typeof AdminWholesaleApplicationsIdRoute
+  AdminWholesaleApplicationsIndexRoute: typeof AdminWholesaleApplicationsIndexRoute
+}
+
+const AdminWholesaleApplicationsRouteChildren: AdminWholesaleApplicationsRouteChildren =
+  {
+    AdminWholesaleApplicationsIdRoute: AdminWholesaleApplicationsIdRoute,
+    AdminWholesaleApplicationsIndexRoute: AdminWholesaleApplicationsIndexRoute,
+  }
+
+const AdminWholesaleApplicationsRouteWithChildren =
+  AdminWholesaleApplicationsRoute._addFileChildren(
+    AdminWholesaleApplicationsRouteChildren,
+  )
 
 interface AdminRouteChildren {
   AdminAccountsRoute: typeof AdminAccountsRoute
   AdminDeliveriesRoute: typeof AdminDeliveriesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminWholesaleApplicationsRoute: typeof AdminWholesaleApplicationsRouteWithChildren
   AdminIndexRoute: typeof AdminIndexRoute
   AdminRequestsIdRoute: typeof AdminRequestsIdRoute
 }
@@ -454,11 +654,22 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAccountsRoute: AdminAccountsRoute,
   AdminDeliveriesRoute: AdminDeliveriesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
+  AdminWholesaleApplicationsRoute: AdminWholesaleApplicationsRouteWithChildren,
   AdminIndexRoute: AdminIndexRoute,
   AdminRequestsIdRoute: AdminRequestsIdRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface AuthRouteChildren {
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface PortalRouteChildren {
   PortalHistoryRoute: typeof PortalHistoryRoute
@@ -479,8 +690,10 @@ const PortalRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   ForShopsRoute: ForShopsRoute,
@@ -490,6 +703,8 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   QuoteIdRoute: QuoteIdRoute,
+  WholesaleApplyRoute: WholesaleApplyRoute,
+  WholesaleIndexRoute: WholesaleIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
