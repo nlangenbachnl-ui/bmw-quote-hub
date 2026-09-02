@@ -451,14 +451,23 @@ function WholesaleApplyPage() {
               onChange={(e) => set("job_title", e.target.value)}
             />
           </Field>
-          <Field label="Business email" required error={errors.business_email} id="bemail">
+          <Field
+            label={account ? "Business email (your account email)" : "Business email"}
+            required
+            error={errors.business_email}
+            id="bemail"
+          >
             <Input
               id="bemail"
               type="email"
               value={values.business_email}
+              readOnly={Boolean(account)}
+              aria-readonly={account ? true : undefined}
+              className={account ? "bg-muted" : undefined}
               onChange={(e) => set("business_email", e.target.value)}
             />
           </Field>
+
           <Field label="Business phone" required error={errors.business_phone} id="bphone">
             <Input
               id="bphone"
