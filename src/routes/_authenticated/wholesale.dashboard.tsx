@@ -391,6 +391,19 @@ function StatusScreen({
           : "Wholesale pricing and shop ordering require an approved account. Submit an application and we'll review it, usually within one business day."}
       </p>
 
+      {hasApplication && reference ? (
+        <p className="mt-4 text-sm">
+          Reference{" "}
+          <span className="font-mono font-bold">{reference}</span> — keep this for any follow-up with
+          our wholesale desk.
+        </p>
+      ) : null}
+      {account ? (
+        <p className="mt-2 text-sm text-muted-foreground">
+          Account on file: {account.business_name} · {account.business_email}
+        </p>
+      ) : null}
+
       <div className="mt-8 flex flex-wrap gap-3">
         <Link
           to="/wholesale/apply"
@@ -461,6 +474,15 @@ function Overview({
 
   return (
     <div className="space-y-8">
+      <section className="rounded-xl border border-border p-6">
+        <h2 className="text-sm font-bold uppercase tracking-wide">Account identity</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {account?.business_name ?? "Business name on file"} · {account?.full_name ?? "Contact"} ·{" "}
+          {account?.business_email ?? ""}
+          {account?.phone ? ` · ${account.phone}` : ""}
+        </p>
+      </section>
+
       <div className="grid gap-4 sm:grid-cols-3">
         <Stat label="Open requests" value={String(
           (requests.data ?? []).filter((r) => !["closed", "fulfilled"].includes(r.status)).length,
@@ -1049,9 +1071,17 @@ function RequestPanel({ userId, onDone }: { userId: string; onDone: () => void }
   );
 }
 
-function HistoryPanel() {
-  const requests = useQuery({ queryKey: ["wholesale-requests"], queryFn: fetchMyRequests });
-  const orders = useQuery({ queryKey: ["wholesale-orders"], queryFn: fetchMyOrders });
+function HistoryPanel({ only }: { only: "requests" | "orders" }) {
+  const requests = useQuery({
+    queryKey: ["wholesale-requests"],
+    queryFn: fetchMyRequests,
+    enabled: only === "requests",
+  });
+  const orders = useQuery({
+    queryKey: ["wholesale-orders"],
+    queryFn: fetchMyOrders,
+    enabled: only === "orders",
+  });
   const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -1067,6 +1097,7 @@ function HistoryPanel() {
 
   return (
     <div className="space-y-10">
+      {only === "requests" ? (
       <section>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-sm font-bold uppercase tracking-wide">Parts requests</h2>
@@ -1135,7 +1166,9 @@ function HistoryPanel() {
           </ul>
         )}
       </section>
+      ) : null}
 
+      {only === "orders" ? (
       <section>
         <h2 className="text-sm font-bold uppercase tracking-wide">Orders</h2>
         {orders.isLoading ? (
@@ -1196,7 +1229,107 @@ function HistoryPanel() {
           </div>
         )}
       </section>
+      ) : null}
     </div>
+  );
+}
+
+function QuotesPanel() {
+  const quotes = useQuery({ queryKey: ["wholesale-quotes"], queryFn: fetchMyWholesaleQuotes });
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  return (
+    <section>
+      <h2 className="text-sm font-bold uppercase tracking-wide">Wholesale quotes</h2>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Quotes issued to your account. Wholesale accounts see complete OEM part numbers.
+      </p>
+      {quotes.isLoading ? (
+        <PanelLoading />
+      ) : (quotes.data ?? []).length === 0 ? (
+        <Empty>
+          No quotes yet. When our team prices one of your parts requests, the quote appears here with
+          its amount, expiration, and full part numbers.
+        </Empty>
+      ) : (
+        <ul className="mt-4 space-y-3">
+          {(quotes.data ?? []).map((q) => (
+            <li key={q.id} className="rounded-xl border border-border p-4">
+              <button
+                type="button"
+                className="flex w-full flex-wrap items-center justify-between gap-3 text-left"
+                aria-expanded={openId === q.id}
+                onClick={() => setOpenId(openId === q.id ? null : q.id)}
+              >
+                <span>
+                  <span className="font-mono text-sm font-bold">{q.quote_number}</span>
+                  <span className="ml-3 text-sm text-muted-foreground">
+                    {formatDate(q.created_at)}
+                    {q.expires_at ? ` · expires ${formatDate(q.expires_at)}` : ""}
+                  </span>
+                </span>
+                <span className="flex items-center gap-3 text-sm">
+                  <span className="font-bold">{formatMoney(q.total)}</span>
+                  <span className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-wide capitalize">
+                    {q.status.replace(/_/g, " ")}
+                  </span>
+                </span>
+              </button>
+              {openId === q.id ? (
+                <div className="mt-4 overflow-x-auto border-t border-border pt-4">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Part number</TableHead>
+                        <TableHead>Description</TableHead>
+                        <TableHead>Qty</TableHead>
+                        <TableHead>Unit</TableHead>
+                        <TableHead>Total</TableHead>
+                        <TableHead>Availability</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {q.wholesale_quote_lines
+                        .slice()
+                        .sort((a, b) => a.position - b.position)
+                        .map((line) => (
+                          <TableRow key={line.id}>
+                            <TableCell className="font-mono text-xs">
+                              {line.part_number || "—"}
+                            </TableCell>
+                            <TableCell>{line.description}</TableCell>
+                            <TableCell>{line.quantity}</TableCell>
+                            <TableCell>{formatMoney(line.unit_price)}</TableCell>
+                            <TableCell>{formatMoney(line.line_total)}</TableCell>
+                            <TableCell>{line.availability || "—"}</TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                  <dl className="mt-4 space-y-1 text-sm">
+                    <div className="flex justify-between">
+                      <dt className="text-muted-foreground">Subtotal</dt>
+                      <dd>{formatMoney(q.subtotal)}</dd>
+                    </div>
+                    <div className="flex justify-between">
+                      <dt className="text-muted-foreground">Shipping</dt>
+                      <dd>{formatMoney(q.shipping_total)}</dd>
+                    </div>
+                    <div className="flex justify-between font-bold">
+                      <dt>Total</dt>
+                      <dd>{formatMoney(q.total)}</dd>
+                    </div>
+                  </dl>
+                  {q.notes ? (
+                    <p className="mt-3 text-sm text-muted-foreground">{q.notes}</p>
+                  ) : null}
+                </div>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
 
@@ -1260,7 +1393,7 @@ function InvoicesPanel() {
   );
 }
 
-function AccountPanel() {
+function AccountPanel({ userId, account }: { userId: string; account: AccountProfile | null }) {
   const queryClient = useQueryClient();
   const profileQuery = useQuery({ queryKey: ["wholesale-profile"], queryFn: fetchMyProfile });
   const profile = profileQuery.data;
@@ -1286,6 +1419,15 @@ function AccountPanel() {
     onSuccess: () => {
       toast.success("Account details updated");
       queryClient.invalidateQueries({ queryKey: ["wholesale-profile"] });
+      if (account) {
+        void saveMyAccountProfile(userId, {
+          full_name: values!.contact_name || account.full_name,
+          business_name: account.business_name,
+          phone: values!.contact_phone || account.phone,
+          business_type: (account.business_type ?? "") as BusinessType | "",
+          business_email: account.business_email,
+        });
+      }
     },
     onError: () => toast.error("We couldn't save your changes"),
   });
@@ -1311,7 +1453,14 @@ function AccountPanel() {
         save.mutate();
       }}
     >
-      <h2 className="text-sm font-bold uppercase tracking-wide">Business contact & shipping</h2>
+      <h2 className="text-sm font-bold uppercase tracking-wide">Business contact &amp; shipping</h2>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Account: <strong className="text-foreground">{account?.business_name}</strong> ·{" "}
+        {account?.full_name} · {account?.business_email}
+        {account?.business_type
+          ? ` · ${BUSINESS_TYPE_LABELS[account.business_type as BusinessType]}`
+          : ""}
+      </p>
       <p className="mt-2 text-sm text-muted-foreground">
         Company name, tier, and tax-exempt status are managed by our wholesale team — contact us to
         change them.
