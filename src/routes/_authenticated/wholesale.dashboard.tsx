@@ -1194,7 +1194,7 @@ function HistoryPanel() {
       </section>
       ) : null}
 
-      {only === "orders" ? (
+      {view === "orders" ? (
       <section>
         <h2 className="text-sm font-bold uppercase tracking-wide">Orders</h2>
         {orders.isLoading ? (
