@@ -74,24 +74,12 @@ export const Route = createFileRoute("/_authenticated/wholesale/dashboard")({
   component: WholesaleDashboard,
 });
 
-type TabKey =
-  | "overview"
-  | "request"
-  | "requests"
-  | "quotes"
-  | "orders"
-  | "invoices"
-  | "vehicles"
-  | "account";
+type TabKey = "dashboard" | "new" | "history" | "account";
 
-const TABS: Array<{ key: TabKey; label: string; icon: typeof Boxes }> = [
-  { key: "overview", label: "Overview", icon: Boxes },
-  { key: "request", label: "New parts request", icon: Plus },
-  { key: "requests", label: "Requests", icon: ClipboardList },
-  { key: "quotes", label: "Quotes", icon: FileText },
-  { key: "orders", label: "Orders", icon: ShoppingCart },
-  { key: "invoices", label: "Invoices", icon: Receipt },
-  { key: "vehicles", label: "Saved vehicles / VINs", icon: Car },
+const TABS: Array<{ key: TabKey; label: string; icon: typeof Plus }> = [
+  { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { key: "new", label: "New Request", icon: Plus },
+  { key: "history", label: "History", icon: History },
   { key: "account", label: "Account", icon: UserCog },
 ];
 
