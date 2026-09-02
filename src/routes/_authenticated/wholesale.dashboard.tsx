@@ -134,41 +134,25 @@ function WholesaleDashboard() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <header className="flex flex-wrap items-start justify-between gap-4 border-b border-border pb-6">
+    <div className="mx-auto max-w-6xl px-4 pb-28 pt-8 sm:px-6 md:pb-16">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-5">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            Wholesale dashboard
-          </p>
-          <h1 className="mt-2 text-2xl font-extrabold uppercase tracking-tight sm:text-3xl">
+          <h1 className="text-xl font-extrabold uppercase tracking-tight sm:text-2xl">
             {profile?.company_name ?? account?.business_name ?? "Your shop"}
           </h1>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary">
-              {TIER_LABELS[profile!.tier ?? "standard"]} tier
-            </span>
-            <span className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Approved
-            </span>
-          </div>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {account?.full_name ? `${account.full_name} · ` : ""}
+            {TIER_LABELS[profile!.tier ?? "standard"]} tier · Approved
+          </p>
         </div>
-        <Button
-          variant="outline"
-          onClick={async () => {
-            await signOut();
-            window.location.href = "/";
-          }}
-        >
-          <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
-          Sign out
-        </Button>
       </header>
 
+      {/* Desktop: compact tab bar. */}
       <nav
-        className="sticky top-16 z-30 -mx-4 mt-6 overflow-x-auto border-b border-border bg-background/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6"
+        className="sticky top-16 z-30 -mx-4 mt-5 hidden border-b border-border bg-background/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 md:block"
         aria-label="Dashboard sections"
       >
-        <div className="flex min-w-max gap-2">
+        <div className="flex gap-2">
           {TABS.map((t) => (
             <button
               key={t.key}
@@ -189,17 +173,38 @@ function WholesaleDashboard() {
       </nav>
 
       <div className="mt-8">
-        {tab === "overview" ? <Overview account={account} onNavigate={setTab} /> : null}
-        {tab === "vehicles" ? <VehiclesPanel userId={userId!} /> : null}
-        {tab === "request" ? (
-          <RequestPanel userId={userId!} onDone={() => setTab("requests")} />
+        {tab === "dashboard" ? (
+          <DashboardPanel account={account} onNavigate={setTab} />
         ) : null}
-        {tab === "requests" ? <HistoryPanel only="requests" /> : null}
-        {tab === "orders" ? <HistoryPanel only="orders" /> : null}
-        {tab === "quotes" ? <QuotesPanel /> : null}
-        {tab === "invoices" ? <InvoicesPanel /> : null}
-        {tab === "account" ? <AccountPanel userId={userId!} account={account} /> : null}
+        {tab === "new" ? (
+          <NewRequestPanel userId={userId!} onDone={() => setTab("history")} />
+        ) : null}
+        {tab === "history" ? <HistoryPanel /> : null}
+        {tab === "account" ? (
+          <AccountPanel userId={userId!} account={account} profile={profile} />
+        ) : null}
       </div>
+
+      {/* Mobile: 4-item bottom navigation. */}
+      <nav
+        className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-border bg-background/95 backdrop-blur md:hidden"
+        aria-label="Dashboard sections"
+      >
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            onClick={() => setTab(t.key)}
+            aria-current={tab === t.key ? "page" : undefined}
+            className={`flex flex-col items-center gap-1 py-2.5 text-[0.7rem] font-semibold ${
+              tab === t.key ? "text-primary" : "text-muted-foreground"
+            }`}
+          >
+            <t.icon className="h-5 w-5" aria-hidden="true" />
+            {t.label}
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }
