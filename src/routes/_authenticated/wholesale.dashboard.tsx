@@ -418,7 +418,7 @@ function StatusScreen({
           className="mt-4 flex flex-col gap-3 sm:flex-row"
           onSubmit={(e) => {
             e.preventDefault();
-            if (reference.trim().length < 4) {
+            if (claimRef.trim().length < 4) {
               toast.error("Enter your application reference number");
               return;
             }
@@ -428,8 +428,8 @@ function StatusScreen({
           <Input
             aria-label="Application reference number"
             placeholder="WS-XXXXXX"
-            value={reference}
-            onChange={(e) => setReference(e.target.value)}
+            value={claimRef}
+            onChange={(e) => setClaimRef(e.target.value)}
             className="font-mono"
           />
           <Button type="submit" disabled={claim.isPending}>
@@ -444,7 +444,13 @@ function StatusScreen({
   );
 }
 
-function Overview({ onNavigate }: { onNavigate: (tab: TabKey) => void }) {
+function Overview({
+  account,
+  onNavigate,
+}: {
+  account: AccountProfile | null;
+  onNavigate: (tab: TabKey) => void;
+}) {
   const requests = useQuery({ queryKey: ["wholesale-requests"], queryFn: fetchMyRequests });
   const orders = useQuery({ queryKey: ["wholesale-orders"], queryFn: fetchMyOrders });
   const pricing = useQuery({ queryKey: ["wholesale-tier-pricing"], queryFn: fetchTierPricing });
@@ -485,7 +491,7 @@ function Overview({ onNavigate }: { onNavigate: (tab: TabKey) => void }) {
             <Car className="mr-2 h-4 w-4" aria-hidden="true" />
             Manage saved VINs
           </Button>
-          <Button variant="outline" onClick={() => onNavigate("history")}>
+          <Button variant="outline" onClick={() => onNavigate("requests")}>
             <FileText className="mr-2 h-4 w-4" aria-hidden="true" />
             View history
           </Button>
