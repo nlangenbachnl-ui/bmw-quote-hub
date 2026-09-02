@@ -45,3 +45,40 @@ grant admin from client-side code.
 Retail customers never receive complete OEM part numbers before payment. Quotes are
 served through a token-gated server projection that masks numbers (`••••••482`).
 Approved wholesale accounts and admins see full part numbers.
+
+## QA / demo wholesale account
+
+A single clearly labeled test account exists for exercising the real wholesale
+sign-in and approved dashboard: `qa-demo-shop@example.com` (business
+"PBP Demo Repair & Body", no admin/staff role, tier `standard`). All of its
+records are prefixed `QA-DEMO-` / `DEMO-` and must never be counted as revenue
+or customer activity.
+
+Cleanup SQL — deletes exactly this account and its data (run as a migration;
+deleting the auth user cascades the rest):
+
+```sql
+-- QA/demo wholesale account teardown
+do $$
+declare _uid uuid;
+begin
+  select id into _uid from auth.users where email = 'qa-demo-shop@example.com';
+  if _uid is null then return; end if;
+
+  delete from public.wholesale_invoices where user_id = _uid;
+  delete from public.wholesale_quote_lines
+    where quote_id in (select id from public.wholesale_quotes where user_id = _uid);
+  delete from public.wholesale_quotes where user_id = _uid;
+  delete from public.wholesale_orders where user_id = _uid;
+  delete from public.wholesale_request_items
+    where request_id in (select id from public.wholesale_parts_requests where user_id = _uid);
+  delete from public.wholesale_parts_requests where user_id = _uid;
+  delete from public.wholesale_vehicles where user_id = _uid;
+  delete from public.wholesale_profiles where user_id = _uid;
+  delete from public.wholesale_application_events
+    where application_id in (select id from public.wholesale_applications where user_id = _uid);
+  delete from public.wholesale_applications where user_id = _uid;
+  delete from public.account_profiles where user_id = _uid;
+  delete from auth.users where id = _uid;
+end $$;
+```
