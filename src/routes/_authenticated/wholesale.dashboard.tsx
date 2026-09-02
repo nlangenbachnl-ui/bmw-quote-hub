@@ -3,15 +3,12 @@ import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AlertCircle,
-  Boxes,
   Car,
-  ClipboardList,
-  FileText,
+  History,
+  LayoutDashboard,
   Loader2,
   LogOut,
   Plus,
-  Receipt,
-  ShoppingCart,
   Trash2,
   Truck,
   UserCog,
@@ -77,24 +74,12 @@ export const Route = createFileRoute("/_authenticated/wholesale/dashboard")({
   component: WholesaleDashboard,
 });
 
-type TabKey =
-  | "overview"
-  | "request"
-  | "requests"
-  | "quotes"
-  | "orders"
-  | "invoices"
-  | "vehicles"
-  | "account";
+type TabKey = "dashboard" | "new" | "history" | "account";
 
-const TABS: Array<{ key: TabKey; label: string; icon: typeof Boxes }> = [
-  { key: "overview", label: "Overview", icon: Boxes },
-  { key: "request", label: "New parts request", icon: Plus },
-  { key: "requests", label: "Requests", icon: ClipboardList },
-  { key: "quotes", label: "Quotes", icon: FileText },
-  { key: "orders", label: "Orders", icon: ShoppingCart },
-  { key: "invoices", label: "Invoices", icon: Receipt },
-  { key: "vehicles", label: "Saved vehicles / VINs", icon: Car },
+const TABS: Array<{ key: TabKey; label: string; icon: typeof Plus }> = [
+  { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { key: "new", label: "New Request", icon: Plus },
+  { key: "history", label: "History", icon: History },
   { key: "account", label: "Account", icon: UserCog },
 ];
 
@@ -102,7 +87,7 @@ const TABS: Array<{ key: TabKey; label: string; icon: typeof Boxes }> = [
 function WholesaleDashboard() {
   const { user } = useAuth();
   const userId = user?.id ?? null;
-  const [tab, setTab] = useState<TabKey>("overview");
+  const [tab, setTab] = useState<TabKey>("dashboard");
 
   const accountQuery = useQuery({
     queryKey: ["account-profile", userId],
@@ -149,41 +134,25 @@ function WholesaleDashboard() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <header className="flex flex-wrap items-start justify-between gap-4 border-b border-border pb-6">
+    <div className="mx-auto max-w-6xl px-4 pb-28 pt-8 sm:px-6 md:pb-16">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-5">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            Wholesale dashboard
-          </p>
-          <h1 className="mt-2 text-2xl font-extrabold uppercase tracking-tight sm:text-3xl">
+          <h1 className="text-xl font-extrabold uppercase tracking-tight sm:text-2xl">
             {profile?.company_name ?? account?.business_name ?? "Your shop"}
           </h1>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary">
-              {TIER_LABELS[profile!.tier ?? "standard"]} tier
-            </span>
-            <span className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Approved
-            </span>
-          </div>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {account?.full_name ? `${account.full_name} · ` : ""}
+            {TIER_LABELS[profile!.tier ?? "standard"]} tier · Approved
+          </p>
         </div>
-        <Button
-          variant="outline"
-          onClick={async () => {
-            await signOut();
-            window.location.href = "/";
-          }}
-        >
-          <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
-          Sign out
-        </Button>
       </header>
 
+      {/* Desktop: compact tab bar. */}
       <nav
-        className="sticky top-16 z-30 -mx-4 mt-6 overflow-x-auto border-b border-border bg-background/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6"
+        className="sticky top-16 z-30 -mx-4 mt-5 hidden border-b border-border bg-background/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 md:block"
         aria-label="Dashboard sections"
       >
-        <div className="flex min-w-max gap-2">
+        <div className="flex gap-2">
           {TABS.map((t) => (
             <button
               key={t.key}
@@ -204,17 +173,36 @@ function WholesaleDashboard() {
       </nav>
 
       <div className="mt-8">
-        {tab === "overview" ? <Overview account={account} onNavigate={setTab} /> : null}
-        {tab === "vehicles" ? <VehiclesPanel userId={userId!} /> : null}
-        {tab === "request" ? (
-          <RequestPanel userId={userId!} onDone={() => setTab("requests")} />
+        {tab === "dashboard" ? (
+          <DashboardPanel account={account} onNavigate={setTab} />
         ) : null}
-        {tab === "requests" ? <HistoryPanel only="requests" /> : null}
-        {tab === "orders" ? <HistoryPanel only="orders" /> : null}
-        {tab === "quotes" ? <QuotesPanel /> : null}
-        {tab === "invoices" ? <InvoicesPanel /> : null}
+        {tab === "new" ? (
+          <NewRequestPanel userId={userId!} onDone={() => setTab("history")} />
+        ) : null}
+        {tab === "history" ? <HistoryPanel /> : null}
         {tab === "account" ? <AccountPanel userId={userId!} account={account} /> : null}
       </div>
+
+      {/* Mobile: 4-item bottom navigation. */}
+      <nav
+        className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-border bg-background/95 backdrop-blur md:hidden"
+        aria-label="Dashboard sections"
+      >
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            onClick={() => setTab(t.key)}
+            aria-current={tab === t.key ? "page" : undefined}
+            className={`flex flex-col items-center gap-1 py-2.5 text-[0.7rem] font-semibold ${
+              tab === t.key ? "text-primary" : "text-muted-foreground"
+            }`}
+          >
+            <t.icon className="h-5 w-5" aria-hidden="true" />
+            {t.label}
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }
@@ -457,7 +445,7 @@ function StatusScreen({
   );
 }
 
-function Overview({
+function DashboardPanel({
   account,
   onNavigate,
 }: {
@@ -466,96 +454,107 @@ function Overview({
 }) {
   const requests = useQuery({ queryKey: ["wholesale-requests"], queryFn: fetchMyRequests });
   const orders = useQuery({ queryKey: ["wholesale-orders"], queryFn: fetchMyOrders });
-  const pricing = useQuery({ queryKey: ["wholesale-tier-pricing"], queryFn: fetchTierPricing });
-  const profile = useQuery({ queryKey: ["wholesale-profile-overview"], queryFn: fetchMyProfile });
+  const quotes = useQuery({ queryKey: ["wholesale-quotes"], queryFn: fetchMyWholesaleQuotes });
 
-  const tier = profile.data?.tier ?? "standard";
-  const tierRow = pricing.data?.find((row) => row.tier === tier);
+  const openRequests = (requests.data ?? []).filter(
+    (r) => !["closed", "fulfilled"].includes(r.status),
+  );
+  const awaitingQuotes = (quotes.data ?? []).filter((q) =>
+    ["sent", "ready", "draft"].includes(q.status),
+  );
+  const activeOrders = (orders.data ?? []).filter(
+    (o) => !["cancelled", "delivered", "closed"].includes(o.status),
+  );
+
+  const activity = [
+    ...(requests.data ?? []).map((r) => ({
+      id: `req-${r.id}`,
+      at: r.created_at,
+      label: `Request ${r.reference_code}`,
+      detail: r.status.replace(/_/g, " "),
+    })),
+    ...(quotes.data ?? []).map((q) => ({
+      id: `quo-${q.id}`,
+      at: q.created_at,
+      label: `Quote ${q.quote_number}`,
+      detail: q.status.replace(/_/g, " "),
+    })),
+    ...(orders.data ?? []).map((o) => ({
+      id: `ord-${o.id}`,
+      at: o.placed_at,
+      label: `Order ${o.order_number}`,
+      detail: o.status.replace(/_/g, " "),
+    })),
+  ]
+    .sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
+    .slice(0, 6);
 
   return (
     <div className="space-y-8">
-      <section className="rounded-xl border border-border p-6">
-        <h2 className="text-sm font-bold uppercase tracking-wide">Account identity</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {account?.business_name ?? "Business name on file"} · {account?.full_name ?? "Contact"} ·{" "}
-          {account?.business_email ?? ""}
-          {account?.phone ? ` · ${account.phone}` : ""}
-        </p>
+      <section className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-muted/40 p-6">
+        <div>
+          <h2 className="text-lg font-extrabold uppercase tracking-tight">
+            Need parts sourced?
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {account?.business_name ?? "Your shop"} — send a VIN and a parts list, we quote it back.
+          </p>
+        </div>
+        <Button size="lg" onClick={() => onNavigate("new")}>
+          <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
+          New Parts Request
+        </Button>
       </section>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Stat label="Open requests" value={String(
-          (requests.data ?? []).filter((r) => !["closed", "fulfilled"].includes(r.status)).length,
-        )} />
-        <Stat label="Orders on file" value={String((orders.data ?? []).length)} />
-        <Stat label="Saved tier" value={TIER_LABELS[tier]} />
+        <Stat label="Open requests" value={String(openRequests.length)} />
+        <Stat label="Quotes awaiting action" value={String(awaitingQuotes.length)} />
+        <Stat label="Active orders" value={String(activeOrders.length)} />
       </div>
 
-      <section className="rounded-xl border border-border p-6">
-        <h2 className="text-sm font-bold uppercase tracking-wide">Your account pricing</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          Quotes we build for your shop are priced using your{" "}
-          <strong className="text-foreground">{TIER_LABELS[tier]}</strong> tier.
-          {tierRow?.discount_percent
-            ? ` Current configured tier adjustment: ${tierRow.discount_percent}%${tierRow.is_sample ? " (sample value set by our team, not final)" : ""}.`
-            : " Your tier discount has not been configured yet, so quotes are priced at standard wholesale until our team sets it."}
-        </p>
-      </section>
-
       <section>
-        <h2 className="text-sm font-bold uppercase tracking-wide">Quick actions</h2>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <Button onClick={() => onNavigate("request")}>
-            <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
-            New parts request
-          </Button>
-          <Button variant="outline" onClick={() => onNavigate("vehicles")}>
-            <Car className="mr-2 h-4 w-4" aria-hidden="true" />
-            Manage saved VINs
-          </Button>
-          <Button variant="outline" onClick={() => onNavigate("requests")}>
-            <FileText className="mr-2 h-4 w-4" aria-hidden="true" />
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-sm font-bold uppercase tracking-wide">Recent activity</h2>
+          <Button variant="ghost" size="sm" onClick={() => onNavigate("history")}>
             View history
           </Button>
         </div>
-      </section>
-
-      <section>
-        <h2 className="text-sm font-bold uppercase tracking-wide">Recent requests</h2>
-        {requests.isLoading ? (
+        {requests.isLoading || quotes.isLoading || orders.isLoading ? (
           <PanelLoading />
-        ) : (requests.data ?? []).length === 0 ? (
+        ) : activity.length === 0 ? (
           <Empty>
-            No parts requests yet. Submit your first request and it will appear here with its
-            reference number and status.
+            No activity yet. Your requests, quotes, and orders appear here once they exist.
           </Empty>
         ) : (
-          <div className="mt-4 overflow-x-auto rounded-xl border border-border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Reference</TableHead>
-                  <TableHead>PO</TableHead>
-                  <TableHead>VIN</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {(requests.data ?? []).slice(0, 5).map((r) => (
-                  <TableRow key={r.id}>
-                    <TableCell className="font-mono text-xs">{r.reference_code}</TableCell>
-                    <TableCell>{r.po_number || "—"}</TableCell>
-                    <TableCell className="font-mono text-xs">{r.vin || "—"}</TableCell>
-                    <TableCell>{formatDate(r.created_at)}</TableCell>
-                    <TableCell className="capitalize">{r.status.replace(/_/g, " ")}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <ul className="mt-4 divide-y divide-border rounded-xl border border-border">
+            {activity.map((item) => (
+              <li key={item.id} className="flex flex-wrap items-center justify-between gap-2 p-4">
+                <span className="text-sm font-semibold">{item.label}</span>
+                <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                  {item.detail} · {formatDate(item.at)}
+                </span>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
+    </div>
+  );
+}
+
+function NewRequestPanel({ userId, onDone }: { userId: string; onDone: () => void }) {
+  return (
+    <div className="space-y-8">
+      <RequestPanel userId={userId} onDone={onDone} />
+      <details className="rounded-xl border border-border p-4">
+        <summary className="flex cursor-pointer items-center gap-2 text-sm font-bold uppercase tracking-wide">
+          <Car className="h-4 w-4" aria-hidden="true" />
+          Manage saved vehicles / VINs
+        </summary>
+        <div className="mt-6">
+          <VehiclesPanel userId={userId} />
+        </div>
+      </details>
     </div>
   );
 }
@@ -1071,16 +1070,26 @@ function RequestPanel({ userId, onDone }: { userId: string; onDone: () => void }
   );
 }
 
-function HistoryPanel({ only }: { only: "requests" | "orders" }) {
+const HISTORY_VIEWS = [
+  { key: "requests", label: "Requests" },
+  { key: "quotes", label: "Quotes" },
+  { key: "orders", label: "Orders" },
+  { key: "invoices", label: "Invoices" },
+] as const;
+
+type HistoryView = (typeof HISTORY_VIEWS)[number]["key"];
+
+function HistoryPanel() {
+  const [view, setView] = useState<HistoryView>("requests");
   const requests = useQuery({
     queryKey: ["wholesale-requests"],
     queryFn: fetchMyRequests,
-    enabled: only === "requests",
+    enabled: view === "requests",
   });
   const orders = useQuery({
     queryKey: ["wholesale-orders"],
     queryFn: fetchMyOrders,
-    enabled: only === "orders",
+    enabled: view === "orders",
   });
   const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
@@ -1096,8 +1105,34 @@ function HistoryPanel({ only }: { only: "requests" | "orders" }) {
   }, [requests.data, search]);
 
   return (
-    <div className="space-y-10">
-      {only === "requests" ? (
+    <div className="space-y-8">
+      <div
+        className="inline-flex flex-wrap gap-1 rounded-lg border border-border bg-muted/50 p-1"
+        role="tablist"
+        aria-label="History views"
+      >
+        {HISTORY_VIEWS.map((v) => (
+          <button
+            key={v.key}
+            type="button"
+            role="tab"
+            aria-selected={view === v.key}
+            onClick={() => setView(v.key)}
+            className={`rounded-md px-3 py-1.5 text-sm font-semibold transition ${
+              view === v.key
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {v.label}
+          </button>
+        ))}
+      </div>
+
+      {view === "quotes" ? <QuotesPanel /> : null}
+      {view === "invoices" ? <InvoicesPanel /> : null}
+
+      {view === "requests" ? (
       <section>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-sm font-bold uppercase tracking-wide">Parts requests</h2>
@@ -1168,7 +1203,7 @@ function HistoryPanel({ only }: { only: "requests" | "orders" }) {
       </section>
       ) : null}
 
-      {only === "orders" ? (
+      {view === "orders" ? (
       <section>
         <h2 className="text-sm font-bold uppercase tracking-wide">Orders</h2>
         {orders.isLoading ? (
@@ -1446,43 +1481,82 @@ function AccountPanel({ userId, account }: { userId: string; account: AccountPro
   ];
 
   return (
-    <form
-      className="max-w-2xl rounded-xl border border-border p-6"
-      onSubmit={(e) => {
-        e.preventDefault();
-        save.mutate();
-      }}
-    >
-      <h2 className="text-sm font-bold uppercase tracking-wide">Business contact &amp; shipping</h2>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Account: <strong className="text-foreground">{account?.business_name}</strong> ·{" "}
-        {account?.full_name} · {account?.business_email}
-        {account?.business_type
-          ? ` · ${BUSINESS_TYPE_LABELS[account.business_type as BusinessType]}`
-          : ""}
-      </p>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Company name, tier, and tax-exempt status are managed by our wholesale team — contact us to
-        change them.
-      </p>
-      <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        {fields.map(([key, label]) => (
-          <div key={key} className={key.includes("line") ? "sm:col-span-2" : undefined}>
-            <Label htmlFor={`a-${key}`}>{label}</Label>
-            <Input
-              id={`a-${key}`}
-              className="mt-1.5"
-              value={values[key] ?? ""}
-              onChange={(e) => setForm({ ...values, [key]: e.target.value })}
-            />
-          </div>
-        ))}
-      </div>
-      <Button type="submit" className="mt-6" disabled={save.isPending}>
-        {save.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" /> : null}
-        Save changes
+    <div className="max-w-2xl space-y-6">
+      <section className="rounded-xl border border-border p-6">
+        <h2 className="text-sm font-bold uppercase tracking-wide">Account</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          <strong className="text-foreground">{account?.business_name}</strong> ·{" "}
+          {account?.full_name} · {account?.business_email}
+          {account?.business_type
+            ? ` · ${BUSINESS_TYPE_LABELS[account.business_type as BusinessType]}`
+            : ""}
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary">
+            {TIER_LABELS[profile!.tier ?? "standard"]} tier
+          </span>
+          <span className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Approved
+          </span>
+        </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Company name, tier, and tax-exempt status are managed by our wholesale team — contact us to
+          change them.
+        </p>
+      </section>
+
+      <form
+        className="rounded-xl border border-border p-6"
+        onSubmit={(e) => {
+          e.preventDefault();
+          save.mutate();
+        }}
+      >
+        <h2 className="text-sm font-bold uppercase tracking-wide">
+          Business contact &amp; shipping
+        </h2>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          {fields.map(([key, label]) => (
+            <div key={key} className={key.includes("line") ? "sm:col-span-2" : undefined}>
+              <Label htmlFor={`a-${key}`}>{label}</Label>
+              <Input
+                id={`a-${key}`}
+                className="mt-1.5"
+                value={values[key] ?? ""}
+                onChange={(e) => setForm({ ...values, [key]: e.target.value })}
+              />
+            </div>
+          ))}
+        </div>
+        <Button type="submit" className="mt-6" disabled={save.isPending}>
+          {save.isPending ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+          ) : null}
+          Save changes
+        </Button>
+      </form>
+
+      <details className="rounded-xl border border-border p-6">
+        <summary className="flex cursor-pointer items-center gap-2 text-sm font-bold uppercase tracking-wide">
+          <Car className="h-4 w-4" aria-hidden="true" />
+          Saved vehicles / VINs
+        </summary>
+        <div className="mt-6">
+          <VehiclesPanel userId={userId} />
+        </div>
+      </details>
+
+      <Button
+        variant="outline"
+        onClick={async () => {
+          await signOut();
+          window.location.href = "/";
+        }}
+      >
+        <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
+        Sign out
       </Button>
-    </form>
+    </div>
   );
 }
 

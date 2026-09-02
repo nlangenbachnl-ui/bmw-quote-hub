@@ -35,7 +35,9 @@ import { Route as AdminWholesaleQuotesRouteImport } from './routes/admin.wholesa
 import { Route as AdminWholesaleApplicationsRouteImport } from './routes/admin.wholesale-applications'
 import { Route as AdminSignInRouteImport } from './routes/admin.sign-in'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminQuotesOrdersRouteImport } from './routes/admin.quotes-orders'
 import { Route as AdminDeliveriesRouteImport } from './routes/admin.deliveries'
+import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
 import { Route as AdminAccountsRouteImport } from './routes/admin.accounts'
 import { Route as AdminWholesaleApplicationsIndexRouteImport } from './routes/admin.wholesale-applications.index'
 import { Route as AdminWholesaleApplicationsIdRouteImport } from './routes/admin.wholesale-applications.$id'
@@ -172,9 +174,19 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminQuotesOrdersRoute = AdminQuotesOrdersRouteImport.update({
+  id: '/quotes-orders',
+  path: '/quotes-orders',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminDeliveriesRoute = AdminDeliveriesRouteImport.update({
   id: '/deliveries',
   path: '/deliveries',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCustomersRoute = AdminCustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminAccountsRoute = AdminAccountsRouteImport.update({
@@ -222,7 +234,9 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/customers': typeof AdminCustomersRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
+  '/admin/quotes-orders': typeof AdminQuotesOrdersRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
@@ -254,7 +268,9 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/customers': typeof AdminCustomersRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
+  '/admin/quotes-orders': typeof AdminQuotesOrdersRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-quotes': typeof AdminWholesaleQuotesRoute
@@ -288,7 +304,9 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/customers': typeof AdminCustomersRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
+  '/admin/quotes-orders': typeof AdminQuotesOrdersRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
@@ -323,7 +341,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/accounts'
+    | '/admin/customers'
     | '/admin/deliveries'
+    | '/admin/quotes-orders'
     | '/admin/settings'
     | '/admin/sign-in'
     | '/admin/wholesale-applications'
@@ -355,7 +375,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/accounts'
+    | '/admin/customers'
     | '/admin/deliveries'
+    | '/admin/quotes-orders'
     | '/admin/settings'
     | '/admin/sign-in'
     | '/admin/wholesale-quotes'
@@ -388,7 +410,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/accounts'
+    | '/admin/customers'
     | '/admin/deliveries'
+    | '/admin/quotes-orders'
     | '/admin/settings'
     | '/admin/sign-in'
     | '/admin/wholesale-applications'
@@ -613,11 +637,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/quotes-orders': {
+      id: '/admin/quotes-orders'
+      path: '/quotes-orders'
+      fullPath: '/admin/quotes-orders'
+      preLoaderRoute: typeof AdminQuotesOrdersRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/deliveries': {
       id: '/admin/deliveries'
       path: '/deliveries'
       fullPath: '/admin/deliveries'
       preLoaderRoute: typeof AdminDeliveriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/customers': {
+      id: '/admin/customers'
+      path: '/customers'
+      fullPath: '/admin/customers'
+      preLoaderRoute: typeof AdminCustomersRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/accounts': {
@@ -687,7 +725,9 @@ const AdminWholesaleApplicationsRouteWithChildren =
 
 interface AdminRouteChildren {
   AdminAccountsRoute: typeof AdminAccountsRoute
+  AdminCustomersRoute: typeof AdminCustomersRoute
   AdminDeliveriesRoute: typeof AdminDeliveriesRoute
+  AdminQuotesOrdersRoute: typeof AdminQuotesOrdersRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSignInRoute: typeof AdminSignInRoute
   AdminWholesaleApplicationsRoute: typeof AdminWholesaleApplicationsRouteWithChildren
@@ -698,7 +738,9 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAccountsRoute: AdminAccountsRoute,
+  AdminCustomersRoute: AdminCustomersRoute,
   AdminDeliveriesRoute: AdminDeliveriesRoute,
+  AdminQuotesOrdersRoute: AdminQuotesOrdersRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSignInRoute: AdminSignInRoute,
   AdminWholesaleApplicationsRoute: AdminWholesaleApplicationsRouteWithChildren,

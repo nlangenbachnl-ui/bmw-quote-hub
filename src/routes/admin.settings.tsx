@@ -20,7 +20,7 @@ function AdminSettings() {
   return (
     <div className="max-w-3xl space-y-6">
       <div>
-        <h1 className="text-2xl font-extrabold uppercase tracking-tight">Pricing settings</h1>
+        <h1 className="text-2xl font-extrabold uppercase tracking-tight">Settings</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Defaults applied to every quote. Individual line prices can still be overridden in the
           quote builder.
@@ -185,14 +185,14 @@ function AdminSettings() {
         </p>
       </section>
 
-      <section className="space-y-5 rounded-xl border border-border bg-card p-6 shadow-card">
-        <div>
-          <h2 className="text-sm font-bold uppercase tracking-wider">Integration placeholders</h2>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Reserved for courier dispatch and mapping/distance APIs. Keys move to server-side
-            secrets when the backend is wired up.
-          </p>
-        </div>
+      <details className="space-y-5 rounded-xl border border-border bg-card p-6 shadow-card">
+        <summary className="cursor-pointer text-sm font-bold uppercase tracking-wider">
+          Advanced — integrations &amp; API
+        </summary>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Reserved for courier dispatch and mapping/distance APIs. Keys move to server-side secrets
+          when the backend is wired up.
+        </p>
         <TextField
           id="courier-provider"
           label="Courier provider"
@@ -214,7 +214,7 @@ function AdminSettings() {
           value={settings.courierApiKey}
           onChange={(v) => updateSettings({ courierApiKey: v })}
         />
-      </section>
+      </details>
 
       <p className="text-xs text-muted-foreground">
         Settings are stored locally in this prototype. They move to the database — with an audit
