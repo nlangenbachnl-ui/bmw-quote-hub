@@ -13,6 +13,19 @@ Independent BMW parts sourcing and quoting. Not affiliated with BMW AG.
 (`/auth/reset-password` still renders). The old mock `/portal` prototype is gone —
 every `/portal/*` URL redirects to the real wholesale dashboard.
 
+## Dashboard navigation
+
+Shop dashboard (`/wholesale/dashboard`): **Dashboard · New Request · History · Account**.
+Saved vehicles/VIN management lives inside New Request and Account; History has
+Requests / Quotes / Orders / Invoices subtabs.
+
+Staff dashboard (`/admin`): **Requests · Quotes & Orders · Customers · Settings**.
+Legacy deep links still work: `/admin/accounts` → Customers (Approved accounts),
+`/admin/wholesale-applications` → Customers (Applications), `/admin/wholesale-quotes`
+→ Quotes & Orders (Quotes), `/admin/deliveries` → Quotes & Orders (Deliveries).
+`/admin/requests/$id` and `/admin/wholesale-applications/$id` are unchanged.
+
+
 Wholesale signup collects the business profile once (contact name, business name,
 phone, business type, account email). It prefills the wholesale application, and
 existing accounts missing those fields get a one-time "Complete your business
