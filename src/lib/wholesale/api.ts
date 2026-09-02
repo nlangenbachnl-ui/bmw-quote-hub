@@ -60,14 +60,17 @@ export async function signedCustomerFileUrl(path: string) {
   return signedDocumentUrl(path, FILE_BUCKET);
 }
 
+/**
+ * Applications are inserted through a security-definer function: applicants may
+ * submit but never read application rows, so the function returns only the
+ * reference number they need.
+ */
 export async function submitApplication(input: ApplicationInsert) {
-  const { data, error } = await supabase
-    .from("wholesale_applications")
-    .insert(input)
-    .select("reference_code")
-    .single();
+  const { data, error } = await supabase.rpc("submit_wholesale_application", {
+    _payload: input as unknown as Database["public"]["Tables"]["wholesale_applications"]["Insert"] as never,
+  });
   if (error) throw error;
-  return data;
+  return { reference_code: data as string };
 }
 
 /* ---------------- customer ---------------- */
