@@ -110,22 +110,19 @@ function AdminHeader() {
 
   const tabs = [
     { to: "/admin", label: "Requests", icon: LayoutDashboard, exact: true },
-    { to: "/admin/accounts", label: "Accounts", icon: Building2, exact: false },
-    {
-      to: "/admin/wholesale-applications",
-      label: "Wholesale",
-      icon: ShieldCheck,
-      exact: false,
-    },
-    { to: "/admin/wholesale-quotes", label: "Wholesale quotes", icon: ReceiptText, exact: false },
-    { to: "/admin/deliveries", label: "Deliveries", icon: Truck, exact: false },
+    { to: "/admin/quotes-orders", label: "Quotes & Orders", icon: ReceiptText, exact: false },
+    { to: "/admin/customers", label: "Customers", icon: Building2, exact: false },
     { to: "/admin/settings", label: "Settings", icon: Settings2, exact: false },
   ] as const;
 
+  const isCustomers =
+    pathname.startsWith("/admin/customers") ||
+    pathname.startsWith("/admin/wholesale-applications") ||
+    pathname.startsWith("/admin/accounts");
 
   return (
     <header className="border-b border-border bg-carbon text-carbon-foreground">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 md:flex-row md:items-center md:justify-between">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
         <div className="flex items-center gap-3">
           <span
             aria-hidden="true"
@@ -137,18 +134,51 @@ function AdminHeader() {
             <p className="text-sm font-extrabold uppercase tracking-tight">
               Precision Bimmer Parts
             </p>
-            <p className="text-xs text-carbon-muted">Internal quote desk · prototype</p>
+            <p className="text-xs text-carbon-muted">Staff dashboard</p>
           </div>
         </div>
 
-        <nav className="flex flex-wrap items-center gap-2" aria-label="Admin sections">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-carbon-muted hover:bg-carbon-elevated hover:text-carbon-foreground"
+            >
+              <UserRound className="mr-2 h-4 w-4" aria-hidden="true" />
+              Staff
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link to="/">View site</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={async () => {
+                await signOut();
+                window.location.href = "/admin/sign-in";
+              }}
+            >
+              Sign out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 pb-3 sm:px-6">
+        <nav className="flex gap-2 overflow-x-auto" aria-label="Admin sections">
           {tabs.map((tab) => {
-            const active = tab.exact ? pathname === tab.to : pathname.startsWith(tab.to);
+            const active =
+              tab.to === "/admin/customers"
+                ? isCustomers
+                : tab.exact
+                  ? pathname === tab.to
+                  : pathname.startsWith(tab.to);
             return (
               <Link
                 key={tab.to}
                 to={tab.to}
-                className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold transition ${
+                className={`flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold transition ${
                   active
                     ? "bg-primary text-primary-foreground"
                     : "text-carbon-muted hover:bg-carbon-elevated hover:text-carbon-foreground"
@@ -159,12 +189,6 @@ function AdminHeader() {
               </Link>
             );
           })}
-          <Link
-            to="/"
-            className="rounded-md px-3 py-2 text-sm font-semibold text-carbon-muted hover:text-carbon-foreground"
-          >
-            View site
-          </Link>
         </nav>
       </div>
     </header>
