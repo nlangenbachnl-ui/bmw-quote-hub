@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-/** The mock shop portal is gone; send visitors to the real wholesale account. */
-export const Route = createFileRoute("/portal")({
+/** Old /portal/* deep links redirect to the real wholesale dashboard. */
+export const Route = createFileRoute("/portal_/$")({
   ssr: false,
   beforeLoad: () => {
     throw redirect({ to: "/wholesale/dashboard", replace: true });
