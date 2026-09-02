@@ -117,9 +117,11 @@ function AdminHeader() {
       icon: ShieldCheck,
       exact: false,
     },
+    { to: "/admin/wholesale-quotes", label: "Wholesale quotes", icon: ReceiptText, exact: false },
     { to: "/admin/deliveries", label: "Deliveries", icon: Truck, exact: false },
     { to: "/admin/settings", label: "Settings", icon: Settings2, exact: false },
   ] as const;
+
 
   return (
     <header className="border-b border-border bg-carbon text-carbon-foreground">
