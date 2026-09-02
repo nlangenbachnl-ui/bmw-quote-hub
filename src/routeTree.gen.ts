@@ -37,6 +37,7 @@ import { Route as AdminSignInRouteImport } from './routes/admin.sign-in'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminQuotesOrdersRouteImport } from './routes/admin.quotes-orders'
 import { Route as AdminDeliveriesRouteImport } from './routes/admin.deliveries'
+import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
 import { Route as AdminAccountsRouteImport } from './routes/admin.accounts'
 import { Route as AdminWholesaleApplicationsIndexRouteImport } from './routes/admin.wholesale-applications.index'
 import { Route as AdminWholesaleApplicationsIdRouteImport } from './routes/admin.wholesale-applications.$id'
@@ -183,6 +184,11 @@ const AdminDeliveriesRoute = AdminDeliveriesRouteImport.update({
   path: '/deliveries',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCustomersRoute = AdminCustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAccountsRoute = AdminAccountsRouteImport.update({
   id: '/accounts',
   path: '/accounts',
@@ -228,6 +234,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/customers': typeof AdminCustomersRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/quotes-orders': typeof AdminQuotesOrdersRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -261,6 +268,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/customers': typeof AdminCustomersRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/quotes-orders': typeof AdminQuotesOrdersRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -296,6 +304,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
+  '/admin/customers': typeof AdminCustomersRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/quotes-orders': typeof AdminQuotesOrdersRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -332,6 +341,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/accounts'
+    | '/admin/customers'
     | '/admin/deliveries'
     | '/admin/quotes-orders'
     | '/admin/settings'
@@ -365,6 +375,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/accounts'
+    | '/admin/customers'
     | '/admin/deliveries'
     | '/admin/quotes-orders'
     | '/admin/settings'
@@ -399,6 +410,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/accounts'
+    | '/admin/customers'
     | '/admin/deliveries'
     | '/admin/quotes-orders'
     | '/admin/settings'
@@ -639,6 +651,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDeliveriesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/customers': {
+      id: '/admin/customers'
+      path: '/customers'
+      fullPath: '/admin/customers'
+      preLoaderRoute: typeof AdminCustomersRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/accounts': {
       id: '/admin/accounts'
       path: '/accounts'
@@ -706,6 +725,7 @@ const AdminWholesaleApplicationsRouteWithChildren =
 
 interface AdminRouteChildren {
   AdminAccountsRoute: typeof AdminAccountsRoute
+  AdminCustomersRoute: typeof AdminCustomersRoute
   AdminDeliveriesRoute: typeof AdminDeliveriesRoute
   AdminQuotesOrdersRoute: typeof AdminQuotesOrdersRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
@@ -718,6 +738,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAccountsRoute: AdminAccountsRoute,
+  AdminCustomersRoute: AdminCustomersRoute,
   AdminDeliveriesRoute: AdminDeliveriesRoute,
   AdminQuotesOrdersRoute: AdminQuotesOrdersRoute,
   AdminSettingsRoute: AdminSettingsRoute,

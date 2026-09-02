@@ -26,7 +26,7 @@ import {
 } from "@/lib/wholesale/constants";
 
 
-export function WholesaleApplicationsQueue() {
+export function ApplicationsQueue() {
   const { user, loading } = useAuth();
   const isAdmin = useIsAdmin(user?.id);
   const [status, setStatus] = useState("all");
