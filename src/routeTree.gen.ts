@@ -35,6 +35,7 @@ import { Route as PortalProfileRouteImport } from './routes/portal.profile'
 import { Route as PortalHistoryRouteImport } from './routes/portal.history'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
 import { Route as AdminWholesaleApplicationsRouteImport } from './routes/admin.wholesale-applications'
+import { Route as AdminSignInRouteImport } from './routes/admin.sign-in'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminDeliveriesRouteImport } from './routes/admin.deliveries'
 import { Route as AdminAccountsRouteImport } from './routes/admin.accounts'
@@ -173,6 +174,11 @@ const AdminWholesaleApplicationsRoute =
     path: '/wholesale-applications',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminSignInRoute = AdminSignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -230,6 +236,7 @@ export interface FileRoutesByFullPath {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
@@ -262,6 +269,7 @@ export interface FileRoutesByTo {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sign-in': typeof AdminSignInRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
   '/portal/profile': typeof PortalProfileRoute
@@ -297,6 +305,7 @@ export interface FileRoutesById {
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/deliveries': typeof AdminDeliveriesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sign-in': typeof AdminSignInRoute
   '/admin/wholesale-applications': typeof AdminWholesaleApplicationsRouteWithChildren
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/history': typeof PortalHistoryRoute
@@ -333,6 +342,7 @@ export interface FileRouteTypes {
     | '/admin/accounts'
     | '/admin/deliveries'
     | '/admin/settings'
+    | '/admin/sign-in'
     | '/admin/wholesale-applications'
     | '/auth/reset-password'
     | '/portal/history'
@@ -365,6 +375,7 @@ export interface FileRouteTypes {
     | '/admin/accounts'
     | '/admin/deliveries'
     | '/admin/settings'
+    | '/admin/sign-in'
     | '/auth/reset-password'
     | '/portal/history'
     | '/portal/profile'
@@ -399,6 +410,7 @@ export interface FileRouteTypes {
     | '/admin/accounts'
     | '/admin/deliveries'
     | '/admin/settings'
+    | '/admin/sign-in'
     | '/admin/wholesale-applications'
     | '/auth/reset-password'
     | '/portal/history'
@@ -622,6 +634,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminWholesaleApplicationsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/sign-in': {
+      id: '/admin/sign-in'
+      path: '/sign-in'
+      fullPath: '/admin/sign-in'
+      preLoaderRoute: typeof AdminSignInRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/settings'
@@ -705,6 +724,7 @@ interface AdminRouteChildren {
   AdminAccountsRoute: typeof AdminAccountsRoute
   AdminDeliveriesRoute: typeof AdminDeliveriesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminSignInRoute: typeof AdminSignInRoute
   AdminWholesaleApplicationsRoute: typeof AdminWholesaleApplicationsRouteWithChildren
   AdminIndexRoute: typeof AdminIndexRoute
   AdminRequestsIdRoute: typeof AdminRequestsIdRoute
@@ -714,6 +734,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAccountsRoute: AdminAccountsRoute,
   AdminDeliveriesRoute: AdminDeliveriesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
+  AdminSignInRoute: AdminSignInRoute,
   AdminWholesaleApplicationsRoute: AdminWholesaleApplicationsRouteWithChildren,
   AdminIndexRoute: AdminIndexRoute,
   AdminRequestsIdRoute: AdminRequestsIdRoute,
