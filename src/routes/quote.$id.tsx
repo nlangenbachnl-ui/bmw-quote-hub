@@ -1,9 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle2, ShieldCheck, Truck } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
+import { CheckCircle2, Loader2, Lock, ShieldCheck, Truck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { computeQuote, money, percent } from "@/lib/admin/pricing";
-import { formatDate, useAdminRequest, useAdminState } from "@/lib/admin/store";
+import { money, percent } from "@/lib/admin/pricing";
+import { RETAIL_PART_LABEL } from "@/lib/part-number";
+import { fetchRetailQuote } from "@/lib/retail-quote.functions";
 
 export const Route = createFileRoute("/quote/$id")({
   ssr: false,
@@ -21,17 +24,42 @@ export const Route = createFileRoute("/quote/$id")({
   component: CustomerQuote,
 });
 
-function CustomerQuote() {
-  const { id } = Route.useParams();
-  const { settings } = useAdminState();
-  const request = useAdminRequest(id);
+function formatDate(iso: string | null) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
 
-  if (!request) {
+function CustomerQuote() {
+  // The URL segment is an unguessable access token, not a database id.
+  const { id: token } = Route.useParams();
+  const load = useServerFn(fetchRetailQuote);
+  const { data, isPending, isError } = useQuery({
+    queryKey: ["retail-quote", token],
+    queryFn: () => load({ data: { token } }),
+    retry: false,
+  });
+
+  if (isPending) {
+    return (
+      <div className="mx-auto flex max-w-xl items-center justify-center gap-3 px-4 py-24 text-muted-foreground">
+        <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+        Loading your quote…
+      </div>
+    );
+  }
+
+  if (isError || !data || data.state !== "ok") {
     return (
       <div className="mx-auto max-w-xl px-4 py-24 text-center">
         <h1 className="text-2xl font-extrabold uppercase tracking-tight">Quote unavailable</h1>
         <p className="mt-2 text-muted-foreground">
-          This quote link is no longer active. Request a fresh quote and we will follow up by email.
+          {data?.state === "expired"
+            ? "This quote has expired. Request a fresh quote and we will follow up by email."
+            : "This quote link is no longer active. Request a fresh quote and we will follow up by email."}
         </p>
         <Button asChild className="mt-6">
           <Link to="/request-quote">Request a free quote</Link>
@@ -40,14 +68,10 @@ function CustomerQuote() {
     );
   }
 
-  const math = computeQuote(
-    request.lines,
-    settings,
-    request.delivery
-      ? { type: request.delivery.type, oversized: request.delivery.oversized }
-      : undefined,
-  );
-  const freeSameDay = math.delivery.type === "Local Same-Day" && math.delivery.waived;
+  const quote = data.quote;
+  const freeSameDay = quote.deliveryLabel === "Local Same-Day" && quote.deliveryFree;
+  const savings = Math.max(0, quote.msrpTotal - quote.subtotal);
+  const savingsPercent = quote.msrpTotal > 0 ? savings / quote.msrpTotal : 0;
 
   return (
     <div className="min-h-screen bg-muted/40 py-10">
@@ -71,11 +95,11 @@ function CustomerQuote() {
               </div>
             </div>
             <h1 className="mt-6 text-2xl font-extrabold uppercase tracking-tight">
-              Quote {request.reference}
+              Quote {quote.reference}
             </h1>
             <p className="mt-1 text-sm text-carbon-muted">
-              Prepared for {request.customerName} · {request.modelYear} {request.bmwModel} · VIN{" "}
-              <span className="font-mono">{request.vin}</span>
+              Prepared for {quote.customerName} · {quote.modelYear} {quote.bmwModel} · VIN{" "}
+              <span className="font-mono">{quote.vin}</span>
             </p>
           </header>
 
@@ -92,20 +116,37 @@ function CustomerQuote() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {math.lines.map(({ line, math: m }) => (
+                  {quote.lines.map((line) => (
                     <tr key={line.id}>
                       <td className="py-3">
                         <p className="font-semibold">{line.description || "Sourced part"}</p>
-                        <p className="font-mono text-xs text-muted-foreground">{line.partNumber}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {RETAIL_PART_LABEL}
+                          {line.partNumber ? (
+                            <>
+                              {" · "}
+                              <span className="font-mono">{line.partNumber}</span>
+                              {line.partNumberMasked ? (
+                                <Lock
+                                  className="ml-1 inline h-3 w-3 align-[-1px]"
+                                  aria-label="Part number released after purchase"
+                                />
+                              ) : null}
+                            </>
+                          ) : null}
+                        </p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          {line.availability ?? "Fitment confirmed against your VIN"}
+                        </p>
                       </td>
                       <td className="py-3 text-center">{line.quantity}</td>
                       <td className="py-3 text-right text-muted-foreground line-through">
-                        {m.msrpTotal > 0 ? money(m.msrpTotal) : "—"}
+                        {line.msrpTotal > 0 ? money(line.msrpTotal) : "—"}
                       </td>
-                      <td className="py-3 text-right font-semibold">{money(m.customerTotal)}</td>
+                      <td className="py-3 text-right font-semibold">{money(line.lineTotal)}</td>
                     </tr>
                   ))}
-                  {math.lines.length === 0 ? (
+                  {quote.lines.length === 0 ? (
                     <tr>
                       <td colSpan={4} className="py-8 text-center text-muted-foreground">
                         Your quote is being prepared — you will receive it by email shortly.
@@ -116,16 +157,27 @@ function CustomerQuote() {
               </table>
             </div>
 
+            {!quote.partNumbersRevealed && quote.lines.length > 0 ? (
+              <p className="mt-4 flex items-start gap-2 rounded-lg bg-muted px-4 py-3 text-xs leading-relaxed text-muted-foreground">
+                <Lock className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                Every line is a genuine BMW part matched to your VIN. Complete OEM part numbers are
+                released with your receipt once the order is paid.
+              </p>
+            ) : null}
+
             <dl className="mt-6 space-y-2 border-t border-border pt-5 text-sm">
-              <Row label="Subtotal" value={money(math.subtotal)} />
-              <Row label="Shipping" value={math.shippingTotal > 0 ? money(math.shippingTotal) : "Included"} />
-              {request.delivery ? (
+              <Row label="Subtotal" value={money(quote.subtotal)} />
+              <Row
+                label="Shipping"
+                value={quote.shippingTotal > 0 ? money(quote.shippingTotal) : "Included"}
+              />
+              {quote.deliveryLabel ? (
                 <Row
-                  label={request.delivery.type}
-                  value={freeSameDay ? "Free" : money(math.delivery.fee)}
+                  label={quote.deliveryLabel}
+                  value={quote.deliveryFree ? "Free" : money(quote.deliveryFee)}
                 />
               ) : null}
-              <Row label="Total" value={money(math.grandTotal)} strong />
+              <Row label="Total" value={money(quote.grandTotal)} strong />
             </dl>
 
             {freeSameDay ? (
@@ -135,24 +187,16 @@ function CustomerQuote() {
               </p>
             ) : null}
 
-            {request.delivery && request.delivery.eligibility !== "Eligible" ? (
-              <p className="mt-3 text-xs text-muted-foreground">
-                Delivery shown as {request.delivery.type} — {request.delivery.eligibility.toLowerCase()}.
-                Same-day service depends on parts availability, delivery radius, package size, and
-                courier capacity; we confirm the window before dispatch.
-              </p>
-            ) : null}
-
-            {math.savings > 0 ? (
+            {savings > 0 ? (
               <p className="mt-4 flex items-center gap-2 rounded-lg bg-primary/5 px-4 py-3 text-sm font-semibold text-primary">
                 <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-                You save {money(math.savings)} ({percent(math.savingsPercent)}) versus BMW MSRP.
+                You save {money(savings)} ({percent(savingsPercent)}) versus BMW MSRP.
               </p>
             ) : null}
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-muted-foreground">
-                Quote valid through <strong>{formatDate(request.expiresAt)}</strong>
+                Quote valid through <strong>{formatDate(quote.expiresAt)}</strong>
               </p>
               <Button size="lg" disabled title="Secure checkout is coming soon">
                 Accept quote &amp; pay

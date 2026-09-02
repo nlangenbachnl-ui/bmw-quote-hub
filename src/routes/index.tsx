@@ -370,7 +370,7 @@ function Index() {
           </div>
           <div className="flex flex-col gap-3">
             <Link
-              to="/for-shops"
+              to="/repair-body-shops"
               className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-blue px-6 py-4 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-blue transition-transform hover:scale-[1.03]"
             >
               <Truck className="h-4 w-4" aria-hidden="true" />

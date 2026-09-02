@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RequestQuoteRouteImport } from './routes/request-quote'
+import { Route as RepairBodyShopsRouteImport } from './routes/repair-body-shops'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PortalRouteImport } from './routes/portal'
+import { Route as IndividualCustomersRouteImport } from './routes/individual-customers'
 import { Route as ForShopsRouteImport } from './routes/for-shops'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -55,6 +57,11 @@ const RequestQuoteRoute = RequestQuoteRouteImport.update({
   path: '/request-quote',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RepairBodyShopsRoute = RepairBodyShopsRouteImport.update({
+  id: '/repair-body-shops',
+  path: '/repair-body-shops',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -63,6 +70,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PortalRoute = PortalRouteImport.update({
   id: '/portal',
   path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndividualCustomersRoute = IndividualCustomersRouteImport.update({
+  id: '/individual-customers',
+  path: '/individual-customers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForShopsRoute = ForShopsRouteImport.update({
@@ -202,8 +214,10 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
+  '/individual-customers': typeof IndividualCustomersRoute
   '/portal': typeof PortalRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -232,7 +246,9 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
+  '/individual-customers': typeof IndividualCustomersRoute
   '/privacy': typeof PrivacyRoute
+  '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -263,8 +279,10 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/for-shops': typeof ForShopsRoute
+  '/individual-customers': typeof IndividualCustomersRoute
   '/portal': typeof PortalRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -296,8 +314,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/for-shops'
+    | '/individual-customers'
     | '/portal'
     | '/privacy'
+    | '/repair-body-shops'
     | '/request-quote'
     | '/sitemap.xml'
     | '/terms'
@@ -326,7 +346,9 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/for-shops'
+    | '/individual-customers'
     | '/privacy'
+    | '/repair-body-shops'
     | '/request-quote'
     | '/sitemap.xml'
     | '/terms'
@@ -356,8 +378,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/for-shops'
+    | '/individual-customers'
     | '/portal'
     | '/privacy'
+    | '/repair-body-shops'
     | '/request-quote'
     | '/sitemap.xml'
     | '/terms'
@@ -389,8 +413,10 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   ForShopsRoute: typeof ForShopsRoute
+  IndividualCustomersRoute: typeof IndividualCustomersRoute
   PortalRoute: typeof PortalRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
+  RepairBodyShopsRoute: typeof RepairBodyShopsRoute
   RequestQuoteRoute: typeof RequestQuoteRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
@@ -422,6 +448,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RequestQuoteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/repair-body-shops': {
+      id: '/repair-body-shops'
+      path: '/repair-body-shops'
+      fullPath: '/repair-body-shops'
+      preLoaderRoute: typeof RepairBodyShopsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -434,6 +467,13 @@ declare module '@tanstack/react-router' {
       path: '/portal'
       fullPath: '/portal'
       preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/individual-customers': {
+      id: '/individual-customers'
+      path: '/individual-customers'
+      fullPath: '/individual-customers'
+      preLoaderRoute: typeof IndividualCustomersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/for-shops': {
@@ -697,8 +737,10 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   ForShopsRoute: ForShopsRoute,
+  IndividualCustomersRoute: IndividualCustomersRoute,
   PortalRoute: PortalRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
+  RepairBodyShopsRoute: RepairBodyShopsRoute,
   RequestQuoteRoute: RequestQuoteRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
