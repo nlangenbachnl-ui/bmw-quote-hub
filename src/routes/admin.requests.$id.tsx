@@ -25,6 +25,7 @@ import {
   useAdminRequest,
   useAdminState,
 } from "@/lib/admin/store";
+import type { QuoteRequest } from "@/lib/admin/store";
 
 export const Route = createFileRoute("/admin/requests/$id")({
   component: QuoteBuilder,
