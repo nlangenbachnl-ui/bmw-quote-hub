@@ -26,6 +26,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WholesaleIndexRouteImport } from './routes/wholesale.index'
+import { Route as StaffIndexRouteImport } from './routes/staff.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as WholesaleSignInRouteImport } from './routes/wholesale.sign-in'
 import { Route as WholesaleApplyRouteImport } from './routes/wholesale.apply'
@@ -129,6 +130,11 @@ const WholesaleIndexRoute = WholesaleIndexRouteImport.update({
   id: '/wholesale/',
   path: '/wholesale/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const StaffIndexRoute = StaffIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StaffRoute,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
@@ -261,6 +267,7 @@ export interface FileRoutesByFullPath {
   '/wholesale/apply': typeof WholesaleApplyRoute
   '/wholesale/sign-in': typeof WholesaleSignInRoute
   '/admin/': typeof AdminIndexRoute
+  '/staff/': typeof StaffIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
@@ -280,7 +287,6 @@ export interface FileRoutesByTo {
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/staff': typeof StaffRouteWithChildren
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -296,6 +302,7 @@ export interface FileRoutesByTo {
   '/wholesale/apply': typeof WholesaleApplyRoute
   '/wholesale/sign-in': typeof WholesaleSignInRoute
   '/admin': typeof AdminIndexRoute
+  '/staff': typeof StaffIndexRoute
   '/wholesale': typeof WholesaleIndexRoute
   '/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
@@ -335,6 +342,7 @@ export interface FileRoutesById {
   '/wholesale/apply': typeof WholesaleApplyRoute
   '/wholesale/sign-in': typeof WholesaleSignInRoute
   '/admin/': typeof AdminIndexRoute
+  '/staff/': typeof StaffIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/_authenticated/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
@@ -374,6 +382,7 @@ export interface FileRouteTypes {
     | '/wholesale/apply'
     | '/wholesale/sign-in'
     | '/admin/'
+    | '/staff/'
     | '/wholesale/'
     | '/wholesale/dashboard'
     | '/admin/requests/$id'
@@ -393,7 +402,6 @@ export interface FileRouteTypes {
     | '/repair-body-shops'
     | '/request-quote'
     | '/sitemap.xml'
-    | '/staff'
     | '/terms'
     | '/admin/accounts'
     | '/admin/customers'
@@ -409,6 +417,7 @@ export interface FileRouteTypes {
     | '/wholesale/apply'
     | '/wholesale/sign-in'
     | '/admin'
+    | '/staff'
     | '/wholesale'
     | '/wholesale/dashboard'
     | '/admin/requests/$id'
@@ -447,6 +456,7 @@ export interface FileRouteTypes {
     | '/wholesale/apply'
     | '/wholesale/sign-in'
     | '/admin/'
+    | '/staff/'
     | '/wholesale/'
     | '/_authenticated/wholesale/dashboard'
     | '/admin/requests/$id'
@@ -598,6 +608,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/wholesale/'
       preLoaderRoute: typeof WholesaleIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/staff/': {
+      id: '/staff/'
+      path: '/'
+      fullPath: '/staff/'
+      preLoaderRoute: typeof StaffIndexRouteImport
+      parentRoute: typeof StaffRoute
     }
     '/admin/': {
       id: '/admin/'
@@ -802,10 +819,12 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface StaffRouteChildren {
   StaffSignInRoute: typeof StaffSignInRoute
+  StaffIndexRoute: typeof StaffIndexRoute
 }
 
 const StaffRouteChildren: StaffRouteChildren = {
   StaffSignInRoute: StaffSignInRoute,
+  StaffIndexRoute: StaffIndexRoute,
 }
 
 const StaffRouteWithChildren = StaffRoute._addFileChildren(StaffRouteChildren)
