@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as StaffRouteImport } from './routes/staff'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RequestQuoteRouteImport } from './routes/request-quote'
 import { Route as RepairBodyShopsRouteImport } from './routes/repair-body-shops'
@@ -47,6 +48,11 @@ import { Route as AuthenticatedWholesaleDashboardRouteImport } from './routes/_a
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -232,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/staff': typeof StaffRoute
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -266,6 +273,7 @@ export interface FileRoutesByTo {
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/staff': typeof StaffRoute
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -302,6 +310,7 @@ export interface FileRoutesById {
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/staff': typeof StaffRoute
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -339,6 +348,7 @@ export interface FileRouteTypes {
     | '/repair-body-shops'
     | '/request-quote'
     | '/sitemap.xml'
+    | '/staff'
     | '/terms'
     | '/admin/accounts'
     | '/admin/customers'
@@ -373,6 +383,7 @@ export interface FileRouteTypes {
     | '/repair-body-shops'
     | '/request-quote'
     | '/sitemap.xml'
+    | '/staff'
     | '/terms'
     | '/admin/accounts'
     | '/admin/customers'
@@ -408,6 +419,7 @@ export interface FileRouteTypes {
     | '/repair-body-shops'
     | '/request-quote'
     | '/sitemap.xml'
+    | '/staff'
     | '/terms'
     | '/admin/accounts'
     | '/admin/customers'
@@ -445,6 +457,7 @@ export interface RootRouteChildren {
   RepairBodyShopsRoute: typeof RepairBodyShopsRoute
   RequestQuoteRoute: typeof RequestQuoteRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  StaffRoute: typeof StaffRoute
   TermsRoute: typeof TermsRoute
   PortalSplatRoute: typeof PortalSplatRoute
   QuoteIdRoute: typeof QuoteIdRoute
@@ -460,6 +473,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -776,6 +796,7 @@ const rootRouteChildren: RootRouteChildren = {
   RepairBodyShopsRoute: RepairBodyShopsRoute,
   RequestQuoteRoute: RequestQuoteRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  StaffRoute: StaffRoute,
   TermsRoute: TermsRoute,
   PortalSplatRoute: PortalSplatRoute,
   QuoteIdRoute: QuoteIdRoute,
