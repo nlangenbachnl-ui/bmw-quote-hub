@@ -56,6 +56,28 @@ export function useIsAdmin(userId: string | null | undefined) {
   });
 }
 
+/**
+ * Role summary for the three roles in this app: shop (no role row), parts staff,
+ * and owner/admin. Authoritative enforcement lives in RLS; this drives UI only.
+ */
+export function useStaffAccess(userId: string | null | undefined) {
+  return useQuery({
+    queryKey: ["staff-access", userId],
+    enabled: Boolean(userId),
+    queryFn: async () => {
+      const [admin, staff] = await Promise.all([
+        supabase.rpc("has_role", { _user_id: userId!, _role: "admin" }),
+        supabase.rpc("has_role", { _user_id: userId!, _role: "staff" }),
+      ]);
+      if (admin.error) throw admin.error;
+      if (staff.error) throw staff.error;
+      const isAdmin = Boolean(admin.data);
+      const isStaff = Boolean(staff.data);
+      return { isAdmin, isStaff, canWorkQueue: isAdmin || isStaff };
+    },
+  });
+}
+
 export async function signOut() {
   await supabase.auth.signOut();
 }

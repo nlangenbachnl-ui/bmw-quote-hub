@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as StaffRouteImport } from './routes/staff'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RequestQuoteRouteImport } from './routes/request-quote'
 import { Route as RepairBodyShopsRouteImport } from './routes/repair-body-shops'
@@ -25,9 +26,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WholesaleIndexRouteImport } from './routes/wholesale.index'
+import { Route as StaffIndexRouteImport } from './routes/staff.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as WholesaleSignInRouteImport } from './routes/wholesale.sign-in'
 import { Route as WholesaleApplyRouteImport } from './routes/wholesale.apply'
+import { Route as StaffSignInRouteImport } from './routes/staff.sign-in'
 import { Route as QuoteIdRouteImport } from './routes/quote.$id'
 import { Route as PortalSplatRouteImport } from './routes/portal_.$'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
@@ -47,6 +50,11 @@ import { Route as AuthenticatedWholesaleDashboardRouteImport } from './routes/_a
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -123,6 +131,11 @@ const WholesaleIndexRoute = WholesaleIndexRouteImport.update({
   path: '/wholesale/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffIndexRoute = StaffIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StaffRoute,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -137,6 +150,11 @@ const WholesaleApplyRoute = WholesaleApplyRouteImport.update({
   id: '/wholesale/apply',
   path: '/wholesale/apply',
   getParentRoute: () => rootRouteImport,
+} as any)
+const StaffSignInRoute = StaffSignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => StaffRoute,
 } as any)
 const QuoteIdRoute = QuoteIdRouteImport.update({
   id: '/quote/$id',
@@ -232,6 +250,7 @@ export interface FileRoutesByFullPath {
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/staff': typeof StaffRouteWithChildren
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -244,9 +263,11 @@ export interface FileRoutesByFullPath {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/$': typeof PortalSplatRoute
   '/quote/$id': typeof QuoteIdRoute
+  '/staff/sign-in': typeof StaffSignInRoute
   '/wholesale/apply': typeof WholesaleApplyRoute
   '/wholesale/sign-in': typeof WholesaleSignInRoute
   '/admin/': typeof AdminIndexRoute
+  '/staff/': typeof StaffIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
@@ -277,9 +298,11 @@ export interface FileRoutesByTo {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal/$': typeof PortalSplatRoute
   '/quote/$id': typeof QuoteIdRoute
+  '/staff/sign-in': typeof StaffSignInRoute
   '/wholesale/apply': typeof WholesaleApplyRoute
   '/wholesale/sign-in': typeof WholesaleSignInRoute
   '/admin': typeof AdminIndexRoute
+  '/staff': typeof StaffIndexRoute
   '/wholesale': typeof WholesaleIndexRoute
   '/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
@@ -302,6 +325,7 @@ export interface FileRoutesById {
   '/repair-body-shops': typeof RepairBodyShopsRoute
   '/request-quote': typeof RequestQuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/staff': typeof StaffRouteWithChildren
   '/terms': typeof TermsRoute
   '/admin/accounts': typeof AdminAccountsRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -314,9 +338,11 @@ export interface FileRoutesById {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/portal_/$': typeof PortalSplatRoute
   '/quote/$id': typeof QuoteIdRoute
+  '/staff/sign-in': typeof StaffSignInRoute
   '/wholesale/apply': typeof WholesaleApplyRoute
   '/wholesale/sign-in': typeof WholesaleSignInRoute
   '/admin/': typeof AdminIndexRoute
+  '/staff/': typeof StaffIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/_authenticated/wholesale/dashboard': typeof AuthenticatedWholesaleDashboardRoute
   '/admin/requests/$id': typeof AdminRequestsIdRoute
@@ -339,6 +365,7 @@ export interface FileRouteTypes {
     | '/repair-body-shops'
     | '/request-quote'
     | '/sitemap.xml'
+    | '/staff'
     | '/terms'
     | '/admin/accounts'
     | '/admin/customers'
@@ -351,9 +378,11 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/portal/$'
     | '/quote/$id'
+    | '/staff/sign-in'
     | '/wholesale/apply'
     | '/wholesale/sign-in'
     | '/admin/'
+    | '/staff/'
     | '/wholesale/'
     | '/wholesale/dashboard'
     | '/admin/requests/$id'
@@ -384,9 +413,11 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/portal/$'
     | '/quote/$id'
+    | '/staff/sign-in'
     | '/wholesale/apply'
     | '/wholesale/sign-in'
     | '/admin'
+    | '/staff'
     | '/wholesale'
     | '/wholesale/dashboard'
     | '/admin/requests/$id'
@@ -408,6 +439,7 @@ export interface FileRouteTypes {
     | '/repair-body-shops'
     | '/request-quote'
     | '/sitemap.xml'
+    | '/staff'
     | '/terms'
     | '/admin/accounts'
     | '/admin/customers'
@@ -420,9 +452,11 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/portal_/$'
     | '/quote/$id'
+    | '/staff/sign-in'
     | '/wholesale/apply'
     | '/wholesale/sign-in'
     | '/admin/'
+    | '/staff/'
     | '/wholesale/'
     | '/_authenticated/wholesale/dashboard'
     | '/admin/requests/$id'
@@ -445,6 +479,7 @@ export interface RootRouteChildren {
   RepairBodyShopsRoute: typeof RepairBodyShopsRoute
   RequestQuoteRoute: typeof RequestQuoteRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  StaffRoute: typeof StaffRouteWithChildren
   TermsRoute: typeof TermsRoute
   PortalSplatRoute: typeof PortalSplatRoute
   QuoteIdRoute: typeof QuoteIdRoute
@@ -460,6 +495,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -567,6 +609,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WholesaleIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff/': {
+      id: '/staff/'
+      path: '/'
+      fullPath: '/staff/'
+      preLoaderRoute: typeof StaffIndexRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -587,6 +636,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/wholesale/apply'
       preLoaderRoute: typeof WholesaleApplyRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/staff/sign-in': {
+      id: '/staff/sign-in'
+      path: '/sign-in'
+      fullPath: '/staff/sign-in'
+      preLoaderRoute: typeof StaffSignInRouteImport
+      parentRoute: typeof StaffRoute
     }
     '/quote/$id': {
       id: '/quote/$id'
@@ -761,6 +817,18 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface StaffRouteChildren {
+  StaffSignInRoute: typeof StaffSignInRoute
+  StaffIndexRoute: typeof StaffIndexRoute
+}
+
+const StaffRouteChildren: StaffRouteChildren = {
+  StaffSignInRoute: StaffSignInRoute,
+  StaffIndexRoute: StaffIndexRoute,
+}
+
+const StaffRouteWithChildren = StaffRoute._addFileChildren(StaffRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -776,6 +844,7 @@ const rootRouteChildren: RootRouteChildren = {
   RepairBodyShopsRoute: RepairBodyShopsRoute,
   RequestQuoteRoute: RequestQuoteRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  StaffRoute: StaffRouteWithChildren,
   TermsRoute: TermsRoute,
   PortalSplatRoute: PortalSplatRoute,
   QuoteIdRoute: QuoteIdRoute,
