@@ -893,6 +893,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_staff_access: { Args: { _user_id: string }; Returns: boolean }
       mask_part_number: { Args: { _part_number: string }; Returns: string }
       publish_retail_quote: { Args: { _payload: Json }; Returns: Json }
       submit_wholesale_application: {
