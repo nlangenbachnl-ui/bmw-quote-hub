@@ -1,0 +1,1 @@
+revoke execute on function public.has_staff_access(uuid) from anon, authenticated;
