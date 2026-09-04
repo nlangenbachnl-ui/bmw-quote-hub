@@ -411,6 +411,39 @@ export async function adminListAllPartsRequests(): Promise<PartsRequest[]> {
   return data ?? [];
 }
 
+/**
+ * One parts request with its line items, for the staff/admin detail workflow.
+ * Readable by admins and parts staff through RLS; owners see their own.
+ */
+export async function adminGetPartsRequest(
+  id: string,
+): Promise<(PartsRequest & { wholesale_request_items: RequestItem[] }) | null> {
+  const { data, error } = await supabase
+    .from("wholesale_parts_requests")
+    .select("*, wholesale_request_items(*)")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return (data ?? null) as (PartsRequest & { wholesale_request_items: RequestItem[] }) | null;
+}
+
+/** Quotes already issued against one parts request. */
+export async function adminListQuotesForRequest(requestId: string): Promise<
+  Array<WholesaleQuote & { wholesale_quote_lines: WholesaleQuoteLine[] }>
+> {
+  const { data, error } = await supabase
+    .from("wholesale_quotes")
+    .select("*, wholesale_quote_lines(*)")
+    .eq("request_id", requestId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as Array<
+    WholesaleQuote & { wholesale_quote_lines: WholesaleQuoteLine[] }
+  >;
+}
+
+
+
 export async function adminCreateWholesaleQuote(input: {
   userId: string;
   createdBy: string;
